@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giometrie – digitale oplossingen op maat</title>
+<meta name="description" content="Giometrie ontwerpt, bouwt en beheert websites, apps en digitale oplossingen op maat voor ondernemers.">
+<meta name="theme-color" content="#16213e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon-180.png">
+<style>
+@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+
+:root{
+  --navy:#16213e; --diep:#0f172e; --oranje:#ff5a36; --oranje-d:#c23c17; --creme:#f6f1e8; --steen:#a8a194; --lei:#4b5677;
+  --lijn:rgba(246,241,232,.12);
+  --veer:cubic-bezier(.22,1.4,.36,1); --zacht:cubic-bezier(.16,1,.3,1);
+  --breed:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px;overflow-x:clip}
+body{background:var(--navy);color:var(--creme);font-family:"Space Grotesk",system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,svg{display:block}
+.wrap{max-width:var(--breed);margin:0 auto;padding:0 24px}
+::selection{background:var(--oranje);color:var(--navy)}
+
+/* ---------- intro ---------- */
+.intro{position:fixed;inset:0;z-index:100;background:var(--diep);display:grid;place-items:center;cursor:pointer;
+  clip-path:inset(0 0 0 0);transition:clip-path 1s var(--zacht)}
+.intro.weg{clip-path:inset(0 0 100% 0)}
+.intro-logo{width:min(560px,78vw);height:auto;overflow:visible}
+.intro .g-lijn{stroke:var(--creme);stroke-dasharray:1;stroke-dashoffset:1;animation:teken 1.1s .15s var(--zacht) forwards}
+.intro .vlak{opacity:0;animation:invliegen .9s var(--veer) forwards}
+.intro .vlak-boven{fill:var(--oranje);--van:translate(0,-26px);animation-delay:.55s}
+.intro .vlak-links{fill:var(--creme);--van:translate(-24px,16px);animation-delay:.65s}
+.intro .vlak-rechts{fill:var(--steen);--van:translate(24px,16px);animation-delay:.75s}
+.intro .letter{fill:var(--creme);opacity:0;transform:translateY(34px);animation:letterop .8s var(--zacht) forwards;animation-delay:calc(.75s + var(--i) * 55ms)}
+.intro .ruit{opacity:0;transform:translateY(-40px);animation:ruitval .7s var(--veer) forwards}
+.intro .ruit-1{fill:var(--oranje);animation-delay:1.35s}.intro .ruit-2{fill:var(--creme);animation-delay:1.5s}
+.intro .woord{clip-path:inset(-20% 0 -40% 0)}
+@keyframes teken{to{stroke-dashoffset:0}}
+@keyframes invliegen{from{opacity:0;transform:var(--van) scale(.85)}to{opacity:1;transform:none}}
+@keyframes letterop{to{opacity:1;transform:none}}
+@keyframes ruitval{60%{opacity:1}to{opacity:1;transform:none}}
+.vlak,.letter,.ruit{transform-box:fill-box;transform-origin:center}
+
+/* ---------- voortgang + cursor ---------- */
+.voortgang{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--oranje);transform-origin:left;transform:scaleX(0);z-index:60}
+.cursor{position:fixed;top:0;left:0;width:14px;height:8px;margin:-4px 0 0 -7px;pointer-events:none;z-index:90;opacity:0;transition:opacity .3s,width .3s var(--zacht),height .3s var(--zacht),margin .3s var(--zacht)}
+.cursor svg{width:100%;height:100%;fill:var(--oranje)}
+.cursor.groot{width:40px;height:23px;margin:-11.5px 0 0 -20px}
+@media (pointer:fine){.cursor{opacity:1}}
+
+/* ---------- navigatie ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:padding .4s var(--zacht);padding:22px 0}
+nav.vast{padding:12px 0}
+/* Het glaseffect zit op een eigen laag: een backdrop-filter op <nav> zelf zou van de menubalk
+   het kader maken voor het vaste menu, waardoor dat menu alleen binnen de balk getoond wordt. */
+nav::before{content:"";position:absolute;inset:0;z-index:-2;background:rgba(15,23,46,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--lijn);opacity:0;transition:opacity .4s}
+nav.vast::before{opacity:1}
+nav.open::before{opacity:0;transition:opacity .25s .3s}  /* pas vervagen als de cirkel de balk bedekt */
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nav-logo{height:34px;width:auto;overflow:visible}
+.nav-logo .g-lijn{stroke:var(--creme)}.nav-logo .vlak-boven,.nav-logo .ruit-1{fill:var(--oranje)}
+.nav-logo .vlak-links,.nav-logo .letter,.nav-logo .ruit-2{fill:var(--creme)}.nav-logo .vlak-rechts{fill:var(--steen)}
+.nav-logo .vlak{transition:transform .5s var(--veer)}
+.merk:hover .vlak-boven{transform:translateY(-3px)}.merk:hover .vlak-links{transform:translate(-2.5px,2px)}.merk:hover .vlak-rechts{transform:translate(2.5px,2px)}
+.menu{display:flex;gap:30px;list-style:none;align-items:center}
+.menu a{text-decoration:none;font-weight:500;font-size:.95rem;position:relative;padding:4px 0}
+.menu a:not(.knop)::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--oranje);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--zacht)}
+.menu a:not(.knop):hover::after{transform:scaleX(1);transform-origin:left}
+.burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+.burger span{position:absolute;left:10px;right:10px;height:2px;background:var(--creme);transition:transform .4s var(--zacht),opacity .3s}
+.burger span:nth-child(1){top:16px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:28px}
+.open .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}.open .burger span:nth-child(2){opacity:0}.open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* ---------- knoppen ---------- */
+.knop{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;font-size:1rem;
+  background:var(--oranje);color:var(--navy);border:0;cursor:pointer;position:relative;overflow:hidden;transition:transform .4s var(--zacht),box-shadow .4s}
+.knop::before{content:"";position:absolute;inset:0;background:var(--creme);transform:translateY(101%);transition:transform .5s var(--zacht);border-radius:inherit}
+.knop:hover::before{transform:none}
+.knop>*{position:relative}
+.knop .pijl{transition:transform .5s var(--zacht)}.knop:hover .pijl{transform:translateX(4px)}
+.knop.rand{background:transparent;color:var(--creme);box-shadow:inset 0 0 0 1.5px rgba(246,241,232,.35)}
+.knop.rand::before{background:var(--creme)}.knop.rand:hover{color:var(--navy)}
+.knop.klein{padding:10px 20px;font-size:.92rem}
+
+/* ---------- held ---------- */
+.held{position:relative;min-height:100svh;display:flex;align-items:center;padding:130px 0 90px;overflow:hidden;background:var(--navy)}
+.raster,.raster-vaag{position:absolute;top:0;left:0;width:100%;height:100%}
+.raster{opacity:.55;pointer-events:none;
+  -webkit-mask:radial-gradient(circle 340px at var(--mx,70%) var(--my,40%),#000 0,transparent 70%);mask:radial-gradient(circle 340px at var(--mx,70%) var(--my,40%),#000 0,transparent 70%)}
+.raster-vaag{opacity:.08;pointer-events:none}
+.held .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative;z-index:2}
+.oog{display:inline-flex;align-items:center;gap:10px;font-weight:500;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:var(--oranje);margin-bottom:22px}
+.oog .ruitje{width:13px;fill:var(--oranje)}
+h1{font-size:clamp(2.6rem,6.2vw,5.2rem);line-height:1.02;letter-spacing:-.035em;font-weight:700;margin-bottom:26px}
+h1 .accent{color:var(--oranje)}
+.held p.lead{font-size:clamp(1.05rem,1.6vw,1.25rem);max-width:520px;opacity:.82;margin-bottom:36px}
+.held .knoppen{display:flex;gap:14px;flex-wrap:wrap}
+.held-beeld{position:relative;aspect-ratio:1;perspective:900px}
+.held-kantel{width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s var(--zacht);will-change:transform}
+.held-icoon{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 40px 60px rgba(0,0,0,.35))}
+.held-icoon .g-lijn{stroke:var(--creme);stroke-dasharray:1;stroke-dashoffset:1}
+.held-icoon .vlak-boven{fill:var(--oranje)}.held-icoon .vlak-links{fill:var(--creme)}.held-icoon .vlak-rechts{fill:var(--steen)}
+.held-icoon .vlak{opacity:0;transition:transform 1s var(--veer)}
+.klaar .held-icoon .g-lijn{animation:teken 1.4s .1s var(--zacht) forwards}
+.klaar .held-icoon .vlak{animation:invliegen 1s var(--veer) forwards}
+.klaar .held-icoon .vlak-boven{--van:translate(0,-30px);animation-delay:.5s}
+.klaar .held-icoon .vlak-links{--van:translate(-28px,18px);animation-delay:.62s}
+.klaar .held-icoon .vlak-rechts{--van:translate(28px,18px);animation-delay:.74s}
+.held-icoon.uit .vlak{animation:none;opacity:1}.held-icoon.uit .g-lijn{animation:none;stroke-dashoffset:0}
+.held-icoon.uit .vlak-boven{transform:translateY(calc(var(--s,0) * -7px))}
+.held-icoon.uit .vlak-links{transform:translate(calc(var(--s,0) * -6px),calc(var(--s,0) * 4px))}
+.held-icoon.uit .vlak-rechts{transform:translate(calc(var(--s,0) * 6px),calc(var(--s,0) * 4px))}
+.zweef{animation:zweef 7s ease-in-out infinite}
+@keyframes zweef{50%{transform:translateY(-14px)}}
+.zwever{position:absolute;width:18px;opacity:.0;animation:zwever 9s ease-in-out infinite}
+.zwever svg{width:100%;fill:var(--oranje)}
+.klaar .zwever{opacity:.9}
+.z0{top:12%;left:8%;animation-delay:-1s}.z1{top:22%;right:4%;width:12px;animation-delay:-3s}.z2{bottom:16%;left:2%;width:24px;animation-delay:-5s}
+.z3{bottom:8%;right:16%;width:10px;animation-delay:-2s}.z4{top:4%;left:46%;width:9px;animation-delay:-6s}.z5{top:52%;right:-2%;width:15px;animation-delay:-4s}
+.z1 svg,.z4 svg{fill:var(--creme)}
+@keyframes zwever{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(10px,-18px) rotate(8deg)}66%{transform:translate(-8px,10px) rotate(-6deg)}}
+.scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;opacity:.55;z-index:2}
+.scroll-hint i{width:1.5px;height:44px;background:linear-gradient(var(--creme),transparent);position:relative;overflow:hidden}
+.scroll-hint i::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:var(--oranje);animation:druppel 2.2s ease-in-out infinite}
+@keyframes druppel{to{top:110%}}
+
+/* ---------- woorden die binnenkomen ---------- */
+[data-split] .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em;margin-bottom:-.06em}
+[data-split] .w>span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--zacht);transition-delay:calc(var(--n) * 55ms + var(--start,0ms))}
+[data-split].zichtbaar .w>span{transform:none}
+[data-reveal]{opacity:0;transform:translateY(40px);transition:opacity .9s var(--zacht),transform 1s var(--zacht);transition-delay:var(--d,0ms)}
+[data-reveal].zichtbaar{opacity:1;transform:none}
+
+/* ---------- band ---------- */
+.band{background:var(--oranje);color:var(--navy);padding:22px 0;overflow:hidden;transform:rotate(-1.6deg) scale(1.03);margin:-10px 0;position:relative;z-index:3}
+.band-rij{display:flex;gap:34px;align-items:center;width:max-content;animation:band 28s linear infinite;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.band-rij span:nth-of-type(even){color:transparent;-webkit-text-stroke:1.5px var(--navy)}
+.band .ruitje{width:22px;fill:var(--navy);flex:none}
+@keyframes band{to{transform:translateX(-50%)}}
+
+/* ---------- secties ---------- */
+section{position:relative;padding:130px 0}
+.licht{background:var(--creme);color:var(--navy)}
+.sectie-kop{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:64px}
+h2{font-size:clamp(2.1rem,4.6vw,3.6rem);line-height:1.05;letter-spacing:-.03em;font-weight:700}
+.sectie-kop p{opacity:.75;max-width:460px;justify-self:end}
+.licht .oog{color:var(--oranje-d)}.licht .oog .ruitje{fill:var(--oranje-d)}
+
+/* diensten */
+.kaarten{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.kaart{position:relative;background:#fff;border-radius:22px;padding:30px 28px 32px;border:1px solid rgba(22,33,62,.08);overflow:hidden;
+  transform-style:preserve-3d;transition:transform .6s var(--zacht),box-shadow .6s var(--zacht),opacity .9s var(--zacht) var(--d,0ms);will-change:transform}
+.kaart:hover{box-shadow:0 30px 60px -25px rgba(22,33,62,.35)}
+.kaart-gloed{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%),rgba(255,90,54,.13),transparent 45%)}
+.kaart:hover .kaart-gloed{opacity:1}
+.kaart h3{font-size:1.35rem;letter-spacing:-.02em;margin:6px 0 8px}
+.kaart p{opacity:.72;font-size:.98rem}
+.illu{width:130px;height:130px;margin:-10px 0 4px -14px;overflow:visible}
+.illu .f-t{fill:#d9d3c7}.illu .f-l{fill:var(--navy)}.illu .f-r{fill:var(--lei)}
+.illu .accent .f-t{fill:var(--oranje)}.illu .f-s{fill:var(--oranje);opacity:.25;transition:opacity .5s}
+.illu g{transition:transform .7s var(--veer)}
+.illu-web .l1{transform:translateY(0)}.kaart:hover .illu-web .l2{transform:translateY(-8px)}.kaart:hover .illu-web .l3{transform:translateY(-16px)}
+.kaart:hover .illu-app .gsm,.kaart:hover .illu-app .scherm{transform:translateY(-6px)}.kaart:hover .illu-app .f-s{opacity:1}
+.kaart:hover .illu-auto .pakje{transform:translate(9px,5px)}.illu-auto .p1{transition-delay:.06s}.illu-auto .p2{transition-delay:.12s}
+.illu .kabel{fill:none;stroke:var(--oranje);stroke-width:2.5;stroke-dasharray:.08 .06;stroke-linecap:round}
+.kaart:hover .illu .kabel{animation:stroom 1s linear infinite}
+@keyframes stroom{to{stroke-dashoffset:-.14}}
+.kaart:hover .illu-link .knoop:first-of-type{transform:translate(-3px,-3px)}
+.illu-stijl .vorm{transform-box:fill-box;transform-origin:center}.illu-stijl .v1 .f-t{fill:var(--oranje)}
+.kaart:hover .illu-stijl .v1{transform:rotate(180deg)}.kaart:hover .illu-stijl .v2{transform:translateY(-8px)}.kaart:hover .illu-stijl .v3{transform:rotate(45deg)}
+.kaart:hover .illu-beheer .deksel{transform:translateY(-14px)}
+
+/* kubus-statement */
+.statement{background:var(--diep);overflow:hidden}
+.statement .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+.scene{aspect-ratio:1;max-width:440px;width:100%;margin:0 auto;perspective:1000px;display:grid;place-items:center;position:relative}
+.kubus{width:46%;aspect-ratio:1;position:relative;transform-style:preserve-3d;transform:rotateX(-30deg) rotateY(var(--ry,45deg));will-change:transform}
+.kubus>div{position:absolute;inset:0;border-radius:4px;backface-visibility:hidden}
+.kubus .k-voor{background:var(--creme);transform:translateZ(var(--h))}.kubus .k-achter{background:var(--creme);transform:rotateY(180deg) translateZ(var(--h))}
+.kubus .k-rechts{background:var(--steen);transform:rotateY(90deg) translateZ(var(--h))}.kubus .k-links{background:var(--steen);transform:rotateY(-90deg) translateZ(var(--h))}
+.kubus .k-boven{background:var(--oranje);transform:rotateX(90deg) translateZ(var(--h))}.kubus .k-onder{background:var(--lei);transform:rotateX(-90deg) translateZ(var(--h))}
+.kubus .k-voor::after,.kubus .k-achter::after{content:"";position:absolute;inset:18%;border:2px solid rgba(22,33,62,.12);border-radius:3px}
+.schaduw{position:absolute;left:27%;width:46%;top:83%;height:8%;border-radius:50%;background:radial-gradient(rgba(0,0,0,.55),transparent 70%);filter:blur(5px)}
+.zinnen{font-size:clamp(2rem,4.4vw,3.6rem);font-weight:700;line-height:1.1;letter-spacing:-.03em}
+.zinnen span{display:block;opacity:.18;transition:opacity .6s,color .6s}
+.zinnen span.aan{opacity:1}.zinnen span.aan.oranje{color:var(--oranje)}
+.statement p{margin-top:26px;opacity:.75;max-width:480px}
+
+/* werkwijze */
+.stappen{list-style:none;position:relative;max-width:820px;margin:0 auto}
+.tijdlijn{position:absolute;left:21px;top:10px;bottom:10px;width:2px;background:rgba(22,33,62,.12)}
+.tijdlijn i{position:absolute;inset:0;background:var(--oranje);transform-origin:top;transform:scaleY(var(--p,0))}
+.stap{display:grid;grid-template-columns:44px 70px 1fr;gap:16px;align-items:start;padding:26px 0}
+.stap-punt{width:44px;height:44px;display:grid;place-items:center;position:relative;z-index:1}
+.stap-punt .ruitje{width:22px;fill:var(--creme);stroke:rgba(22,33,62,.25);stroke-width:.8;transition:fill .5s,transform .7s var(--veer)}
+.stap.aan .stap-punt .ruitje{fill:var(--oranje);stroke:none;transform:scale(1.35)}
+.stap-nr{font-size:2.6rem;font-weight:700;line-height:1;color:rgba(22,33,62,.14);transition:color .6s}
+.stap.aan .stap-nr{color:var(--navy)}
+.stap h3{font-size:1.5rem;letter-spacing:-.02em;margin:2px 0 6px}.stap p{opacity:.72;max-width:520px}
+
+/* waarom */
+.waarom-rij{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.waarom{padding-top:26px;position:relative}
+.waarom-lijn{position:absolute;top:0;left:0;right:0;height:2px;background:var(--lijn);overflow:hidden}
+.waarom-lijn::after{content:"";position:absolute;inset:0;background:var(--oranje);transform:scaleX(0);transform-origin:left;transition:transform 1.2s var(--zacht);transition-delay:calc(var(--d,0ms) + .2s)}
+.waarom.zichtbaar .waarom-lijn::after{transform:scaleX(1)}
+.waarom h3{font-size:1.3rem;letter-spacing:-.02em;margin-bottom:8px}.waarom p{opacity:.72;font-size:.98rem}
+
+/* contact */
+.contact{text-align:center;overflow:hidden;background:var(--navy)}
+.contact h2{font-size:clamp(2.6rem,8vw,6.4rem);margin-bottom:24px}
+.contact p{opacity:.78;max-width:560px;margin:0 auto 40px;font-size:1.15rem}
+.contact .knoppen{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.contact .raster-vaag{opacity:.06}
+.melding{position:fixed;left:50%;bottom:28px;transform:translate(-50%,200%);visibility:hidden;background:var(--creme);color:var(--navy);padding:12px 22px;border-radius:999px;font-weight:700;z-index:80;transition:transform .6s var(--veer)}
+.melding.toon{transform:translate(-50%,0);visibility:visible}
+
+footer{background:var(--diep);padding:54px 0 40px;border-top:1px solid var(--lijn)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.voet-logo{height:30px;width:auto}
+.voet-logo .g-lijn{stroke:var(--creme)}.voet-logo .vlak-boven,.voet-logo .ruit-1{fill:var(--oranje)}
+.voet-logo .vlak-links,.voet-logo .letter,.voet-logo .ruit-2{fill:var(--creme)}.voet-logo .vlak-rechts{fill:var(--steen)}
+footer small{opacity:.55}
+
+/* ---------- gsm ---------- */
+@media (max-width:900px){
+  .held .wrap,.statement .wrap,.sectie-kop{grid-template-columns:1fr}
+  .held-beeld{max-width:340px;width:80%;margin:0 auto;order:-1}
+  .held{padding-top:110px}
+  .sectie-kop p{justify-self:start}
+  .kaarten{grid-template-columns:1fr 1fr}.waarom-rij{grid-template-columns:1fr 1fr}
+  .burger{display:block}
+  .menu{position:fixed;inset:0;background:var(--diep);flex-direction:column;justify-content:center;gap:26px;font-size:1.5rem;z-index:-1;
+    clip-path:circle(0px at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .65s cubic-bezier(.7,0,.25,1) .18s;visibility:hidden}
+  .open .menu{clip-path:circle(var(--r,150vmax) at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .85s cubic-bezier(.7,0,.25,1);visibility:visible}
+  .menu li{opacity:0;transform:translateY(26px);transition:opacity .3s,transform .3s var(--zacht)}
+  .open .menu li{opacity:1;transform:none;transition:opacity .6s var(--zacht),transform .8s var(--zacht);transition-delay:calc(.32s + var(--i) * 70ms)}
+  .menu a{font-size:1.6rem}
+  section{padding:96px 0}
+}
+@media (max-width:900px){.menu{transition-property:clip-path,visibility}}
+@media (max-width:600px){
+  body{font-size:16px}.wrap{padding:0 18px}
+  .kaarten,.waarom-rij{grid-template-columns:1fr}
+  .stap{grid-template-columns:44px 1fr}.stap-nr{display:none}
+  .scroll-hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}
+  .intro{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="intro" aria-hidden="true"><svg class="intro-logo" viewBox="0 0 295.2 67.0" aria-label="Giometrie" role="img"><g transform="translate(0 -11.53)"><g class="logo-icoon" transform="translate(-6.29 9.98) scale(0.6803)"><path class="vlak vlak-boven" d="M50.00 47.40 L32.99 37.58 L50.00 27.76 L67.01 37.58 Z"/><path class="vlak vlak-links" d="M47.75 51.30 L47.75 70.94 L30.74 61.12 L30.74 41.48 Z"/><path class="vlak vlak-rechts" d="M52.25 51.30 L69.26 41.48 L69.26 61.12 L52.25 70.94 Z"/><path class="g-lijn" d="M75.57 23.76 L50.00 9.00 L14.49 29.50 L14.49 70.50 L50.00 91.00 L85.51 70.50 L85.51 50.00 L79.01 50.00" pathLength="1" fill="none" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/></g><g class="woord"><path class="letter" style="--i:0" d="M63.07721351494799 64.094V35.32599999999999H70.38521351494799V64.094Z"/><path class="letter" style="--i:1" d="M92.48321351494799 64.90599999999999Q88.19121351494799 64.90599999999999 84.76921351494798 63.166Q81.34721351494798 61.425999999999995 79.37521351494799 58.11999999999999Q77.40321351494799 54.81399999999999 77.40321351494799 50.17399999999999V49.245999999999995Q77.40321351494799 44.605999999999995 79.37521351494799 41.3Q81.34721351494798 37.99399999999999 84.76921351494798 36.25399999999999Q88.19121351494799 34.513999999999996 92.48321351494799 34.513999999999996Q96.77521351494799 34.513999999999996 100.19721351494799 36.25399999999999Q103.61921351494799 37.99399999999999 105.59121351494798 41.3Q107.56321351494799 44.605999999999995 107.56321351494799 49.245999999999995V50.17399999999999Q107.56321351494799 54.81399999999999 105.59121351494798 58.11999999999999Q103.61921351494799 61.425999999999995 100.19721351494799 63.166Q96.77521351494799 64.90599999999999 92.48321351494799 64.90599999999999ZM92.48321351494799 58.41Q95.84721351494798 58.41 98.05121351494799 56.235Q100.25521351494798 54.059999999999995 100.25521351494798 49.99999999999999V49.419999999999995Q100.25521351494798 45.35999999999999 98.08021351494799 43.18499999999999Q95.90521351494799 41.00999999999999 92.48321351494799 41.00999999999999Q89.11921351494799 41.00999999999999 86.915213514948 43.18499999999999Q84.71121351494799 45.35999999999999 84.71121351494799 49.419999999999995V49.99999999999999Q84.71121351494799 54.059999999999995 86.915213514948 56.235Q89.11921351494799 58.41 92.48321351494799 58.41Z"/><path class="letter" style="--i:2" d="M114.58121351494799 64.094V35.32599999999999H121.77321351494798V38.45799999999999H122.817213514948Q123.57121351494798 37.007999999999996 125.31121351494798 35.934999999999995Q127.05121351494799 34.861999999999995 129.893213514948 34.861999999999995Q132.96721351494799 34.861999999999995 134.823213514948 36.050999999999995Q136.679213514948 37.239999999999995 137.665213514948 39.153999999999996H138.70921351494798Q139.695213514948 37.29799999999999 141.493213514948 36.07999999999999Q143.291213514948 34.861999999999995 146.59721351494798 34.861999999999995Q149.265213514948 34.861999999999995 151.44021351494797 35.992999999999995Q153.61521351494798 37.123999999999995 154.920213514948 39.41499999999999Q156.225213514948 41.70599999999999 156.225213514948 45.18599999999999V64.094H148.917213514948V45.708Q148.917213514948 43.33 147.69921351494799 42.141Q146.481213514948 40.952 144.277213514948 40.952Q141.783213514948 40.952 140.420213514948 42.547Q139.057213514948 44.141999999999996 139.057213514948 47.099999999999994V64.094H131.749213514948V45.708Q131.749213514948 43.33 130.53121351494798 42.141Q129.313213514948 40.952 127.10921351494798 40.952Q124.61521351494798 40.952 123.25221351494798 42.547Q121.88921351494798 44.141999999999996 121.88921351494798 47.099999999999994V64.094Z"/><path class="letter" style="--i:3" d="M177.511213514948 64.90599999999999Q173.219213514948 64.90599999999999 169.94221351494798 63.07899999999999Q166.665213514948 61.251999999999995 164.838213514948 57.916999999999994Q163.011213514948 54.581999999999994 163.011213514948 50.05799999999999V49.361999999999995Q163.011213514948 44.837999999999994 164.809213514948 41.50299999999999Q166.607213514948 38.16799999999999 169.855213514948 36.340999999999994Q173.10321351494798 34.513999999999996 177.39521351494798 34.513999999999996Q181.629213514948 34.513999999999996 184.761213514948 36.398999999999994Q187.893213514948 38.28399999999999 189.633213514948 41.61899999999999Q191.373213514948 44.95399999999999 191.373213514948 49.361999999999995V51.855999999999995H170.435213514948Q170.551213514948 54.81399999999999 172.63921351494798 56.669999999999995Q174.727213514948 58.525999999999996 177.743213514948 58.525999999999996Q180.81721351494798 58.525999999999996 182.26721351494797 57.19199999999999Q183.71721351494799 55.85799999999999 184.47121351494798 54.233999999999995L190.445213514948 57.36599999999999Q189.63321351494798 58.873999999999995 188.09621351494798 60.642999999999994Q186.559213514948 62.41199999999999 184.00721351494798 63.65899999999999Q181.45521351494799 64.90599999999999 177.511213514948 64.90599999999999ZM170.493213514948 46.403999999999996H183.94921351494799Q183.71721351494799 43.91 181.948213514948 42.401999999999994Q180.179213514948 40.89399999999999 177.337213514948 40.89399999999999Q174.379213514948 40.89399999999999 172.63921351494798 42.401999999999994Q170.899213514948 43.91 170.493213514948 46.403999999999996Z"/><path class="letter" style="--i:4" d="M209.179213514948 64.094Q206.337213514948 64.094 204.56821351494798 62.324999999999996Q202.79921351494798 60.556 202.79921351494798 57.59799999999999V41.35799999999999H195.607213514948V35.32599999999999H202.79921351494798V26.39399999999999H210.107213514948V35.32599999999999H217.99521351494798V41.35799999999999H210.107213514948V56.321999999999996Q210.107213514948 58.062 211.731213514948 58.062H217.299213514948V64.094Z"/><path class="letter" style="--i:5" d="M224.89721351494802 64.094V35.32599999999999H232.08921351494803V38.574H233.133213514948Q233.77121351494802 36.83399999999999 235.25021351494803 36.02199999999999Q236.72921351494801 35.209999999999994 238.70121351494802 35.209999999999994H242.181213514948V41.70599999999999H238.585213514948Q235.80121351494802 41.70599999999999 234.00321351494802 43.18499999999999Q232.205213514948 44.663999999999994 232.205213514948 47.73799999999999V64.094Z"/><path class="letter" style="--i:6" d="M249.055213514948 64.094V35.32599999999999H256.36321351494803V64.094Z"/><path class="letter" style="--i:7" d="M277.881213514948 64.90599999999999Q273.58921351494797 64.90599999999999 270.312213514948 63.07899999999999Q267.035213514948 61.251999999999995 265.208213514948 57.916999999999994Q263.381213514948 54.581999999999994 263.381213514948 50.05799999999999V49.361999999999995Q263.381213514948 44.837999999999994 265.179213514948 41.50299999999999Q266.977213514948 38.16799999999999 270.225213514948 36.340999999999994Q273.473213514948 34.513999999999996 277.765213514948 34.513999999999996Q281.999213514948 34.513999999999996 285.131213514948 36.398999999999994Q288.263213514948 38.28399999999999 290.003213514948 41.61899999999999Q291.743213514948 44.95399999999999 291.743213514948 49.361999999999995V51.855999999999995H270.805213514948Q270.921213514948 54.81399999999999 273.009213514948 56.669999999999995Q275.097213514948 58.525999999999996 278.113213514948 58.525999999999996Q281.187213514948 58.525999999999996 282.63721351494803 57.19199999999999Q284.087213514948 55.85799999999999 284.841213514948 54.233999999999995L290.81521351494797 57.36599999999999Q290.003213514948 58.873999999999995 288.466213514948 60.642999999999994Q286.929213514948 62.41199999999999 284.37721351494804 63.65899999999999Q281.825213514948 64.90599999999999 277.881213514948 64.90599999999999ZM270.863213514948 46.403999999999996H284.319213514948Q284.087213514948 43.91 282.318213514948 42.401999999999994Q280.549213514948 40.89399999999999 277.70721351494797 40.89399999999999Q274.749213514948 40.89399999999999 273.009213514948 42.401999999999994Q271.269213514948 43.91 270.863213514948 46.403999999999996Z"/></g><path class="ruit ruit-1" d="M66.73 20.89 L73.13 24.58 L66.73 28.27 L60.34 24.58 Z"/><path class="ruit ruit-2" d="M252.71 20.89 L259.10 24.58 L252.71 28.27 L246.31 24.58 Z"/></g></svg></div>
+<div class="voortgang"></div>
+<div class="cursor" aria-hidden="true"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></div>
+<div class="melding" role="status" aria-live="polite">E-mailadres gekopieerd</div>
+
+<nav>
+  <div class="wrap">
+    <a class="merk" href="#top" aria-label="Giometrie, naar boven"><svg class="nav-logo" viewBox="0 0 295.2 67.0" aria-label="Giometrie" role="img"><g transform="translate(0 -11.53)"><g class="logo-icoon" transform="translate(-6.29 9.98) scale(0.6803)"><path class="vlak vlak-boven" d="M50.00 47.40 L32.99 37.58 L50.00 27.76 L67.01 37.58 Z"/><path class="vlak vlak-links" d="M47.75 51.30 L47.75 70.94 L30.74 61.12 L30.74 41.48 Z"/><path class="vlak vlak-rechts" d="M52.25 51.30 L69.26 41.48 L69.26 61.12 L52.25 70.94 Z"/><path class="g-lijn" d="M75.57 23.76 L50.00 9.00 L14.49 29.50 L14.49 70.50 L50.00 91.00 L85.51 70.50 L85.51 50.00 L79.01 50.00" pathLength="1" fill="none" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/></g><g class="woord"><path class="letter" style="--i:0" d="M63.07721351494799 64.094V35.32599999999999H70.38521351494799V64.094Z"/><path class="letter" style="--i:1" d="M92.48321351494799 64.90599999999999Q88.19121351494799 64.90599999999999 84.76921351494798 63.166Q81.34721351494798 61.425999999999995 79.37521351494799 58.11999999999999Q77.40321351494799 54.81399999999999 77.40321351494799 50.17399999999999V49.245999999999995Q77.40321351494799 44.605999999999995 79.37521351494799 41.3Q81.34721351494798 37.99399999999999 84.76921351494798 36.25399999999999Q88.19121351494799 34.513999999999996 92.48321351494799 34.513999999999996Q96.77521351494799 34.513999999999996 100.19721351494799 36.25399999999999Q103.61921351494799 37.99399999999999 105.59121351494798 41.3Q107.56321351494799 44.605999999999995 107.56321351494799 49.245999999999995V50.17399999999999Q107.56321351494799 54.81399999999999 105.59121351494798 58.11999999999999Q103.61921351494799 61.425999999999995 100.19721351494799 63.166Q96.77521351494799 64.90599999999999 92.48321351494799 64.90599999999999ZM92.48321351494799 58.41Q95.84721351494798 58.41 98.05121351494799 56.235Q100.25521351494798 54.059999999999995 100.25521351494798 49.99999999999999V49.419999999999995Q100.25521351494798 45.35999999999999 98.08021351494799 43.18499999999999Q95.90521351494799 41.00999999999999 92.48321351494799 41.00999999999999Q89.11921351494799 41.00999999999999 86.915213514948 43.18499999999999Q84.71121351494799 45.35999999999999 84.71121351494799 49.419999999999995V49.99999999999999Q84.71121351494799 54.059999999999995 86.915213514948 56.235Q89.11921351494799 58.41 92.48321351494799 58.41Z"/><path class="letter" style="--i:2" d="M114.58121351494799 64.094V35.32599999999999H121.77321351494798V38.45799999999999H122.817213514948Q123.57121351494798 37.007999999999996 125.31121351494798 35.934999999999995Q127.05121351494799 34.861999999999995 129.893213514948 34.861999999999995Q132.96721351494799 34.861999999999995 134.823213514948 36.050999999999995Q136.679213514948 37.239999999999995 137.665213514948 39.153999999999996H138.70921351494798Q139.695213514948 37.29799999999999 141.493213514948 36.07999999999999Q143.291213514948 34.861999999999995 146.59721351494798 34.861999999999995Q149.265213514948 34.861999999999995 151.44021351494797 35.992999999999995Q153.61521351494798 37.123999999999995 154.920213514948 39.41499999999999Q156.225213514948 41.70599999999999 156.225213514948 45.18599999999999V64.094H148.917213514948V45.708Q148.917213514948 43.33 147.69921351494799 42.141Q146.481213514948 40.952 144.277213514948 40.952Q141.783213514948 40.952 140.420213514948 42.547Q139.057213514948 44.141999999999996 139.057213514948 47.099999999999994V64.094H131.749213514948V45.708Q131.749213514948 43.33 130.53121351494798 42.141Q129.313213514948 40.952 127.10921351494798 40.952Q124.61521351494798 40.952 123.25221351494798 42.547Q121.88921351494798 44.141999999999996 121.88921351494798 47.099999999999994V64.094Z"/><path class="letter" style="--i:3" d="M177.511213514948 64.90599999999999Q173.219213514948 64.90599999999999 169.94221351494798 63.07899999999999Q166.665213514948 61.251999999999995 164.838213514948 57.916999999999994Q163.011213514948 54.581999999999994 163.011213514948 50.05799999999999V49.361999999999995Q163.011213514948 44.837999999999994 164.809213514948 41.50299999999999Q166.607213514948 38.16799999999999 169.855213514948 36.340999999999994Q173.10321351494798 34.513999999999996 177.39521351494798 34.513999999999996Q181.629213514948 34.513999999999996 184.761213514948 36.398999999999994Q187.893213514948 38.28399999999999 189.633213514948 41.61899999999999Q191.373213514948 44.95399999999999 191.373213514948 49.361999999999995V51.855999999999995H170.435213514948Q170.551213514948 54.81399999999999 172.63921351494798 56.669999999999995Q174.727213514948 58.525999999999996 177.743213514948 58.525999999999996Q180.81721351494798 58.525999999999996 182.26721351494797 57.19199999999999Q183.71721351494799 55.85799999999999 184.47121351494798 54.233999999999995L190.445213514948 57.36599999999999Q189.63321351494798 58.873999999999995 188.09621351494798 60.642999999999994Q186.559213514948 62.41199999999999 184.00721351494798 63.65899999999999Q181.45521351494799 64.90599999999999 177.511213514948 64.90599999999999ZM170.493213514948 46.403999999999996H183.94921351494799Q183.71721351494799 43.91 181.948213514948 42.401999999999994Q180.179213514948 40.89399999999999 177.337213514948 40.89399999999999Q174.379213514948 40.89399999999999 172.63921351494798 42.401999999999994Q170.899213514948 43.91 170.493213514948 46.403999999999996Z"/><path class="letter" style="--i:4" d="M209.179213514948 64.094Q206.337213514948 64.094 204.56821351494798 62.324999999999996Q202.79921351494798 60.556 202.79921351494798 57.59799999999999V41.35799999999999H195.607213514948V35.32599999999999H202.79921351494798V26.39399999999999H210.107213514948V35.32599999999999H217.99521351494798V41.35799999999999H210.107213514948V56.321999999999996Q210.107213514948 58.062 211.731213514948 58.062H217.299213514948V64.094Z"/><path class="letter" style="--i:5" d="M224.89721351494802 64.094V35.32599999999999H232.08921351494803V38.574H233.133213514948Q233.77121351494802 36.83399999999999 235.25021351494803 36.02199999999999Q236.72921351494801 35.209999999999994 238.70121351494802 35.209999999999994H242.181213514948V41.70599999999999H238.585213514948Q235.80121351494802 41.70599999999999 234.00321351494802 43.18499999999999Q232.205213514948 44.663999999999994 232.205213514948 47.73799999999999V64.094Z"/><path class="letter" style="--i:6" d="M249.055213514948 64.094V35.32599999999999H256.36321351494803V64.094Z"/><path class="letter" style="--i:7" d="M277.881213514948 64.90599999999999Q273.58921351494797 64.90599999999999 270.312213514948 63.07899999999999Q267.035213514948 61.251999999999995 265.208213514948 57.916999999999994Q263.381213514948 54.581999999999994 263.381213514948 50.05799999999999V49.361999999999995Q263.381213514948 44.837999999999994 265.179213514948 41.50299999999999Q266.977213514948 38.16799999999999 270.225213514948 36.340999999999994Q273.473213514948 34.513999999999996 277.765213514948 34.513999999999996Q281.999213514948 34.513999999999996 285.131213514948 36.398999999999994Q288.263213514948 38.28399999999999 290.003213514948 41.61899999999999Q291.743213514948 44.95399999999999 291.743213514948 49.361999999999995V51.855999999999995H270.805213514948Q270.921213514948 54.81399999999999 273.009213514948 56.669999999999995Q275.097213514948 58.525999999999996 278.113213514948 58.525999999999996Q281.187213514948 58.525999999999996 282.63721351494803 57.19199999999999Q284.087213514948 55.85799999999999 284.841213514948 54.233999999999995L290.81521351494797 57.36599999999999Q290.003213514948 58.873999999999995 288.466213514948 60.642999999999994Q286.929213514948 62.41199999999999 284.37721351494804 63.65899999999999Q281.825213514948 64.90599999999999 277.881213514948 64.90599999999999ZM270.863213514948 46.403999999999996H284.319213514948Q284.087213514948 43.91 282.318213514948 42.401999999999994Q280.549213514948 40.89399999999999 277.70721351494797 40.89399999999999Q274.749213514948 40.89399999999999 273.009213514948 42.401999999999994Q271.269213514948 43.91 270.863213514948 46.403999999999996Z"/></g><path class="ruit ruit-1" d="M66.73 20.89 L73.13 24.58 L66.73 28.27 L60.34 24.58 Z"/><path class="ruit ruit-2" d="M252.71 20.89 L259.10 24.58 L252.71 28.27 L246.31 24.58 Z"/></g></svg></a>
+    <ul class="menu">
+      <li><a href="#diensten">Diensten</a></li>
+      <li><a href="#werkwijze">Werkwijze</a></li>
+      <li><a href="#waarom">Waarom</a></li>
+      <li><a class="knop klein" href="#contact"><span>Contact</span></a></li>
+    </ul>
+    <button class="burger" aria-label="Menu openen" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<header class="held" id="top">
+  <svg class="raster-vaag" aria-hidden="true"><use href="#iso-raster"/></svg>
+  <svg class="raster" aria-hidden="true"><use href="#iso-raster"/></svg>
+  <div class="wrap">
+    <div>
+      <div class="oog" data-reveal><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Specialist in digitale oplossingen op maat</div>
+      <h1 data-split>Ik bouw een <span class="accent">oplossing</span> voor jouw probleem.</h1>
+      <p class="lead" data-reveal style="--d:500ms">Websites, apps en automatisering voor ondernemers. Ontworpen in jouw stijl, gebouwd rond jouw zaak, en ook na de lancering sta ik voor je klaar.</p>
+      <div class="knoppen" data-reveal style="--d:650ms">
+        <a class="knop magneet" href="#contact"><span>Start een project</span><span class="pijl">→</span></a>
+        <a class="knop rand magneet" href="#diensten"><span>Wat ik doe</span></a>
+      </div>
+    </div>
+    <div class="held-beeld">
+      <span class="zwever z0"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></span><span class="zwever z1"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></span><span class="zwever z2"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></span><span class="zwever z3"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></span><span class="zwever z4"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></span><span class="zwever z5"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></span>
+      <div class="held-kantel"><div class="zweef"><svg viewBox="0 0 100 100" class="held-icoon" aria-hidden="true"><path class="vlak vlak-boven" d="M50.00 47.69 L32.49 37.58 L50.00 27.48 L67.51 37.58 Z"/><path class="vlak vlak-links" d="M48.00 51.15 L48.00 71.37 L30.49 61.26 L30.49 41.05 Z"/><path class="vlak vlak-rechts" d="M52.00 51.15 L69.51 41.05 L69.51 61.26 L52.00 71.37 Z"/><path class="g-lijn" d="M75.57 23.76 L50.00 9.00 L14.49 29.50 L14.49 70.50 L50.00 91.00 L85.51 70.50 L85.51 50.00 L77.51 50.00" pathLength="1" fill="none" stroke-width="8.0" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><i></i></div>
+</header>
+
+<div class="band" aria-hidden="true"><div class="band-rij"><span>Websites</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Apps</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Automatisering</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Koppelingen</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Huisstijl</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Beheer</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Websites</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Apps</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Automatisering</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Koppelingen</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Huisstijl</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg><span>Beheer</span><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></div></div>
+
+<section class="licht" id="diensten">
+  <div class="wrap">
+    <div class="sectie-kop">
+      <div><div class="oog" data-reveal><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Diensten</div><h2 data-split>Alles wat je zaak digitaal nodig heeft.</h2></div>
+      <p data-reveal>Van een eerste website tot een systeem dat je werk uit handen neemt. Je hoeft niet te weten hoe het technisch moet: vertel me wat je wilt bereiken.</p>
+    </div>
+    <div class="kaarten"><article class="kaart" data-reveal style="--d:0ms">
+  <div class="kaart-gloed"></div>
+  <svg class="illu illu-web" viewBox="0 0 100 100" aria-hidden="true"><g class="laag l1"><path class="f-l" d="M13.6 65.7 L50.0 86.7 L50.0 91.6 L13.6 70.6 Z"/><path class="f-r" d="M86.4 65.7 L50.0 86.7 L50.0 91.6 L86.4 70.6 Z"/><path class="f-t" d="M50.0 44.7 L86.4 65.7 L50.0 86.7 L13.6 65.7 Z"/></g><g class="laag l2"><path class="f-l" d="M13.6 56.6 L50.0 77.6 L50.0 82.5 L13.6 61.5 Z"/><path class="f-r" d="M86.4 56.6 L50.0 77.6 L50.0 82.5 L86.4 61.5 Z"/><path class="f-t" d="M50.0 35.6 L86.4 56.6 L50.0 77.6 L13.6 56.6 Z"/></g><g class="laag l3 accent"><path class="f-l" d="M13.6 47.5 L50.0 68.5 L50.0 73.4 L13.6 52.4 Z"/><path class="f-r" d="M86.4 47.5 L50.0 68.5 L50.0 73.4 L86.4 52.4 Z"/><path class="f-t" d="M50.0 26.5 L86.4 47.5 L50.0 68.5 L13.6 47.5 Z"/></g></svg>
+  <h3>Websites & webshops</h3><p>Snel, op maat en in jouw huisstijl. Een site die werkt op elke gsm en elke computer.</p></article><article class="kaart" data-reveal style="--d:80ms">
+  <div class="kaart-gloed"></div>
+  <svg class="illu illu-app" viewBox="0 0 100 100" aria-hidden="true"><g class="gsm"><path class="f-l" d="M34.8 27.6 L59.1 41.6 L59.1 89.2 L34.8 75.2 Z"/><path class="f-r" d="M65.2 38.1 L59.1 41.6 L59.1 89.2 L65.2 85.7 Z"/><path class="f-t" d="M40.9 24.1 L65.2 38.1 L59.1 41.6 L34.8 27.6 Z"/></g><g class="scherm"><path class="f-s" d="M37.0 31.9 L56.4 43.1 L56.4 83.7 L37.0 72.5 Z"/></g></svg>
+  <h3>Apps & webtoepassingen</h3><p>Reservaties, bestellingen, planning of een klantenportaal: gebouwd rond hoe jij werkt.</p></article><article class="kaart" data-reveal style="--d:160ms">
+  <div class="kaart-gloed"></div>
+  <svg class="illu illu-auto" viewBox="0 0 100 100" aria-hidden="true"><g class="band"><path class="f-l" d="M16.1 56.6 L69.4 87.4 L69.4 91.6 L16.1 60.8 Z"/><path class="f-r" d="M83.9 79.0 L69.4 87.4 L69.4 91.6 L83.9 83.2 Z"/><path class="f-t" d="M30.6 48.2 L83.9 79.0 L69.4 87.4 L16.1 56.6 Z"/></g><g class="pakje p0"><path class="f-l" d="M20.9 45.4 L30.6 51.0 L30.6 62.2 L20.9 56.6 Z"/><path class="f-r" d="M40.3 45.4 L30.6 51.0 L30.6 62.2 L40.3 56.6 Z"/><path class="f-t" d="M30.6 39.8 L40.3 45.4 L30.6 51.0 L20.9 45.4 Z"/></g><g class="pakje p1 accent"><path class="f-l" d="M39.1 55.9 L48.8 61.5 L48.8 72.7 L39.1 67.1 Z"/><path class="f-r" d="M58.5 55.9 L48.8 61.5 L48.8 72.7 L58.5 67.1 Z"/><path class="f-t" d="M48.8 50.3 L58.5 55.9 L48.8 61.5 L39.1 55.9 Z"/></g><g class="pakje p2"><path class="f-l" d="M57.3 66.4 L67.0 72.0 L67.0 83.2 L57.3 77.6 Z"/><path class="f-r" d="M76.7 66.4 L67.0 72.0 L67.0 83.2 L76.7 77.6 Z"/><path class="f-t" d="M67.0 60.8 L76.7 66.4 L67.0 72.0 L57.3 66.4 Z"/></g></svg>
+  <h3>Automatisering</h3><p>Herhalend werk dat vanzelf gaat: rapporten, offertes en het verwerken van gegevens.</p></article><article class="kaart" data-reveal style="--d:240ms">
+  <div class="kaart-gloed"></div>
+  <svg class="illu illu-link" viewBox="0 0 100 100" aria-hidden="true"><g class="knoop"><path class="f-l" d="M12.4 37.7 L27.0 46.1 L27.0 62.9 L12.4 54.5 Z"/><path class="f-r" d="M41.5 37.7 L27.0 46.1 L27.0 62.9 L41.5 54.5 Z"/><path class="f-t" d="M27.0 29.3 L41.5 37.7 L27.0 46.1 L12.4 37.7 Z"/></g><path class="kabel" d="M34.2 50.3 L63.3 67.1" pathLength="1"/><g class="knoop accent"><path class="f-l" d="M56.1 62.9 L70.6 71.3 L70.6 88.1 L56.1 79.7 Z"/><path class="f-r" d="M85.2 62.9 L70.6 71.3 L70.6 88.1 L85.2 79.7 Z"/><path class="f-t" d="M70.6 54.5 L85.2 62.9 L70.6 71.3 L56.1 62.9 Z"/></g></svg>
+  <h3>Koppelingen</h3><p>Systemen die met elkaar praten, zodat je niets meer dubbel moet invoeren.</p></article><article class="kaart" data-reveal style="--d:320ms">
+  <div class="kaart-gloed"></div>
+  <svg class="illu illu-stijl" viewBox="0 0 100 100" aria-hidden="true"><g class="vorm v1"><path class="f-t" d="M50 26 L66 35 L50 44 L34 35 Z"/></g><g class="vorm v2"><circle class="f-l" cx="36" cy="62" r="11"/></g><g class="vorm v3"><rect class="f-r" x="55" y="52" width="20" height="20" rx="2"/></g></svg>
+  <h3>Huisstijl</h3><p>Logo, visitekaartjes en een stijlgids: een herkenbaar merk van A tot Z.</p></article><article class="kaart" data-reveal style="--d:400ms">
+  <div class="kaart-gloed"></div>
+  <svg class="illu illu-beheer" viewBox="0 0 100 100" aria-hidden="true"><g class="doos"><path class="f-l" d="M20.9 48.2 L50.0 65.0 L50.0 91.6 L20.9 74.8 Z"/><path class="f-r" d="M79.1 48.2 L50.0 65.0 L50.0 91.6 L79.1 74.8 Z"/><path class="f-t" d="M50.0 31.4 L79.1 48.2 L50.0 65.0 L20.9 48.2 Z"/></g><g class="deksel accent"><path class="f-l" d="M18.5 43.3 L50.0 61.5 L50.0 66.4 L18.5 48.2 Z"/><path class="f-r" d="M81.5 43.3 L50.0 61.5 L50.0 66.4 L81.5 48.2 Z"/><path class="f-t" d="M50.0 25.1 L81.5 43.3 L50.0 61.5 L18.5 43.3 Z"/></g></svg>
+  <h3>Beheer & onderhoud</h3><p>Na de oplevering blijf ik je aanspreekpunt. Eén berichtje en het is aangepast.</p></article></div>
+  </div>
+</section>
+
+<section class="statement">
+  <div class="wrap">
+    <div class="scene"><div class="schaduw"></div><div class="kubus"><div class="k-voor"></div><div class="k-achter"></div><div class="k-rechts"></div><div class="k-links"></div><div class="k-boven"></div><div class="k-onder"></div></div></div>
+    <div>
+      <div class="oog"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Waarom de naam</div>
+      <div class="zinnen"><span>Structuur.</span><span>Precisie.</span><span class="oranje">Alles op zijn plaats.</span></div>
+      <p data-reveal>Giometrie komt van geometrie: vormen, lijnen en structuur. Zo pak ik elk project aan. Alles klopt, en jij hoeft je er niets van aan te trekken.</p>
+    </div>
+  </div>
+</section>
+
+<section class="licht" id="werkwijze">
+  <div class="wrap">
+    <div class="sectie-kop">
+      <div><div class="oog" data-reveal><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Werkwijze</div><h2 data-split>Eerst luisteren, dan bouwen.</h2></div>
+      <p data-reveal>Vier stappen, één aanspreekpunt. Je weet altijd waar je project staat.</p>
+    </div>
+    <ol class="stappen"><li class="tijdlijn" aria-hidden="true"><i></i></li><li class="stap" data-stap>
+  <div class="stap-punt"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></div><div class="stap-nr">01</div>
+  <div><h3>Luisteren</h3><p>We bekijken samen wat je wilt bereiken. Geen technische termen: jij vertelt, ik vertaal.</p></div></li><li class="stap" data-stap>
+  <div class="stap-punt"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></div><div class="stap-nr">02</div>
+  <div><h3>Ontwerpen</h3><p>Je krijgt een ontwerp in jouw stijl om te bekijken en bij te sturen, voor er iets gebouwd wordt.</p></div></li><li class="stap" data-stap>
+  <div class="stap-punt"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></div><div class="stap-nr">03</div>
+  <div><h3>Bouwen</h3><p>Ik bouw de oplossing en test ze op gsm, tablet en computer.</p></div></li><li class="stap" data-stap>
+  <div class="stap-punt"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg></div><div class="stap-nr">04</div>
+  <div><h3>Beheren</h3><p>Ook na de lancering blijf ik je aanspreekpunt: aanpassingen, updates en hulp wanneer je het nodig hebt.</p></div></li></ol>
+  </div>
+</section>
+
+<section id="waarom">
+  <div class="wrap">
+    <div class="sectie-kop">
+      <div><div class="oog" data-reveal><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Waarom Giometrie</div><h2 data-split>Gemaakt om te blijven werken.</h2></div>
+      <p data-reveal>Een goede oplossing zie je niet: ze werkt gewoon. Dag na dag.</p>
+    </div>
+    <div class="waarom-rij"><div class="waarom" data-reveal style="--d:0ms"><div class="waarom-lijn"></div>
+  <h3>Op maat</h3><p>Geen sjabloon waar je je aan moet aanpassen. De oplossing past zich aan jou aan.</p></div><div class="waarom" data-reveal style="--d:90ms"><div class="waarom-lijn"></div>
+  <h3>Eenvoudig</h3><p>Makkelijk in gebruik, voor jou én voor je klanten.</p></div><div class="waarom" data-reveal style="--d:180ms"><div class="waarom-lijn"></div>
+  <h3>Veilig gebouwd</h3><p>Zo weinig mogelijk onderdelen die kunnen mislopen. Snel, stabiel en verzorgd.</p></div><div class="waarom" data-reveal style="--d:270ms"><div class="waarom-lijn"></div>
+  <h3>Eén aanspreekpunt</h3><p>Je hebt één persoon die je project kent, van het eerste gesprek tot later.</p></div></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <svg class="raster-vaag" aria-hidden="true"><use href="#iso-raster"/></svg>
+  <div class="wrap" style="position:relative">
+    <div class="oog" data-reveal style="justify-content:center"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Contact</div>
+    <h2 data-split>Klaar om te bouwen?</h2>
+    <p data-reveal>Vertel me in een paar zinnen waar je mee zit. Je krijgt zo snel mogelijk antwoord, met een eerste idee.</p>
+    <div class="knoppen" data-reveal style="--d:200ms">
+      <!-- ✏️ e-mail en telefoon: pas aan in maak_site.py (EMAIL, TELEFOON, TEL_LINK) -->
+      <a class="knop magneet" href="mailto:info@giometrie.be" data-kopieer="info@giometrie.be"><span>info@giometrie.be</span><span class="pijl">→</span></a>
+      <a class="knop rand magneet" href="tel:+32495465864"><span>0495 46 58 64</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><svg class="voet-logo" viewBox="0 0 295.2 67.0" aria-label="Giometrie" role="img"><g transform="translate(0 -11.53)"><g class="logo-icoon" transform="translate(-6.29 9.98) scale(0.6803)"><path class="vlak vlak-boven" d="M50.00 47.40 L32.99 37.58 L50.00 27.76 L67.01 37.58 Z"/><path class="vlak vlak-links" d="M47.75 51.30 L47.75 70.94 L30.74 61.12 L30.74 41.48 Z"/><path class="vlak vlak-rechts" d="M52.25 51.30 L69.26 41.48 L69.26 61.12 L52.25 70.94 Z"/><path class="g-lijn" d="M75.57 23.76 L50.00 9.00 L14.49 29.50 L14.49 70.50 L50.00 91.00 L85.51 70.50 L85.51 50.00 L79.01 50.00" pathLength="1" fill="none" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/></g><g class="woord"><path class="letter" style="--i:0" d="M63.07721351494799 64.094V35.32599999999999H70.38521351494799V64.094Z"/><path class="letter" style="--i:1" d="M92.48321351494799 64.90599999999999Q88.19121351494799 64.90599999999999 84.76921351494798 63.166Q81.34721351494798 61.425999999999995 79.37521351494799 58.11999999999999Q77.40321351494799 54.81399999999999 77.40321351494799 50.17399999999999V49.245999999999995Q77.40321351494799 44.605999999999995 79.37521351494799 41.3Q81.34721351494798 37.99399999999999 84.76921351494798 36.25399999999999Q88.19121351494799 34.513999999999996 92.48321351494799 34.513999999999996Q96.77521351494799 34.513999999999996 100.19721351494799 36.25399999999999Q103.61921351494799 37.99399999999999 105.59121351494798 41.3Q107.56321351494799 44.605999999999995 107.56321351494799 49.245999999999995V50.17399999999999Q107.56321351494799 54.81399999999999 105.59121351494798 58.11999999999999Q103.61921351494799 61.425999999999995 100.19721351494799 63.166Q96.77521351494799 64.90599999999999 92.48321351494799 64.90599999999999ZM92.48321351494799 58.41Q95.84721351494798 58.41 98.05121351494799 56.235Q100.25521351494798 54.059999999999995 100.25521351494798 49.99999999999999V49.419999999999995Q100.25521351494798 45.35999999999999 98.08021351494799 43.18499999999999Q95.90521351494799 41.00999999999999 92.48321351494799 41.00999999999999Q89.11921351494799 41.00999999999999 86.915213514948 43.18499999999999Q84.71121351494799 45.35999999999999 84.71121351494799 49.419999999999995V49.99999999999999Q84.71121351494799 54.059999999999995 86.915213514948 56.235Q89.11921351494799 58.41 92.48321351494799 58.41Z"/><path class="letter" style="--i:2" d="M114.58121351494799 64.094V35.32599999999999H121.77321351494798V38.45799999999999H122.817213514948Q123.57121351494798 37.007999999999996 125.31121351494798 35.934999999999995Q127.05121351494799 34.861999999999995 129.893213514948 34.861999999999995Q132.96721351494799 34.861999999999995 134.823213514948 36.050999999999995Q136.679213514948 37.239999999999995 137.665213514948 39.153999999999996H138.70921351494798Q139.695213514948 37.29799999999999 141.493213514948 36.07999999999999Q143.291213514948 34.861999999999995 146.59721351494798 34.861999999999995Q149.265213514948 34.861999999999995 151.44021351494797 35.992999999999995Q153.61521351494798 37.123999999999995 154.920213514948 39.41499999999999Q156.225213514948 41.70599999999999 156.225213514948 45.18599999999999V64.094H148.917213514948V45.708Q148.917213514948 43.33 147.69921351494799 42.141Q146.481213514948 40.952 144.277213514948 40.952Q141.783213514948 40.952 140.420213514948 42.547Q139.057213514948 44.141999999999996 139.057213514948 47.099999999999994V64.094H131.749213514948V45.708Q131.749213514948 43.33 130.53121351494798 42.141Q129.313213514948 40.952 127.10921351494798 40.952Q124.61521351494798 40.952 123.25221351494798 42.547Q121.88921351494798 44.141999999999996 121.88921351494798 47.099999999999994V64.094Z"/><path class="letter" style="--i:3" d="M177.511213514948 64.90599999999999Q173.219213514948 64.90599999999999 169.94221351494798 63.07899999999999Q166.665213514948 61.251999999999995 164.838213514948 57.916999999999994Q163.011213514948 54.581999999999994 163.011213514948 50.05799999999999V49.361999999999995Q163.011213514948 44.837999999999994 164.809213514948 41.50299999999999Q166.607213514948 38.16799999999999 169.855213514948 36.340999999999994Q173.10321351494798 34.513999999999996 177.39521351494798 34.513999999999996Q181.629213514948 34.513999999999996 184.761213514948 36.398999999999994Q187.893213514948 38.28399999999999 189.633213514948 41.61899999999999Q191.373213514948 44.95399999999999 191.373213514948 49.361999999999995V51.855999999999995H170.435213514948Q170.551213514948 54.81399999999999 172.63921351494798 56.669999999999995Q174.727213514948 58.525999999999996 177.743213514948 58.525999999999996Q180.81721351494798 58.525999999999996 182.26721351494797 57.19199999999999Q183.71721351494799 55.85799999999999 184.47121351494798 54.233999999999995L190.445213514948 57.36599999999999Q189.63321351494798 58.873999999999995 188.09621351494798 60.642999999999994Q186.559213514948 62.41199999999999 184.00721351494798 63.65899999999999Q181.45521351494799 64.90599999999999 177.511213514948 64.90599999999999ZM170.493213514948 46.403999999999996H183.94921351494799Q183.71721351494799 43.91 181.948213514948 42.401999999999994Q180.179213514948 40.89399999999999 177.337213514948 40.89399999999999Q174.379213514948 40.89399999999999 172.63921351494798 42.401999999999994Q170.899213514948 43.91 170.493213514948 46.403999999999996Z"/><path class="letter" style="--i:4" d="M209.179213514948 64.094Q206.337213514948 64.094 204.56821351494798 62.324999999999996Q202.79921351494798 60.556 202.79921351494798 57.59799999999999V41.35799999999999H195.607213514948V35.32599999999999H202.79921351494798V26.39399999999999H210.107213514948V35.32599999999999H217.99521351494798V41.35799999999999H210.107213514948V56.321999999999996Q210.107213514948 58.062 211.731213514948 58.062H217.299213514948V64.094Z"/><path class="letter" style="--i:5" d="M224.89721351494802 64.094V35.32599999999999H232.08921351494803V38.574H233.133213514948Q233.77121351494802 36.83399999999999 235.25021351494803 36.02199999999999Q236.72921351494801 35.209999999999994 238.70121351494802 35.209999999999994H242.181213514948V41.70599999999999H238.585213514948Q235.80121351494802 41.70599999999999 234.00321351494802 43.18499999999999Q232.205213514948 44.663999999999994 232.205213514948 47.73799999999999V64.094Z"/><path class="letter" style="--i:6" d="M249.055213514948 64.094V35.32599999999999H256.36321351494803V64.094Z"/><path class="letter" style="--i:7" d="M277.881213514948 64.90599999999999Q273.58921351494797 64.90599999999999 270.312213514948 63.07899999999999Q267.035213514948 61.251999999999995 265.208213514948 57.916999999999994Q263.381213514948 54.581999999999994 263.381213514948 50.05799999999999V49.361999999999995Q263.381213514948 44.837999999999994 265.179213514948 41.50299999999999Q266.977213514948 38.16799999999999 270.225213514948 36.340999999999994Q273.473213514948 34.513999999999996 277.765213514948 34.513999999999996Q281.999213514948 34.513999999999996 285.131213514948 36.398999999999994Q288.263213514948 38.28399999999999 290.003213514948 41.61899999999999Q291.743213514948 44.95399999999999 291.743213514948 49.361999999999995V51.855999999999995H270.805213514948Q270.921213514948 54.81399999999999 273.009213514948 56.669999999999995Q275.097213514948 58.525999999999996 278.113213514948 58.525999999999996Q281.187213514948 58.525999999999996 282.63721351494803 57.19199999999999Q284.087213514948 55.85799999999999 284.841213514948 54.233999999999995L290.81521351494797 57.36599999999999Q290.003213514948 58.873999999999995 288.466213514948 60.642999999999994Q286.929213514948 62.41199999999999 284.37721351494804 63.65899999999999Q281.825213514948 64.90599999999999 277.881213514948 64.90599999999999ZM270.863213514948 46.403999999999996H284.319213514948Q284.087213514948 43.91 282.318213514948 42.401999999999994Q280.549213514948 40.89399999999999 277.70721351494797 40.89399999999999Q274.749213514948 40.89399999999999 273.009213514948 42.401999999999994Q271.269213514948 43.91 270.863213514948 46.403999999999996Z"/></g><path class="ruit ruit-1" d="M66.73 20.89 L73.13 24.58 L66.73 28.27 L60.34 24.58 Z"/><path class="ruit ruit-2" d="M252.71 20.89 L259.10 24.58 L252.71 28.27 L246.31 24.58 Z"/></g></svg><small>© <span class="jaar">2026</span> Giometrie · giometrie.be</small></div>
+</footer>
+
+<!-- isometrisch raster (één keer gedefinieerd, meermaals gebruikt) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="iso-patroon" width="34.64" height="20" patternUnits="userSpaceOnUse">
+      <path d="M0 0 L34.64 20 M34.64 0 L0 20 M0 10 H34.64" stroke="#f6f1e8" stroke-width=".6" fill="none" opacity=".9"/>
+    </pattern>
+    <symbol id="iso-raster" viewBox="0 0 100 100" preserveAspectRatio="none"><rect width="100%" height="100%" fill="url(#iso-patroon)"/></symbol>
+  </defs>
+</svg>
+
+<script>
+(() => {
+  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fijn = matchMedia('(pointer: fine)').matches;
+  const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  document.querySelector('.jaar').textContent = new Date().getFullYear();
+
+  // het raster vult de hele sectie (geen herschaling van de lijnen)
+  $$('.raster, .raster-vaag').forEach(s => { s.removeAttribute('viewBox'); s.innerHTML = '<rect width="100%" height="100%" fill="url(#iso-patroon)"/>'; });
+
+  // ---------- koppen opsplitsen in woorden ----------
+  $$('[data-split]').forEach(el => {
+    let n = 0;
+    const loop = node => [...node.childNodes].forEach(c => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(t => {
+          if (!t) return;
+          if (/^\s+$/.test(t)) { frag.append(t); return; }
+          const w = document.createElement('span'); w.className = 'w';
+          const i = document.createElement('span'); i.textContent = t; i.style.setProperty('--n', n++);
+          w.append(i); frag.append(w);
+        });
+        c.replaceWith(frag);
+      } else loop(c);
+    });
+    loop(el);
+  });
+
+  // ---------- intro ----------
+  const intro = $('.intro');
+  const start = () => {
+    intro.classList.add('weg'); document.body.classList.add('klaar');
+    $$('.held [data-split], .held [data-reveal]').forEach(e => e.classList.add('zichtbaar'));
+    setTimeout(() => intro.remove(), 1100);
+  };
+  if (rustig) { intro.remove(); document.body.classList.add('klaar'); }
+  else { const t = setTimeout(start, 2350); intro.addEventListener('click', () => { clearTimeout(t); start(); }); }
+
+  // ---------- verschijnen bij scrollen ----------
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && document.body.classList.contains('klaar')) { e.target.classList.add('zichtbaar'); io.unobserve(e.target); }
+  }), { threshold: .18, rootMargin: '0px 0px -40px 0px' });
+  $$('[data-split], [data-reveal]').forEach(el => { if (!el.closest('.held')) io.observe(el); });
+  if (rustig) $$('[data-split], [data-reveal]').forEach(e => e.classList.add('zichtbaar'));
+  // na de intro alles controleren wat al in beeld is
+  const herCheck = () => $$('[data-split]:not(.zichtbaar), [data-reveal]:not(.zichtbaar)').forEach(el => { io.unobserve(el); io.observe(el); });
+  setTimeout(herCheck, 2500);
+
+  // ---------- navigatie ----------
+  const nav = $('nav'), burger = $('.burger');
+  const menu = $('.menu');
+  $$('.menu li').forEach((li, i) => li.style.setProperty('--i', i));
+  burger.addEventListener('click', () => {
+    const b = burger.getBoundingClientRect();   // de cirkel groeit vanuit het midden van de knop
+    const bx = b.left + b.width / 2, by = b.top + b.height / 2;
+    const straal = Math.max(...[[0, 0], [innerWidth, 0], [0, innerHeight], [innerWidth, innerHeight]].map(([x, y]) => Math.hypot(x - bx, y - by)));
+    menu.style.setProperty('--bx', bx + 'px'); menu.style.setProperty('--by', by + 'px'); menu.style.setProperty('--r', Math.ceil(straal) + 'px');
+    const o = nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o); burger.setAttribute('aria-label', o ? 'Menu sluiten' : 'Menu openen');
+    document.body.style.overflow = o ? 'hidden' : '';
+  });
+  $$('.menu a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); burger.setAttribute('aria-expanded', false); document.body.style.overflow = ''; }));
+
+  // ---------- scroll-effecten ----------
+  const balk = $('.voortgang'), kubus = $('.kubus'), scene = $('.scene'), zinnen = $$('.zinnen span');
+  const stappen = $('.stappen'), lijn = $('.tijdlijn i'), stapEl = $$('[data-stap]');
+  const zetKubus = () => kubus.style.setProperty('--h', (kubus.offsetWidth / 2) + 'px');
+  zetKubus(); addEventListener('resize', zetKubus);
+  const tussen = (v, a, b) => Math.min(b, Math.max(a, v));
+  let gepland = false;
+  const scroll = () => {
+    gepland = false;
+    const y = scrollY, h = innerHeight, max = document.documentElement.scrollHeight - h;
+    balk.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+    nav.classList.toggle('vast', y > 30);
+    // kubus draait mee met het scrollen; zinnen lichten op
+    const r = scene.getBoundingClientRect(), p = tussen((h - r.top) / (h + r.height), 0, 1);
+    kubus.style.setProperty('--ry', (45 + p * 360) + 'deg');
+    zinnen.forEach((z, i) => z.classList.toggle('aan', p > .28 + i * .12));
+    // tijdlijn tekent zich
+    const s = stappen.getBoundingClientRect(), sp = tussen((h * .6 - s.top) / s.height, 0, 1);
+    lijn.style.setProperty('--p', sp);
+    stapEl.forEach(st => { const b = st.getBoundingClientRect(); st.classList.toggle('aan', b.top + 22 < h * .6); });
+  };
+  addEventListener('scroll', () => { if (!gepland) { gepland = true; requestAnimationFrame(scroll); } }, { passive: true });
+  scroll();
+
+  if (rustig) return;
+
+  // ---------- held: raster volgt de muis, icoon kantelt en valt open ----------
+  const held = $('.held'), kantel = $('.held-kantel'), icoon = $('.held-icoon');
+  setTimeout(() => icoon.classList.add('uit'), 3800);
+  held.addEventListener('pointermove', e => {
+    const r = held.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    held.style.setProperty('--mx', (x * 100) + '%'); held.style.setProperty('--my', (y * 100) + '%');
+    const b = kantel.getBoundingClientRect(), cx = (e.clientX - b.left) / b.width - .5, cy = (e.clientY - b.top) / b.height - .5;
+    kantel.style.transform = `rotateY(${cx * 16}deg) rotateX(${-cy * 16}deg)`;
+    const afstand = Math.hypot(cx, cy); icoon.style.setProperty('--s', tussen(1.4 - afstand * 1.6, 0, 1).toFixed(3));
+  });
+  held.addEventListener('pointerleave', () => { kantel.style.transform = ''; icoon.style.setProperty('--s', 0); });
+
+  // ---------- kaarten kantelen en gloeien ----------
+  $$('.kaart').forEach(k => {
+    k.addEventListener('pointermove', e => {
+      const r = k.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      k.style.setProperty('--gx', x * 100 + '%'); k.style.setProperty('--gy', y * 100 + '%');
+      k.style.transform = `perspective(900px) rotateX(${(.5 - y) * 7}deg) rotateY(${(x - .5) * 9}deg) translateY(-6px)`;
+    });
+    k.addEventListener('pointerleave', () => { k.style.transform = ''; });
+  });
+
+  // ---------- magnetische knoppen ----------
+  $$('.magneet').forEach(m => {
+    m.addEventListener('pointermove', e => {
+      const r = m.getBoundingClientRect();
+      m.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px, ${(e.clientY - r.top - r.height / 2) * .35}px)`;
+    });
+    m.addEventListener('pointerleave', () => { m.style.transform = ''; });
+  });
+
+  // ---------- e-mail kopiëren (de link opent ook gewoon het mailprogramma) ----------
+  const melding = $('.melding');
+  $$('[data-kopieer]').forEach(a => a.addEventListener('click', () => {
+    navigator.clipboard?.writeText(a.dataset.kopieer).then(() => { melding.classList.add('toon'); setTimeout(() => melding.classList.remove('toon'), 2200); }).catch(() => {});
+  }));
+
+  // ---------- ruit-cursor ----------
+  if (fijn) {
+    const c = $('.cursor'); let tx = -100, ty = -100, cx = -100, cy = -100;
+    addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; });
+    $$('a, button, .kaart').forEach(el => { el.addEventListener('pointerenter', () => c.classList.add('groot')); el.addEventListener('pointerleave', () => c.classList.remove('groot')); });
+    const volg = () => { cx += (tx - cx) * .2; cy += (ty - cy) * .2; c.style.transform = `translate(${cx}px, ${cy}px)`; requestAnimationFrame(volg); };
+    volg();
+  }
+})();
+</script>
+</body>
+</html>
