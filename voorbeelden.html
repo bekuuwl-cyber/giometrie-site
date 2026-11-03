@@ -63,6 +63,11 @@ a{color:inherit}
 .slot p{opacity:.78;max-width:560px;margin:18px auto 34px;font-size:1.1rem}
 .knop{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;background:var(--oranje);color:var(--navy);transition:transform .4s var(--zacht)}
 .knop:hover{transform:translateY(-2px)}
+.slot-knoppen{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.knop.rand{background:transparent;color:var(--creme);box-shadow:inset 0 0 0 1.5px rgba(246,241,232,.38);transition:transform .4s var(--zacht),box-shadow .3s,color .3s}
+.knop.rand:hover{box-shadow:inset 0 0 0 1.5px var(--oranje);color:var(--oranje)}
+.pijl-uit{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--zacht)}
+.knop:hover .pijl-uit{transform:translate(2px,-2px)}
 footer{background:var(--diep);color:var(--creme);padding:28px 0;font-size:.9rem;opacity:.95}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
@@ -363,7 +368,8 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
 <section class="slot"><div class="wrap">
   <h2>Iets gelijkaardigs nodig?</h2>
   <p>Elk voorbeeld hier is een begin. Ik bouw het op maat van jouw zaak, in jouw stijl.</p>
-  <a class="knop" href="/#contact">Plan een kennismaking <span>→</span></a>
+  <div class="slot-knoppen"><a class="knop" href="/#contact">Plan een kennismaking <span>→</span></a>
+  <a class="knop rand" href="werkwijze.html" title="Opent de pagina Stappenplan">Bekijk het stappenplan <svg class="pijl-uit" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 L9 3 M4.5 3 H9 V7.5"/></svg></a></div>
   <p class="melding-demo">Alle voorbeelden zijn verzonnen. Er wordt niets verstuurd of bewaard.</p>
 </div></section>
 
