@@ -59,6 +59,7 @@ img,svg{display:block}
 @media (pointer:fine){.cursor{opacity:1}}
 
 /* ---------- navigatie ---------- */
+/* menu:begin (wordt ook gebruikt door voorbeelden.html) */
 nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:padding .4s var(--zacht);padding:22px 0}
 nav.vast{padding:12px 0}
 /* Het glaseffect zit op een eigen laag: een backdrop-filter op <nav> zelf zou van de menubalk
@@ -93,6 +94,20 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px
 .burger span{position:absolute;left:10px;right:10px;height:2px;background:var(--creme);transition:transform .4s var(--zacht),opacity .3s}
 .burger span:nth-child(1){top:16px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:28px}
 .open .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}.open .burger span:nth-child(2){opacity:0}.open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+@media (max-width:900px){
+  .burger{display:block}
+  .menu{position:fixed;inset:0;background:var(--diep);flex-direction:column;justify-content:center;gap:26px;font-size:1.5rem;z-index:-1;
+    clip-path:circle(0px at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .65s cubic-bezier(.7,0,.25,1) .18s;visibility:hidden}
+  .open .menu{clip-path:circle(var(--r,150vmax) at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .85s cubic-bezier(.7,0,.25,1);visibility:visible}
+  .menu li{opacity:0;transform:translateY(26px);transition:opacity .3s,transform .3s var(--zacht)}
+  .open .menu li{opacity:1;transform:none;transition:opacity .6s var(--zacht),transform .8s var(--zacht);transition-delay:calc(.32s + var(--i) * 70ms)}
+  .menu a{font-size:1.6rem}
+  .menu .naar-pagina,.menu .naar-pagina + .naar-pagina{border-left:0;padding-left:0;margin:4px 0 0}
+  .menu .pagina-link{padding:10px 22px}.pijl-uit{width:15px;height:15px}
+}
+@media (min-width:901px) and (max-width:1120px){.menu{gap:16px}.menu .naar-pagina{padding-left:16px}.menu .naar-pagina + .naar-pagina{margin-left:0}.menu .pagina-link{padding:8px 12px;gap:6px}}
+@media (max-width:900px){.menu{transition-property:clip-path,visibility}}
+/* menu:einde */
 
 /* ---------- knoppen ---------- */
 .knop{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;font-size:1rem;
@@ -319,20 +334,9 @@ footer small{opacity:.55} .voet-link{color:inherit;text-underline-offset:3px}
   .held{padding-top:110px}
   .sectie-kop p{justify-self:start}
   .kaarten{grid-template-columns:1fr 1fr}.waarom-rij{grid-template-columns:1fr 1fr}
-  .burger{display:block}
-  .menu{position:fixed;inset:0;background:var(--diep);flex-direction:column;justify-content:center;gap:26px;font-size:1.5rem;z-index:-1;
-    clip-path:circle(0px at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .65s cubic-bezier(.7,0,.25,1) .18s;visibility:hidden}
-  .open .menu{clip-path:circle(var(--r,150vmax) at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .85s cubic-bezier(.7,0,.25,1);visibility:visible}
-  .menu li{opacity:0;transform:translateY(26px);transition:opacity .3s,transform .3s var(--zacht)}
-  .open .menu li{opacity:1;transform:none;transition:opacity .6s var(--zacht),transform .8s var(--zacht);transition-delay:calc(.32s + var(--i) * 70ms)}
-  .menu a{font-size:1.6rem}
-  .menu .naar-pagina,.menu .naar-pagina + .naar-pagina{border-left:0;padding-left:0;margin:4px 0 0}
-  .menu .pagina-link{padding:10px 22px}.pijl-uit{width:15px;height:15px}
   section{padding:96px 0}
   .sub .eerste-sectie{padding-top:130px}
 }
-@media (min-width:901px) and (max-width:1120px){.menu{gap:16px}.menu .naar-pagina{padding-left:16px}.menu .naar-pagina + .naar-pagina{margin-left:0}.menu .pagina-link{padding:8px 12px;gap:6px}}
-@media (max-width:900px){.menu{transition-property:clip-path,visibility}}
 @media (max-width:600px){
   body{font-size:16px}.wrap{padding:0 18px}
   .kaarten,.waarom-rij,.ai-punten{grid-template-columns:1fr}
