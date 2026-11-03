@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voorbeelden – Giometrie</title>
+<meta name="description" content="Probeer zelf: kleine werkende voorbeelden van apps en programma's die Giometrie op maat bouwt.">
+<meta name="theme-color" content="#16213e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon-180.png">
+<link rel="preload" href="fonts/SpaceGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+:root{--navy:#16213e;--diep:#0f172e;--oranje:#ff5a36;--creme:#f6f1e8;--steen:#a8a194;--lei:#4b5677;--zacht:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--creme);color:var(--navy);font-family:"Space Grotesk",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+/* kop */
+.kop{background:var(--navy);color:var(--creme);position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(246,241,232,.1)}
+.kop .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{height:32px;width:auto;display:block}
+.logo .g-lijn{stroke:var(--creme);fill:none}.logo .vlak-boven,.logo .ruit-1{fill:var(--oranje)}
+.logo .vlak-links,.logo .letter,.logo .ruit-2{fill:var(--creme)}.logo .vlak-rechts{fill:var(--steen)}
+.terug{text-decoration:none;font-weight:500;font-size:.95rem;opacity:.85}.terug:hover{opacity:1;color:var(--oranje)}
+/* intro */
+.held{background:var(--navy);color:var(--creme);padding:90px 0 80px;position:relative;overflow:hidden}
+.oog{display:flex;align-items:center;gap:10px;color:var(--oranje);font-weight:700;font-size:.82rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
+.oog i{width:12px;height:7px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.held h1{font-size:clamp(2.6rem,7vw,5.2rem);line-height:1;letter-spacing:-.04em;max-width:900px}
+.held p{max-width:620px;font-size:1.15rem;opacity:.8;margin-top:22px}
+.sprong{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.sprong a{text-decoration:none;border:1px solid rgba(246,241,232,.25);border-radius:999px;padding:9px 16px;font-size:.92rem;font-weight:500;transition:border-color .3s,background .3s}
+.sprong a:hover{border-color:var(--oranje);background:rgba(255,90,54,.1)}
+.sprong b{color:var(--oranje);margin-right:6px}
+.held-lijnen{position:absolute;right:-220px;top:50%;width:760px;transform:translateY(-50%);opacity:.08;pointer-events:none}
+/* demo-blokken */
+.demo{padding:100px 0;border-bottom:1px solid rgba(22,33,62,.1)}
+.demo .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:center}
+.demo:nth-of-type(even) .wrap{grid-template-columns:1.2fr .8fr}.demo:nth-of-type(even) .tekst{order:2}
+.demo .nr{font-weight:700;color:var(--oranje);letter-spacing:.14em;font-size:.85rem}
+.demo h2{font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.08;letter-spacing:-.03em;margin:8px 0 14px}
+.demo .tekst>p{opacity:.8}
+.demo ul{list-style:none;margin-top:22px;display:grid;gap:10px}
+.demo li{display:flex;gap:12px;align-items:flex-start;opacity:.85;font-size:.97rem}
+.demo li::before{content:"";flex:none;width:11px;height:7px;margin-top:9px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.demo .voor-wie{margin-top:22px;font-size:.9rem;opacity:.6}
+/* browservenster */
+.venster{background:#fff;border-radius:16px;box-shadow:0 40px 80px -40px rgba(22,33,62,.45),0 0 0 1px rgba(22,33,62,.08);overflow:hidden;min-width:0}
+.balk{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#ece7de;border-bottom:1px solid rgba(22,33,62,.08)}
+.balk i{width:11px;height:11px;border-radius:50%;background:#d6cfc3}.balk i:first-child{background:#ff6b5b}.balk i:nth-child(2){background:#f5bf4f}.balk i:nth-child(3){background:#59c35f}
+.balk span{flex:1;margin-left:10px;background:#fff;border-radius:7px;padding:4px 12px;font-size:.78rem;color:#6b6f80;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app{position:relative}
+/* slot */
+.slot{background:var(--navy);color:var(--creme);padding:100px 0;text-align:center}
+.slot h2{font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-.03em;line-height:1.05}
+.slot p{opacity:.78;max-width:560px;margin:18px auto 34px;font-size:1.1rem}
+.knop{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;background:var(--oranje);color:var(--navy);transition:transform .4s var(--zacht)}
+.knop:hover{transform:translateY(-2px)}
+footer{background:var(--diep);color:var(--creme);padding:28px 0;font-size:.9rem;opacity:.95}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
+.melding-demo{font-size:.8rem;opacity:.55;margin-top:12px;text-align:center}
+
+/* ================= 1. kapsalon: afspraak boeken ================= */
+.k{--z:#1d1d1b;--g:#a8834e;--p:#faf7f2;background:var(--p);color:var(--z);font-family:Georgia,"Times New Roman",serif;padding:26px 26px 28px;min-height:470px}
+.k-kop{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #e6dfd3;padding-bottom:14px;margin-bottom:18px}
+.k-merk{font-size:1.35rem;letter-spacing:.2em;text-transform:uppercase}
+.k-merk small{display:block;font-size:.62rem;letter-spacing:.32em;color:var(--g);margin-top:2px}
+.k-stappen{display:flex;gap:6px;font-family:system-ui,sans-serif;font-size:.72rem}
+.k-stappen span{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:1px solid #d8cfc0;color:#9a917f;transition:.3s}
+.k-stappen span.aan{background:var(--z);border-color:var(--z);color:#fff}
+.k-stappen span.klaar{background:var(--g);border-color:var(--g);color:#fff}
+.k h3{font-weight:400;font-size:1.25rem;margin-bottom:12px}
+.k-lijst{display:grid;gap:8px}
+.k-dienst{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:1px solid #e6dfd3;border-radius:10px;padding:13px 16px;font-family:inherit;transition:border-color .25s,transform .25s}
+.k-dienst:hover{border-color:var(--g);transform:translateX(3px)}
+.k-dienst em{display:block;font-style:normal;font-family:system-ui,sans-serif;font-size:.78rem;color:#8a8273;margin-top:2px}
+.k-dienst b{font-weight:400;color:var(--g);font-size:1.05rem;white-space:nowrap}
+.k-dagen{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px}
+.k-dag{background:#fff;border:1px solid #e6dfd3;border-radius:10px;padding:8px 2px;font-family:system-ui,sans-serif;text-align:center;line-height:1.2;transition:.2s}
+.k-dag small{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:#8a8273}
+.k-dag b{font-size:1.1rem}
+.k-dag.vol{background:transparent;color:#b5ad9f}.k-dag.vol b{text-decoration:line-through}
+.k-dag.aan{background:var(--z);border-color:var(--z);color:#fff}.k-dag.aan small{color:#cfc6b6}
+.k-uren{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.k-uur{background:#fff;border:1px solid #e6dfd3;border-radius:8px;padding:8px 0;font-family:system-ui,sans-serif;font-size:.86rem;transition:.2s}
+.k-uur:hover:not(:disabled){border-color:var(--g)}
+.k-uur:disabled{color:#c9c1b2;text-decoration:line-through;cursor:not-allowed;background:transparent}
+.k-uur.aan{background:var(--g);border-color:var(--g);color:#fff}
+.k-veld{display:grid;gap:5px;font-family:system-ui,sans-serif;font-size:.8rem;color:#6d6658;margin-bottom:12px}
+.k-veld input{border:1px solid #e0d8ca;border-radius:9px;padding:11px 13px;font-size:.95rem;background:#fff;color:var(--z)}
+.k-veld input:focus{outline:none;border-color:var(--g)}
+.k-samen{background:#fff;border:1px solid #e6dfd3;border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:.95rem}
+.k-samen div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.k-samen span{font-family:system-ui,sans-serif;font-size:.82rem;color:#8a8273}
+.k-actie{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}
+.k-btn{background:var(--z);color:#fff;border:0;border-radius:999px;padding:12px 22px;font-family:system-ui,sans-serif;font-size:.9rem;letter-spacing:.04em;transition:opacity .2s}
+.k-btn:disabled{opacity:.3;cursor:not-allowed}
+.k-link{background:none;border:0;font-family:system-ui,sans-serif;font-size:.86rem;color:#8a8273;text-decoration:underline}
+.k-vol{font-family:system-ui,sans-serif;font-size:.88rem;color:#8a8273;background:#fff;border:1px dashed #d8cfc0;border-radius:10px;padding:16px;text-align:center}
+.k-info{font-family:system-ui,sans-serif;font-size:.76rem;color:#8a8273;margin-top:10px}
+.k-fout{color:#b3412e;font-family:system-ui,sans-serif;font-size:.8rem;min-height:1.2em}
+.k-ok{text-align:center;padding:26px 6px}
+.k-ok .rond{width:64px;height:64px;border-radius:50%;background:var(--g);margin:0 auto 16px;display:grid;place-items:center;animation:k-pop .6s var(--zacht)}
+.k-ok .rond svg{width:30px;height:30px}
+.k-ok h3{font-size:1.5rem}
+.k-ok p{font-family:system-ui,sans-serif;font-size:.9rem;color:#6d6658;margin:6px 0 18px}
+@keyframes k-pop{from{transform:scale(.3);opacity:0}}
+.k-paneel{animation:k-in .45s var(--zacht)}
+@keyframes k-in{from{opacity:0;transform:translateX(16px)}}
+
+/* ================= 2. vloerlegger: offerte ================= */
+.s{--b:#1f4fd1;--y:#ffd23f;--t:#14213d;background:#fff;color:var(--t);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-columns:1fr 1fr;min-height:470px}
+.s-links{padding:24px 24px 26px;display:grid;gap:18px;align-content:start}
+.s-merk{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.s-merk i{width:26px;height:26px;border-radius:7px;background:var(--y);display:grid;place-items:center;transform:rotate(-8deg)}
+.s-merk i::after{content:"";width:12px;height:12px;border-radius:2px;background:var(--b)}
+.s-groep>span{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7390;margin-bottom:8px}
+.s-groep>span b{color:var(--b);font-size:.95rem;text-transform:none;letter-spacing:0}
+.s-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:#eef1f8;border-radius:10px;padding:4px;gap:4px}
+.s-seg button{border:0;background:none;border-radius:7px;padding:8px 4px;font-size:.88rem;font-weight:600;color:#4b5677;transition:.2s}
+.s-seg button.aan{background:#fff;color:var(--b);box-shadow:0 2px 6px rgba(20,33,61,.12)}
+.s input[type=range]{width:100%;accent-color:var(--b);height:22px}
+.s-check{display:flex;align-items:center;gap:10px;font-size:.9rem;padding:5px 0;cursor:pointer}
+.s-check input{width:18px;height:18px;accent-color:var(--b)}
+.s-check em{margin-left:auto;font-style:normal;color:#6b7390;font-size:.82rem;white-space:nowrap}
+.s-kleuren{display:flex;gap:8px;flex-wrap:wrap}
+.s-kleur{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #d5dae8;transition:transform .2s,box-shadow .2s}
+.s-kleur.aan{box-shadow:0 0 0 2px var(--b);transform:scale(1.1)}
+.s-rechts{background:#f4f6fb;padding:22px 22px 24px;display:grid;gap:16px;align-content:start;border-left:1px solid #e6e9f2}
+.s-kamer{border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 0 #e6e9f2}
+.s-kamer svg{display:block;width:100%;height:auto}
+.s-muur{transition:fill .6s ease}
+.s-rij{display:flex;justify-content:space-between;font-size:.88rem;padding:4px 0;color:#4b5677}
+.s-rij.tot{border-top:2px solid var(--t);margin-top:6px;padding-top:10px;color:var(--t);font-weight:800;font-size:1.05rem;align-items:baseline}
+.s-rij.tot b{font-size:1.5rem;color:var(--b);letter-spacing:-.02em;white-space:nowrap}
+.s-btn{background:var(--b);color:#fff;border:0;border-radius:10px;padding:13px;font-weight:700;font-size:.95rem;transition:background .2s}
+.s-btn:hover{background:#1840b0}
+.s-btn.ok{background:#16a34a}
+.s-klein{font-size:.74rem;color:#7a819a;text-align:center}
+.s-maten{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.s-maten2{grid-template-columns:1fr 1fr}
+.s-types{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.s-types button{display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid #d5dae8;background:#fff;border-radius:9px;padding:8px 10px;font-size:.84rem;font-weight:600;text-align:left;color:#14213d;transition:.2s}
+.s-types button small{color:#9aa1b8;font-size:.72rem;letter-spacing:.05em}
+.s-types button.aan{border-color:var(--b);box-shadow:0 0 0 1px var(--b);color:var(--b)}
+.s-types button:last-child{grid-column:1/-1}
+.s-seg button:disabled{opacity:.35;cursor:not-allowed}
+.s-maat{display:grid;grid-template-columns:1fr auto;align-items:center;background:#eef1f8;border-radius:9px;padding:5px 9px 6px;cursor:text}
+.s-maat small{grid-column:1/-1;font-size:.68rem;color:#6b7390;font-weight:600}
+.s-maat input{width:100%;min-width:0;border:0;background:none;font-weight:700;font-size:1rem;padding:0;-moz-appearance:textfield;appearance:textfield}
+.s-maat input::-webkit-inner-spin-button{-webkit-appearance:none}
+.s-maat input:focus{outline:none}.s-maat:focus-within{box-shadow:0 0 0 2px var(--b)}
+.s-maat span{font-size:.8rem;color:#6b7390}
+.s-tellers{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.s-tel{display:flex;align-items:center;gap:8px;font-size:.88rem}
+.s-tel span{margin-right:2px}
+.s-tel button{width:28px;height:28px;border-radius:50%;border:1px solid #d5dae8;background:#fff;font-weight:700;line-height:1;color:var(--b)}
+.s-tel b{min-width:14px;text-align:center}
+.s-hint{font-size:.76rem;color:#6b7390;margin-top:6px;min-height:1em}
+.s-hint:empty{display:none}
+.s-btwkeuze{border-top:1px solid #e6e9f2;padding-top:12px}
+.s-opp{font-size:.8rem;color:#4b5677;background:#fff;border-radius:9px;padding:8px 11px;box-shadow:0 1px 0 #e6e9f2}
+.s-rij.sub{border-top:1px solid #d5dae8;margin-top:4px;padding-top:8px;color:var(--t);font-weight:600}
+.s-rij span:first-child{padding-right:10px}.s-rij span:last-child{white-space:nowrap}
+.s-duur{display:flex;align-items:center;gap:8px;font-size:.86rem;font-weight:600}
+.s-duur i{width:16px;height:16px;border-radius:50%;border:2px solid var(--b);position:relative;flex:none}
+.s-duur i::after{content:"";position:absolute;left:5px;top:1px;width:2px;height:6px;background:var(--b);border-radius:2px}
+
+/* ================= 3. frituur: bestellen ================= */
+.f{--r:#d7263d;--m:#f4b942;--c:#fff8ec;--t:#2b1b12;background:var(--c);color:var(--t);font-family:"Trebuchet MS",system-ui,sans-serif;min-height:470px;display:grid;grid-template-columns:1.25fr .9fr}
+.f-menu{padding:20px 20px 22px}
+.f-merk{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.f-merk i{width:34px;height:34px;border-radius:50%;background:var(--r);display:grid;place-items:center;color:var(--m);font-style:normal;font-weight:900;font-size:1.1rem}
+.f-merk b{font-size:1.2rem;font-weight:900;letter-spacing:-.01em}
+.f-merk small{display:block;font-size:.72rem;color:#8a6a52;font-weight:400}
+.f-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.f-tabs button{border:2px solid var(--t);background:none;border-radius:999px;padding:6px 14px;font-weight:700;font-size:.85rem;white-space:nowrap;transition:.2s}
+.f-tabs button.aan{background:var(--t);color:var(--c)}
+.f-items{display:grid;gap:8px}
+.f-item{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:10px 10px 10px 12px;box-shadow:0 2px 0 #f0e2c8;animation:f-in .35s var(--zacht) both}
+.f-item .emo{width:42px;height:42px;border-radius:12px;background:#ffeccc;display:grid;place-items:center;flex:none}
+.f-item .emo svg{width:28px;height:28px}
+.f-item div{flex:1;line-height:1.25}
+.f-item small{display:block;color:#8a6a52;font-size:.76rem}
+.f-item b{font-size:.95rem}
+.f-plus{width:34px;height:34px;border-radius:50%;border:0;background:var(--r);color:#fff;font-size:1.3rem;font-weight:700;line-height:1;flex:none;transition:transform .15s}
+.f-plus:active{transform:scale(.88)}
+@keyframes f-in{from{opacity:0;transform:translateY(8px)}}
+.f-mand{background:var(--t);color:var(--c);padding:20px 18px 22px;display:flex;flex-direction:column;min-width:0}
+.f-mand h4{font-size:1.05rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.f-teller{background:var(--m);color:var(--t);border-radius:999px;font-size:.78rem;padding:2px 9px;transition:transform .2s}
+.f-teller.bots{animation:f-bots .4s}
+@keyframes f-bots{40%{transform:scale(1.35)}}
+.f-regels{flex:1;display:grid;gap:8px;align-content:start;font-size:.88rem;max-height:250px;overflow:auto;padding-right:2px}
+.f-regel{display:flex;align-items:center;gap:8px}
+.f-regel span{flex:1;min-width:0}
+.f-regel button{width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,248,236,.35);background:none;color:var(--c);font-weight:700;line-height:1}
+.f-leeg{opacity:.55;font-size:.86rem}
+.f-afhaal{display:grid;gap:5px;font-size:.78rem;opacity:.85;margin:12px 0}
+.f-afhaal select{background:rgba(255,248,236,.1);border:1px solid rgba(255,248,236,.25);border-radius:9px;padding:8px;color:var(--c)}
+.f-afhaal option{color:#000}
+.f-betaal{font-size:.72rem;opacity:.6;text-align:center;margin-top:8px}
+.f-later{font-size:.86rem;color:#8a6a52;max-width:360px;margin:-8px auto 18px}
+.f-tot{display:flex;justify-content:space-between;font-weight:900;font-size:1.15rem;margin-bottom:12px}
+.f-btn{background:var(--m);color:var(--t);border:0;border-radius:12px;padding:13px;font-weight:900;font-size:1rem;transition:opacity .2s,transform .15s}
+.f-btn:disabled{opacity:.35;cursor:not-allowed}
+.f-btn:active:not(:disabled){transform:scale(.97)}
+.f-volg{grid-column:1/-1;padding:34px 26px;text-align:center;animation:f-in .4s var(--zacht)}
+.f-volg .nummer{display:inline-block;background:var(--r);color:#fff;font-weight:900;font-size:2.4rem;border-radius:18px;padding:6px 22px;margin:8px 0 6px;letter-spacing:.02em}
+.f-volg p{color:#8a6a52;font-size:.92rem}
+.f-stap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:26px auto 22px;max-width:440px}
+.f-stap div{font-size:.8rem;font-weight:700;color:#b49a85;display:grid;gap:8px;justify-items:center}
+.f-stap div::before{content:"";width:100%;height:8px;border-radius:99px;background:#efdcc0;transition:background .5s}
+.f-stap div.aan{color:var(--t)}.f-stap div.aan::before{background:var(--r)}
+.f-stap div.klaar::before{background:#2f9e44}
+.f-nog{background:none;border:2px solid var(--t);border-radius:999px;padding:9px 18px;font-weight:700}
+
+/* ================= 4. dashboard ================= */
+.d{--bg:#0f1620;--k:#18212d;--l:#263241;--t:#e8eef5;--m:#8a98a8;--a:#3ddc97;--a2:#7aa2ff;background:var(--bg);color:var(--t);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 20px 22px;min-height:470px}
+.d-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.d-top b{font-size:1.05rem}.d-top small{display:block;color:var(--m);font-size:.76rem}
+.d-seg{display:flex;background:var(--k);border-radius:9px;padding:3px}
+.d-seg button{border:0;background:none;color:var(--m);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:7px;transition:.2s}
+.d-seg button.aan{background:var(--l);color:var(--t)}
+.d-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.d-kaart{background:var(--k);border-radius:12px;padding:12px 13px;min-width:0}
+.d-kaart span{display:block;color:var(--m);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d-kaart b{display:block;font-size:1.25rem;letter-spacing:-.02em;margin:3px 0 1px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.d-kaart em{font-style:normal;font-size:.72rem;font-weight:700}
+.d-kaart em.op{color:var(--a)}.d-kaart em.neer{color:#ff7a7a}
+.d-onder{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}
+.d-blok{background:var(--k);border-radius:12px;padding:12px 14px;min-width:0;position:relative}
+.d-blok h5{font-size:.78rem;color:var(--m);font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between}
+.d-blok h5 small{font-weight:400;font-size:.72rem;opacity:.75}
+.d-blok h5 i{font-style:normal;display:flex;gap:10px}
+.d-blok h5 i span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:var(--a)}
+.d-blok h5 i span+span::before{background:var(--a2)}
+.d-grafiek svg{display:block;width:100%;height:auto;overflow:visible}
+.d-staaf{fill:var(--a);transition:y .6s var(--zacht),height .6s var(--zacht),opacity .2s}
+.d-staaf.vorig{fill:var(--a2);opacity:.45}
+.d-grafiek .doel:hover .d-staaf{opacity:.75}
+.d-as{fill:var(--m);font-size:10px}
+.d-tip{position:absolute;pointer-events:none;background:#fff;color:#0f1620;border-radius:8px;padding:6px 9px;font-size:.74rem;font-weight:600;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .15s}
+.d-top5{display:grid;gap:9px}
+.d-prod{font-size:.8rem}
+.d-prod div{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;white-space:nowrap}
+.d-prod div span{color:var(--m)}
+.d-prod i{display:block;height:6px;border-radius:9px;background:var(--l);overflow:hidden}
+.d-prod i::after{content:"";display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--a2),var(--a));border-radius:9px;transition:width .7s var(--zacht)}
+
+/* mobiel */
+@media (max-width:980px){
+  .demo .wrap{grid-template-columns:1fr;gap:36px}
+  .demo:nth-of-type(even) .wrap{grid-template-columns:1fr}.demo:nth-of-type(even) .tekst{order:0}
+}
+@media (max-width:640px){
+  body{font-size:16px}.wrap{padding:0 16px}
+  .held{padding:64px 0 56px}.demo{padding:70px 0}
+  .s,.f{grid-template-columns:1fr}
+  .s-rechts{border-left:0;border-top:1px solid #e6e9f2}
+  .d-kpi{grid-template-columns:1fr 1fr}.d-onder{grid-template-columns:1fr}
+  .k{padding:20px 16px}.k-dagen{grid-template-columns:repeat(3,1fr)}.k-uren{grid-template-columns:repeat(3,1fr)}
+  .terug span{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "abae760e20f744678168aeace0ceaabb"}'></script>
+</head>
+<body>
+<header class="kop"><div class="wrap">
+  <a href="/" aria-label="Giometrie, naar de startpagina"><svg class="logo" viewBox="0 0 295.2 67.0" role="img" aria-label="Giometrie"><g transform="translate(0 -11.53)"><g class="logo-icoon" transform="translate(-6.29 9.98) scale(0.6803)"><path class="vlak vlak-boven" d="M50.00 47.40 L32.99 37.58 L50.00 27.76 L67.01 37.58 Z"/><path class="vlak vlak-links" d="M47.75 51.30 L47.75 70.94 L30.74 61.12 L30.74 41.48 Z"/><path class="vlak vlak-rechts" d="M52.25 51.30 L69.26 41.48 L69.26 61.12 L52.25 70.94 Z"/><path class="g-lijn" d="M75.57 23.76 L50.00 9.00 L14.49 29.50 L14.49 70.50 L50.00 91.00 L85.51 70.50 L85.51 50.00 L79.01 50.00" pathLength="1" fill="none" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/></g><g class="woord"><path class="letter" style="--i:0" d="M63.07721351494799 64.094V35.32599999999999H70.38521351494799V64.094Z"/><path class="letter" style="--i:1" d="M92.48321351494799 64.90599999999999Q88.19121351494799 64.90599999999999 84.76921351494798 63.166Q81.34721351494798 61.425999999999995 79.37521351494799 58.11999999999999Q77.40321351494799 54.81399999999999 77.40321351494799 50.17399999999999V49.245999999999995Q77.40321351494799 44.605999999999995 79.37521351494799 41.3Q81.34721351494798 37.99399999999999 84.76921351494798 36.25399999999999Q88.19121351494799 34.513999999999996 92.48321351494799 34.513999999999996Q96.77521351494799 34.513999999999996 100.19721351494799 36.25399999999999Q103.61921351494799 37.99399999999999 105.59121351494798 41.3Q107.56321351494799 44.605999999999995 107.56321351494799 49.245999999999995V50.17399999999999Q107.56321351494799 54.81399999999999 105.59121351494798 58.11999999999999Q103.61921351494799 61.425999999999995 100.19721351494799 63.166Q96.77521351494799 64.90599999999999 92.48321351494799 64.90599999999999ZM92.48321351494799 58.41Q95.84721351494798 58.41 98.05121351494799 56.235Q100.25521351494798 54.059999999999995 100.25521351494798 49.99999999999999V49.419999999999995Q100.25521351494798 45.35999999999999 98.08021351494799 43.18499999999999Q95.90521351494799 41.00999999999999 92.48321351494799 41.00999999999999Q89.11921351494799 41.00999999999999 86.915213514948 43.18499999999999Q84.71121351494799 45.35999999999999 84.71121351494799 49.419999999999995V49.99999999999999Q84.71121351494799 54.059999999999995 86.915213514948 56.235Q89.11921351494799 58.41 92.48321351494799 58.41Z"/><path class="letter" style="--i:2" d="M114.58121351494799 64.094V35.32599999999999H121.77321351494798V38.45799999999999H122.817213514948Q123.57121351494798 37.007999999999996 125.31121351494798 35.934999999999995Q127.05121351494799 34.861999999999995 129.893213514948 34.861999999999995Q132.96721351494799 34.861999999999995 134.823213514948 36.050999999999995Q136.679213514948 37.239999999999995 137.665213514948 39.153999999999996H138.70921351494798Q139.695213514948 37.29799999999999 141.493213514948 36.07999999999999Q143.291213514948 34.861999999999995 146.59721351494798 34.861999999999995Q149.265213514948 34.861999999999995 151.44021351494797 35.992999999999995Q153.61521351494798 37.123999999999995 154.920213514948 39.41499999999999Q156.225213514948 41.70599999999999 156.225213514948 45.18599999999999V64.094H148.917213514948V45.708Q148.917213514948 43.33 147.69921351494799 42.141Q146.481213514948 40.952 144.277213514948 40.952Q141.783213514948 40.952 140.420213514948 42.547Q139.057213514948 44.141999999999996 139.057213514948 47.099999999999994V64.094H131.749213514948V45.708Q131.749213514948 43.33 130.53121351494798 42.141Q129.313213514948 40.952 127.10921351494798 40.952Q124.61521351494798 40.952 123.25221351494798 42.547Q121.88921351494798 44.141999999999996 121.88921351494798 47.099999999999994V64.094Z"/><path class="letter" style="--i:3" d="M177.511213514948 64.90599999999999Q173.219213514948 64.90599999999999 169.94221351494798 63.07899999999999Q166.665213514948 61.251999999999995 164.838213514948 57.916999999999994Q163.011213514948 54.581999999999994 163.011213514948 50.05799999999999V49.361999999999995Q163.011213514948 44.837999999999994 164.809213514948 41.50299999999999Q166.607213514948 38.16799999999999 169.855213514948 36.340999999999994Q173.10321351494798 34.513999999999996 177.39521351494798 34.513999999999996Q181.629213514948 34.513999999999996 184.761213514948 36.398999999999994Q187.893213514948 38.28399999999999 189.633213514948 41.61899999999999Q191.373213514948 44.95399999999999 191.373213514948 49.361999999999995V51.855999999999995H170.435213514948Q170.551213514948 54.81399999999999 172.63921351494798 56.669999999999995Q174.727213514948 58.525999999999996 177.743213514948 58.525999999999996Q180.81721351494798 58.525999999999996 182.26721351494797 57.19199999999999Q183.71721351494799 55.85799999999999 184.47121351494798 54.233999999999995L190.445213514948 57.36599999999999Q189.63321351494798 58.873999999999995 188.09621351494798 60.642999999999994Q186.559213514948 62.41199999999999 184.00721351494798 63.65899999999999Q181.45521351494799 64.90599999999999 177.511213514948 64.90599999999999ZM170.493213514948 46.403999999999996H183.94921351494799Q183.71721351494799 43.91 181.948213514948 42.401999999999994Q180.179213514948 40.89399999999999 177.337213514948 40.89399999999999Q174.379213514948 40.89399999999999 172.63921351494798 42.401999999999994Q170.899213514948 43.91 170.493213514948 46.403999999999996Z"/><path class="letter" style="--i:4" d="M209.179213514948 64.094Q206.337213514948 64.094 204.56821351494798 62.324999999999996Q202.79921351494798 60.556 202.79921351494798 57.59799999999999V41.35799999999999H195.607213514948V35.32599999999999H202.79921351494798V26.39399999999999H210.107213514948V35.32599999999999H217.99521351494798V41.35799999999999H210.107213514948V56.321999999999996Q210.107213514948 58.062 211.731213514948 58.062H217.299213514948V64.094Z"/><path class="letter" style="--i:5" d="M224.89721351494802 64.094V35.32599999999999H232.08921351494803V38.574H233.133213514948Q233.77121351494802 36.83399999999999 235.25021351494803 36.02199999999999Q236.72921351494801 35.209999999999994 238.70121351494802 35.209999999999994H242.181213514948V41.70599999999999H238.585213514948Q235.80121351494802 41.70599999999999 234.00321351494802 43.18499999999999Q232.205213514948 44.663999999999994 232.205213514948 47.73799999999999V64.094Z"/><path class="letter" style="--i:6" d="M249.055213514948 64.094V35.32599999999999H256.36321351494803V64.094Z"/><path class="letter" style="--i:7" d="M277.881213514948 64.90599999999999Q273.58921351494797 64.90599999999999 270.312213514948 63.07899999999999Q267.035213514948 61.251999999999995 265.208213514948 57.916999999999994Q263.381213514948 54.581999999999994 263.381213514948 50.05799999999999V49.361999999999995Q263.381213514948 44.837999999999994 265.179213514948 41.50299999999999Q266.977213514948 38.16799999999999 270.225213514948 36.340999999999994Q273.473213514948 34.513999999999996 277.765213514948 34.513999999999996Q281.999213514948 34.513999999999996 285.131213514948 36.398999999999994Q288.263213514948 38.28399999999999 290.003213514948 41.61899999999999Q291.743213514948 44.95399999999999 291.743213514948 49.361999999999995V51.855999999999995H270.805213514948Q270.921213514948 54.81399999999999 273.009213514948 56.669999999999995Q275.097213514948 58.525999999999996 278.113213514948 58.525999999999996Q281.187213514948 58.525999999999996 282.63721351494803 57.19199999999999Q284.087213514948 55.85799999999999 284.841213514948 54.233999999999995L290.81521351494797 57.36599999999999Q290.003213514948 58.873999999999995 288.466213514948 60.642999999999994Q286.929213514948 62.41199999999999 284.37721351494804 63.65899999999999Q281.825213514948 64.90599999999999 277.881213514948 64.90599999999999ZM270.863213514948 46.403999999999996H284.319213514948Q284.087213514948 43.91 282.318213514948 42.401999999999994Q280.549213514948 40.89399999999999 277.70721351494797 40.89399999999999Q274.749213514948 40.89399999999999 273.009213514948 42.401999999999994Q271.269213514948 43.91 270.863213514948 46.403999999999996Z"/></g><path class="ruit ruit-1" d="M66.73 20.89 L73.13 24.58 L66.73 28.27 L60.34 24.58 Z"/><path class="ruit ruit-2" d="M252.71 20.89 L259.10 24.58 L252.71 28.27 L246.31 24.58 Z"/></g></svg></a>
+  <a class="terug" href="/">← <span>Terug naar </span>giometrie.be</a>
+</div></header>
+
+<section class="held">
+  <svg class="held-lijnen" viewBox="-700 -700 1400 1400" aria-hidden="true"><g fill="none" stroke="#f6f1e8" stroke-opacity="1" stroke-width="1.4" stroke-dasharray="7 9"><path d="M0.0 -230.0 L199.2 -115.0 L199.2 115.0 L0.0 230.0 L-199.2 115.0 L-199.2 -115.0Z"/><path d="M0.0 -330.0 L285.8 -165.0 L285.8 165.0 L0.0 330.0 L-285.8 165.0 L-285.8 -165.0Z"/><path d="M0.0 -430.0 L372.4 -215.0 L372.4 215.0 L0.0 430.0 L-372.4 215.0 L-372.4 -215.0Z"/><path d="M0.0 -530.0 L459.0 -265.0 L459.0 265.0 L0.0 530.0 L-459.0 265.0 L-459.0 -265.0Z"/><path d="M0.0 -630.0 L545.6 -315.0 L545.6 315.0 L0.0 630.0 L-545.6 315.0 L-545.6 -315.0Z"/><path d="M-700 0 H700 M0 -700 V700"/></g></svg>
+  <div class="wrap">
+    <div class="oog"><i></i>Voorbeelden</div>
+    <h1>Klik, probeer, ontdek.</h1>
+    <p>Vier kleine voorbeelden van wat ik voor jouw zaak kan bouwen. Ze werken echt, dus klik gerust rond. Elk voorbeeld heeft een eigen stijl, want jouw programma krijgt de stijl van jouw zaak.</p>
+    <nav class="sprong" aria-label="Naar een voorbeeld">
+      <a href="#afspraak"><b>01</b>Afspraak boeken</a>
+      <a href="#offerte"><b>02</b>Offerte berekenen</a>
+      <a href="#bestellen"><b>03</b>Online bestellen</a>
+      <a href="#dashboard"><b>04</b>Dashboard</a>
+    </nav>
+  </div>
+</section>
+
+<main>
+<section class="demo" id="afspraak"><div class="wrap">
+  <div class="tekst">
+    <span class="nr">01</span>
+    <h2>Afspraken boeken, dag en nacht</h2>
+    <p>Je klanten kiezen zelf een behandeling, dag en uur. Jij krijgt geen telefoontjes meer tijdens het werk.</p>
+    <ul>
+      <li>Toont enkel uren waarop de hele behandeling past, rekening houdend met openingsuren en pauze</li>
+      <li>Werkt even vlot op een gsm als op een computer</li>
+      <li>Kan een herinnering sturen en koppelen aan je agenda</li>
+    </ul>
+    <p class="voor-wie">Voor kappers, garages, kinés, schoonheidssalons …</p>
+  </div>
+  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/afspraak</span></div>
+    <div class="app k" id="k-app" aria-live="polite"></div></div>
+</div></section>
+
+<section class="demo" id="offerte"><div class="wrap">
+  <div class="tekst">
+    <span class="nr">02</span>
+    <h2>Een offerte in tien seconden</h2>
+    <p>Klanten berekenen zelf een richtprijs voor hun nieuwe vloer. Jij krijgt een aanvraag binnen met alle details, en de klant weet meteen waar hij aan toe is.</p>
+    <ul>
+      <li>Rekent met de echte afmetingen, snijverlies en volle pakken</li>
+      <li>Houdt rekening met het soort vloer, het legpatroon, de ondergrond en 6 % of 21 % btw</li>
+      <li>Toont het legpatroon en de kleur meteen in een plattegrond, met jouw eigen prijzen</li>
+    </ul>
+    <p class="voor-wie">Voor vloerleggers, schilders, aannemers, tuinaanleggers …</p>
+  </div>
+  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/offerte</span></div>
+    <div class="app s" id="s-app"></div></div>
+</div></section>
+
+<section class="demo" id="bestellen"><div class="wrap">
+  <div class="tekst">
+    <span class="nr">03</span>
+    <h2>Bestellen zonder wachtrij</h2>
+    <p>Klanten stellen hun bestelling samen, kiezen een afhaaluur en volgen live wanneer alles klaar is.</p>
+    <ul>
+      <li>Winkelmandje dat meteen het totaal berekent</li>
+      <li>Enkel afhaaluren binnen je openingsuren</li>
+      <li>Klant ziet wanneer zijn bestelling klaar is</li>
+    </ul>
+    <p class="voor-wie">Voor frituren, bakkers, slagers, restaurants …</p>
+  </div>
+  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/bestellen</span></div>
+    <div class="app f" id="f-app"></div></div>
+</div></section>
+
+<section class="demo" id="dashboard"><div class="wrap">
+  <div class="tekst">
+    <span class="nr">04</span>
+    <h2>Je cijfers in één oogopslag</h2>
+    <p>Geen losse Excel-bestanden meer. Een dashboard toont wat er goed gaat en wat aandacht nodig heeft.</p>
+    <ul>
+      <li>Kies week, maand of jaar en vergelijk met vroeger</li>
+      <li>Ga met je muis over de grafiek voor de details</li>
+      <li>Haalt de cijfers automatisch uit je kassa of boekhouding</li>
+    </ul>
+    <p class="voor-wie">Voor winkels, webshops, horeca, kmo's …</p>
+  </div>
+  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/dashboard</span></div>
+    <div class="app d" id="d-app"></div></div>
+</div></section>
+</main>
+
+<section class="slot"><div class="wrap">
+  <h2>Iets gelijkaardigs nodig?</h2>
+  <p>Elk voorbeeld hier is een begin. Ik bouw het op maat van jouw zaak, in jouw stijl.</p>
+  <a class="knop" href="/#contact">Plan een kennismaking <span>→</span></a>
+  <p class="melding-demo">Alle voorbeelden zijn verzonnen. Er wordt niets verstuurd of bewaard.</p>
+</div></section>
+
+<footer><div class="wrap"><span>© <span class="jaar">2026</span> Giometrie · BTW BE 1044.780.367</span><a href="privacy.html">Privacy</a></div></footer>
+
+<script>
+(() => {
+  const $ = (s, el = document) => el.querySelector(s);
+  const euro = (n, d = 2) => '€ ' + n.toLocaleString('nl-BE', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const vink = '<svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.jaar').forEach(e => e.textContent = new Date().getFullYear());
+  // telt een getal vloeiend op naar de nieuwe waarde
+  const tel = (el, naar, fmt, duur = 600) => {
+    const van = +el.dataset.w || 0; el.dataset.w = naar;
+    if (rustig) { el.textContent = fmt(naar); return; }
+    const t0 = performance.now();
+    const stap = t => { const p = Math.min(1, (t - t0) / duur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(van + (naar - van) * e); if (p < 1) requestAnimationFrame(stap); };
+    requestAnimationFrame(stap);
+  };
+
+  // =============== 1. kapsalon ===============
+  (() => {
+    const app = $('#k-app');
+    const DIENSTEN = [['Knippen dames', 'wassen, knippen en föhnen', 48, 60], ['Knippen heren', 'wassen, knippen en stylen', 29, 30],
+                      ['Kleuren en knippen', 'uitgroei kleuren, knippen en föhnen', 89, 120], ['Brushing', 'wassen en brushen', 28, 30]];
+    const DAG = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'], MAAND = 'jan feb mrt apr mei jun jul aug sep okt nov dec'.split(' ');
+    const dagen = []; for (let d = new Date(), i = 0; dagen.length < 6 && i < 14; i++) { d.setDate(d.getDate() + 1); if (d.getDay() > 1) dagen.push(new Date(d)); }
+    // openingsuren in minuten: [open, dicht, middagpauze van, tot]. Di–vr 9:00–18:00 met pauze 12:30–13:30, za 8:30–16:00.
+    const OPEN = { 2: [540, 1080, 750, 810], 3: [540, 1080, 750, 810], 4: [540, 1080, 750, 810], 5: [540, 1080, 750, 810], 6: [510, 960, 0, 0] };
+    const uur = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    // verzonnen agenda: elk blok van 30 minuten is al dan niet al geboekt (vast per dag)
+    // de eerste dag is volledig volgeboekt, de andere dagen deels
+    const geboekt = (d, m) => { if (d === dagen[0]) return true; const x = Math.sin(d.getDate() * 12.9898 + d.getMonth() * 78.233 + m * .731) * 43758.5453; return x - Math.floor(x) < .22; };
+    const starts = d => { const [o, c, p1, p2] = OPEN[d.getDay()], r = []; for (let m = o; m < c; m += 30) if (!(m >= p1 && m < p2)) r.push(m); return r; };
+    // een beginuur kan enkel als de hele behandeling past: vóór sluitingstijd, niet over de pauze, en geen geboekt blok ertussen
+    const kan = (d, m) => { const [, c, p1, p2] = OPEN[d.getDay()], duur = DIENSTEN[s.dienst][3];
+      if (m + duur > c || (p2 > p1 && m < p2 && m + duur > p1)) return false;
+      for (let t = m; t < m + duur; t += 30) if (geboekt(d, t)) return false; return true; };
+    const BEGIN = { stap: 1, dienst: null, dag: 1, uur: null, naam: '', tel: '' };      // start op de eerste dag met plaats
+    let s = { ...BEGIN };
+    const kop = () => `<div class="k-kop"><div class="k-merk">Kapsalon<small>Afspraak maken</small></div>
+      <div class="k-stappen">${[1, 2, 3].map(n => `<span class="${n === s.stap ? 'aan' : n < s.stap ? 'klaar' : ''}">${n}</span>`).join('')}</div></div>`;
+    const teken = () => {
+      let h = '';
+      if (s.stap === 1) h = `<div class="k-paneel"><h3>Kies je behandeling</h3><div class="k-lijst">${DIENSTEN.map((d, i) =>
+          `<button class="k-dienst" data-d="${i}"><span>${d[0]}<em>${d[1]} · ${d[3]} min</em></span><b>€ ${d[2]}</b></button>`).join('')}</div></div>`;
+      else if (s.stap === 2) h = `<div class="k-paneel"><h3>Wanneer past het?</h3>
+          <div class="k-dagen">${dagen.map((d, i) => `<button class="k-dag${i === s.dag ? ' aan' : ''}${i === 0 ? ' vol' : ''}" data-dag="${i}"><small>${DAG[d.getDay()]}</small><b>${d.getDate()}</b><small>${i === 0 ? 'volzet' : MAAND[d.getMonth()]}</small></button>`).join('')}</div>
+          ${(() => { const d = dagen[s.dag], st = starts(d); return st.some(m => kan(d, m))
+            ? `<div class="k-uren">${st.map(m => `<button class="k-uur${m === s.uur ? ' aan' : ''}" data-u="${m}" ${kan(d, m) ? '' : 'disabled aria-label="' + uur(m) + ' niet beschikbaar"'}>${uur(m)}</button>`).join('')}</div>`
+            : '<p class="k-vol">Deze dag is volzet. Kies een andere dag.</p>'; })()}
+          <p class="k-info">${DAG[dagen[s.dag].getDay()] === 'za' ? 'Zaterdag open van 8:30 tot 16:00.' : 'Open van 9:00 tot 18:00, middagpauze van 12:30 tot 13:30.'} ${DIENSTEN[s.dienst][0]} duurt ${DIENSTEN[s.dienst][3]} minuten.</p>
+          <div class="k-actie"><button class="k-link" data-terug>← Terug</button><button class="k-btn" data-verder ${s.uur !== null ? '' : 'disabled'}>Verder</button></div></div>`;
+      else if (s.stap === 3) { const d = DIENSTEN[s.dienst], dg = dagen[s.dag];
+        h = `<div class="k-paneel"><h3>Bijna klaar</h3><div class="k-samen">
+          <div><span>Behandeling</span>${d[0]}</div><div><span>Wanneer</span>${DAG[dg.getDay()]} ${dg.getDate()} ${MAAND[dg.getMonth()]} van ${uur(s.uur)} tot ${uur(s.uur + d[3])}</div><div><span>Prijs</span>€ ${d[2]}</div></div>
+          <label class="k-veld">Je naam<input id="k-naam" autocomplete="off" value="${esc(s.naam)}" placeholder="bv. Sarah"></label>
+          <label class="k-veld">Gsm-nummer<input id="k-tel" inputmode="tel" autocomplete="off" value="${esc(s.tel)}" placeholder="0470 12 34 56"></label>
+          <div class="k-fout" id="k-fout"></div>
+          <div class="k-actie"><button class="k-link" data-terug>← Terug</button><button class="k-btn" data-bevestig>Bevestig afspraak</button></div></div>`; }
+      else { const d = DIENSTEN[s.dienst], dg = dagen[s.dag];
+        h = `<div class="k-ok"><div class="rond">${vink}</div><h3>Tot dan, ${esc(s.naam.split(' ')[0])}!</h3>
+          <p>${d[0]} op ${DAG[dg.getDay()]} ${dg.getDate()} ${MAAND[dg.getMonth()]} om ${uur(s.uur)}.<br>Je krijgt de dag voordien een sms als herinnering.</p>
+          <button class="k-btn" data-opnieuw>Nieuwe afspraak</button></div>`; }
+      app.innerHTML = kop() + h;
+    };
+    app.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      if (b.dataset.d) { s.dienst = +b.dataset.d; s.stap = 2; if (s.uur !== null && !kan(dagen[s.dag], s.uur)) s.uur = null; }
+      else if (b.dataset.dag) { s.dag = +b.dataset.dag; if (s.uur !== null && !kan(dagen[s.dag], s.uur)) s.uur = null; }
+      else if (b.dataset.u) s.uur = +b.dataset.u;
+      else if ('verder' in b.dataset) s.stap = 3;
+      else if ('terug' in b.dataset) s.stap--;
+      else if ('bevestig' in b.dataset) {
+        s.naam = $('#k-naam').value.trim(); s.tel = $('#k-tel').value.trim();
+        if (s.naam.length < 2) return $('#k-fout').textContent = 'Vul je naam in.';
+        if (!/^\+?\d{9,13}$/.test(s.tel.replace(/[\s./-]/g, ''))) return $('#k-fout').textContent = 'Vul een geldig gsm-nummer in.';
+        s.stap = 4;
+      } else if ('opnieuw' in b.dataset) s = { ...BEGIN };
+      const pos = app.getBoundingClientRect().top; teken();
+      if (b.dataset.u || b.dataset.dag) return;            // binnen dezelfde stap: niet verspringen
+      const nieuw = app.getBoundingClientRect().top; if (Math.abs(nieuw - pos) > 2) scrollBy(0, nieuw - pos);
+    });
+    app.addEventListener('input', e => { if (e.target.id === 'k-naam') s.naam = e.target.value; if (e.target.id === 'k-tel') s.tel = e.target.value; });
+    teken();
+  })();
+
+  // =============== 2. vloerlegger ===============
+  (() => {
+    const app = $('#s-app');
+    // [naam, materiaal €/m², plaatsing €/m², pakgrootte m², m² per dag, klikvloer (ondervloer), visgraat mogelijk]
+    const TYPES = [['Laminaat', 22, 14, 2.4, 30, 1, 0], ['PVC klik', 32, 15, 2.2, 28, 1, 1], ['PVC gelijmd', 38, 22, 2.2, 20, 0, 1],
+                   ['Lamelparket', 58, 24, 1.9, 22, 1, 1], ['Massief eiken parket', 85, 34, 1.6, 12, 0, 1]];
+    const PATROON = [['Recht', 7, 0, 1], ['Diagonaal', 12, 6, .8], ['Visgraat', 15, 20, .5]];   // [naam, snijverlies %, toeslag €/m², snelheid]
+    const ONDER = [['Goed', 'Vlakke, droge ondergrond: we kunnen meteen leggen.'], ['Oneffen', 'Eerst egaliseren (droogtijd 1 dag).'], ['Oude vloer eruit', 'Oude vloer uitbreken en afvoeren met container.']];
+    const KLEUREN = [['Natuur eik', '#c9a46c'], ['Wit geolied', '#e3d6bf'], ['Gerookt eik', '#8a6440'], ['Noten', '#5e4130'], ['Grijs', '#a39e95']];
+    const VERPLAATSING = 35;
+    const s = { l: 6, b: 4.5, deuren: 1, type: 3, patroon: 0, onder: 0, ondervloer: true, plinten: true, verwarming: false, kleur: 0, oud: true };
+    const getal = (v, d = 1) => v.toLocaleString('nl-BE', { minimumFractionDigits: d, maximumFractionDigits: d });
+    const maat = (k, t) => `<label class="s-maat"><small>${t}</small><input type="number" data-m="${k}" value="${s[k]}" min="1" max="20" step="0.1" inputmode="decimal"><span>m</span></label>`;
+    app.innerHTML = `<div class="s-links">
+        <div class="s-merk"><i></i>Vloeren op maat</div>
+        <div class="s-groep"><span>Afmetingen van de ruimte</span><div class="s-maten s-maten2">${maat('l', 'Lengte')}${maat('b', 'Breedte')}</div>
+          <div class="s-tellers"><div class="s-tel"><span>Deuren</span><button data-t="deuren" data-d="-1" aria-label="Eén deur minder">−</button><b id="s-deuren">${s.deuren}</b><button data-t="deuren" data-d="1" aria-label="Eén deur meer">+</button></div></div></div>
+        <div class="s-groep"><span>Soort vloer</span><div class="s-types" data-groep="type">${TYPES.map((t, i) =>
+          `<button data-v="${i}" class="${i === s.type ? 'aan' : ''}">${t[0]}<small>${'€'.repeat(i < 2 ? 1 : i < 4 ? 2 : 3)}</small></button>`).join('')}</div></div>
+        <div class="s-groep"><span>Legpatroon</span><div class="s-seg" data-groep="patroon">${PATROON.map((p, i) => `<button data-v="${i}" class="${i === s.patroon ? 'aan' : ''}">${p[0]}</button>`).join('')}</div>
+          <p class="s-hint" id="s-patroonhint"></p></div>
+        <div class="s-groep"><span>Ondergrond</span><div class="s-seg" data-groep="onder">${ONDER.map((o, i) => `<button data-v="${i}" class="${i === s.onder ? 'aan' : ''}">${o[0]}</button>`).join('')}</div>
+          <p class="s-hint" id="s-onderhint"></p></div>
+        <div class="s-groep"><span>Extra</span>
+          <label class="s-check"><input type="checkbox" data-o="ondervloer" checked>Geluidsdempende ondervloer<em>€ 4,50/m²</em></label>
+          <label class="s-check"><input type="checkbox" data-o="plinten" checked>Plinten plaatsen<em>€ 15,50/m</em></label>
+          <label class="s-check"><input type="checkbox" data-o="verwarming">Er ligt vloerverwarming<em>+ € 2/m²</em></label>
+          <p class="s-hint" id="s-extrahint"></p></div>
+        <div class="s-groep"><span>Kleur <b id="s-kleurnaam">${KLEUREN[0][0]}</b></span><div class="s-kleuren">${KLEUREN.map((k, i) =>
+          `<button class="s-kleur${i === s.kleur ? ' aan' : ''}" data-k="${i}" style="background:${k[1]}" aria-label="${k[0]}"></button>`).join('')}</div></div>
+        <label class="s-check s-btwkeuze"><input type="checkbox" data-o="oud" checked>Woning ouder dan 10 jaar<em>6 % btw</em></label>
+      </div>
+      <div class="s-rechts">
+        <div class="s-kamer"><svg viewBox="0 0 300 180" id="s-plan" aria-hidden="true"></svg></div>
+        <p class="s-opp" id="s-opp"></p>
+        <div>
+          <div class="s-rij"><span id="s-matlabel">Vloer</span><span id="s-mat"></span></div>
+          <div class="s-rij"><span id="s-plaatslabel">Plaatsing</span><span id="s-plaats"></span></div>
+          <div class="s-rij" id="s-rij-voor"><span id="s-voorlabel">Voorbereiding</span><span id="s-voor"></span></div>
+          <div class="s-rij" id="s-rij-extra"><span id="s-extralabel">Ondervloer, plinten en profielen</span><span id="s-extra"></span></div>
+          <div class="s-rij"><span>Verplaatsing</span><span id="s-verpl"></span></div>
+          <div class="s-rij" id="s-rij-klein"><span>Toeslag kleine opdracht (minimum € 450)</span><span id="s-klein"></span></div>
+          <div class="s-rij sub"><span>Totaal excl. btw</span><span id="s-sub"></span></div>
+          <div class="s-rij"><span id="s-btwlabel">Btw 6 %</span><span id="s-btw"></span></div>
+          <div class="s-rij tot"><span>Richtprijs</span><b id="s-tot"></b></div>
+        </div>
+        <p class="s-duur" id="s-duur"></p>
+        <button class="s-btn" id="s-vraag">Vraag een gratis opmeting aan</button>
+        <p class="s-klein">Richtprijs met materiaal en plaatsing. De definitieve offerte volgt na een gratis opmeting.</p>
+      </div>`;
+    // bovenaanzicht van de ruimte met het gekozen legpatroon en de gekozen kleur
+    const plan = () => {
+      const k = KLEUREN[s.kleur][1], sc = Math.min(250 / s.l, 140 / s.b), W = s.l * sc, H = s.b * sc, x = (300 - W) / 2 + 6, y = (172 - H) / 2;
+      const lijn = 'rgba(40,25,10,.28)';
+      const rij = rot => `<pattern id="s-p2" width="64" height="18" patternUnits="userSpaceOnUse"${rot}><rect width="64" height="18" fill="${k}"/>
+        <path d="M0 8.5 H64 M0 17.5 H64 M40 0 V9 M14 9 V18" stroke="${lijn}" stroke-width=".8"/><rect y="9" width="64" height="9" fill="#000" opacity=".04"/></pattern>`;
+      const pat = [rij(''), rij(' patternTransform="rotate(45)"'),
+        `<pattern id="s-p2" width="16" height="32" patternUnits="userSpaceOnUse"><rect width="16" height="32" fill="${k}"/>
+           <path d="M8 8 L16 0 L16 16 L8 24 Z M8 24 L16 16 L16 32 L8 40 Z" fill="#000" opacity=".05"/>
+           <path d="M0 0 L8 8 L8 24 L0 16 Z M8 8 L16 0 L16 16 L8 24 Z M0 16 L8 24 L8 40 L0 32 Z M8 24 L16 16 L16 32 L8 40 Z" fill="none" stroke="${lijn}" stroke-width=".8"/></pattern>`][s.patroon];
+      const dw = Math.min(18, .9 * sc), plekken = [[x + W * .12, y, 0], [x + W, y + H * .2, 90], [x + W * .75, y + H, 180], [x, y + H * .75, 270], [x + W * .6, y, 0], [x + W, y + H * .65, 90]];
+      const deur = plekken.slice(0, s.deuren).map(([dx, dy, rot]) => `<g transform="translate(${dx} ${dy}) rotate(${rot})"><path d="M0 0 h${dw}" stroke="#fff" stroke-width="5"/>
+        <path d="M${dw} 0 a${dw} ${dw} 0 0 1 ${-dw} ${dw} M0 0 V${dw}" fill="none" stroke="#14213d" stroke-opacity=".35" stroke-dasharray="2 2"/></g>`).join('');
+      $('#s-plan').innerHTML = `<defs>${pat}</defs><rect width="300" height="180" fill="#eef1f8"/>
+        <rect x="${x}" y="${y}" width="${W}" height="${H}" fill="url(#s-p2)"/>
+        <rect x="${x}" y="${y}" width="${W}" height="${H}" fill="none" stroke="#14213d" stroke-width="${s.plinten ? 4 : 3}" stroke-opacity="${s.plinten ? .9 : .6}"/>${deur}
+        <text x="150" y="${y + H + 12}" text-anchor="middle" font-size="10" fill="#4b5677">${getal(s.l)} m</text>
+        <text x="${x - 6}" y="${y + H / 2}" text-anchor="end" dominant-baseline="middle" font-size="10" fill="#4b5677">${getal(s.b)} m</text>`;
+    };
+    const bereken = () => {
+      const t = TYPES[s.type]; if (s.patroon === 2 && !t[6]) s.patroon = 0;
+      app.querySelectorAll('[data-groep="patroon"] button').forEach((b, i) => { b.disabled = i === 2 && !t[6]; b.classList.toggle('aan', i === s.patroon); });
+      const ov = $('[data-o="ondervloer"]'); ov.disabled = !t[5]; if (!t[5]) ov.checked = false; else ov.checked = s.ondervloer;
+      const p = PATROON[s.patroon], m2 = s.l * s.b, omtrek = Math.max(0, 2 * (s.l + s.b) - s.deuren * .9);
+      const kopen = Math.ceil(m2 * (1 + p[1] / 100) / t[3]) * t[3], pakken = Math.round(kopen / t[3]);
+      const mat = kopen * t[1], plaats = m2 * (t[2] + p[2]) + (s.type === 4 ? m2 * 14 : 0);
+      const voor = [0, m2 * 17, m2 * 11 + 195][s.onder];
+      const extra = (t[5] && s.ondervloer ? m2 * 4.5 : 0) + (s.plinten ? omtrek * 15.5 : 0) + s.deuren * 28 + (s.verwarming ? m2 * 2 : 0);
+      const MINIMUM = 450, klein = Math.max(0, MINIMUM - (mat + plaats + voor + extra + VERPLAATSING));   // kleine opdrachten: minimumbedrag
+      const sub = mat + plaats + voor + extra + VERPLAATSING + klein, pct = s.oud ? 6 : 21, btw = sub * pct / 100;
+      $('#s-rij-klein').style.display = klein ? '' : 'none';
+      const delen = [t[5] && s.ondervloer && 'ondervloer', s.plinten && 'plinten', s.deuren && 'profielen', s.verwarming && 'aanpassing vloerverwarming'].filter(Boolean);
+      $('#s-rij-extra').style.display = delen.length ? '' : 'none';
+      $('#s-extralabel').textContent = delen.length ? delen.join(', ').replace(/^./, c => c.toUpperCase()).replace(/, ([^,]*)$/, ' en $1') : '';
+      $('#s-extrahint').textContent = s.verwarming && s.type === 4 ? 'Massief parket raden we af op vloerverwarming: het hout werkt te veel. Kies liever lamelparket of PVC.'
+        : s.verwarming ? 'We gebruiken een ondervloer of lijm die geschikt is voor vloerverwarming.' : '';
+      $('#s-matlabel').textContent = `${t[0]} (${pakken} pakken = ${getal(kopen)} m²)`;
+      $('#s-plaatslabel').textContent = `Plaatsing ${p[0].toLowerCase()}${s.type === 4 ? ', schuren en oliën' : ''}`;
+      $('#s-rij-voor').style.display = s.onder ? '' : 'none';
+      $('#s-voorlabel').textContent = s.onder === 1 ? 'Egaliseren' : 'Oude vloer uitbreken en container';
+      $('#s-btwlabel').textContent = `Btw ${pct} %`;
+      $('#s-opp').innerHTML = `Vloer <b>${getal(m2)} m²</b> · ${p[1]} % snijverlies${s.plinten ? ` · plinten <b>${getal(omtrek)} m</b>` : ''}`;
+      $('#s-patroonhint').textContent = !t[6] ? 'Visgraat is niet mogelijk met laminaat.' : s.patroon ? `Meer snijwerk: ${p[1]} % snijverlies en langere plaatsing.` : '';
+      $('#s-onderhint').textContent = s.type === 2 && s.onder === 0 ? 'Gelijmde PVC vraagt een perfect vlakke ondergrond. Bij de opmeting kijken we of egaliseren nodig is.' : ONDER[s.onder][1];
+      let dagen = m2 / (t[4] * p[3]) + (s.onder === 1 ? 1 : s.onder === 2 ? .5 : 0) + (s.type === 4 ? 1 : 0);
+      dagen = Math.max(1, Math.ceil(dagen * 2) / 2);
+      $('#s-duur').innerHTML = `<i></i>Geschatte duur: ${getal(dagen, dagen % 1 ? 1 : 0)} werkdag${dagen > 1 ? 'en' : ''}`;
+      [['#s-klein', klein], ['#s-mat', mat], ['#s-plaats', plaats], ['#s-voor', voor], ['#s-extra', extra], ['#s-verpl', VERPLAATSING], ['#s-sub', sub], ['#s-btw', btw], ['#s-tot', sub + btw]]
+        .forEach(([id, v]) => tel($(id), v, x => euro(x, 0)));
+      plan();
+      const knop = $('#s-vraag'); knop.classList.remove('ok'); knop.textContent = 'Vraag een gratis opmeting aan';
+    };
+    app.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      const g = b.parentElement.dataset.groep;
+      if (g) { s[g] = +b.dataset.v; b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('aan', x === b)); bereken(); }
+      if (b.dataset.t) { s.deuren = Math.max(0, Math.min(6, s.deuren + +b.dataset.d)); $('#s-deuren').textContent = s.deuren; bereken(); }
+      if (b.dataset.k) { s.kleur = +b.dataset.k; app.querySelectorAll('.s-kleur').forEach(x => x.classList.toggle('aan', x === b)); $('#s-kleurnaam').textContent = KLEUREN[s.kleur][0]; bereken(); }
+      if (b.id === 's-vraag') { b.classList.add('ok'); b.textContent = 'Aanvraag ontvangen (demo)'; }
+    });
+    app.addEventListener('input', e => { const k = e.target.dataset.m; if (!k) return;
+      const v = parseFloat(e.target.value); if (v > 0) { s[k] = Math.min(20, Math.max(1, v)); bereken(); } });
+    app.addEventListener('change', e => { if (e.target.dataset.o) { s[e.target.dataset.o] = e.target.checked; bereken(); }
+      if (e.target.dataset.m) e.target.value = s[e.target.dataset.m]; });
+    bereken();
+  })();
+
+  // =============== 3. frituur ===============
+  (() => {
+    const app = $('#f-app');
+    const ico = {
+      friet: '<svg viewBox="0 0 32 32"><path d="M10 4 L11 14 M14 3 L14.5 14 M18 4 L17.5 14 M22 5 L21 14" stroke="#f4b942" stroke-width="3" stroke-linecap="round"/><path d="M7 13 H25 L22.5 29 H9.5 Z" fill="#d7263d"/></svg>',
+      snack: '<svg viewBox="0 0 32 32"><rect x="5" y="12" width="22" height="9" rx="4.5" fill="#a0522d"/><path d="M8 14 h3 M14 18 h3 M20 14 h3" stroke="#7a3b1c" stroke-width="2" stroke-linecap="round"/></svg>',
+      saus: '<svg viewBox="0 0 32 32"><path d="M9 14 H23 L21 27 H11 Z" fill="#fff" stroke="#e8d3b0"/><ellipse cx="16" cy="14" rx="7" ry="3" fill="#f4b942"/></svg>',
+      drank: '<svg viewBox="0 0 32 32"><rect x="10" y="7" width="12" height="21" rx="3" fill="#2f9e44"/><rect x="10" y="13" width="12" height="7" fill="#fff8ec"/><rect x="13" y="4" width="6" height="4" rx="1" fill="#555"/></svg>' };
+    const MENU = { 'Friet': [['Kleine friet', 'friet', 3.2], ['Middelgrote friet', 'friet', 3.9], ['Grote friet', 'friet', 4.6]],
+      'Snacks': [['Frikandel', 'snack', 2.6], ['Kipcorn', 'snack', 2.9], ['Bitterballen (6)', 'snack', 4.2], ['Vegaburger', 'snack', 4.8]],
+      'Sauzen': [['Mayonaise', 'saus', 1.0], ['Stoofvleessaus', 'saus', 2.4], ['Andalouse', 'saus', 1.0], ['Samurai', 'saus', 1.0]],
+      'Drank': [['Water', 'drank', 2.0], ['Cola', 'drank', 2.4], ['Ice tea', 'drank', 2.4]] };
+    const ALLE = Object.values(MENU).flat();
+    let tab = 'Friet', mand = {}, volg = null;
+    // open 11:30–13:30 en 17:00–21:30, maandag gesloten; afhalen ten vroegste 20 minuten na het bestellen, per kwartier
+    const OPEN = [[690, 810], [1020, 1290]], WD = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
+    const afhaal = () => { const o = [], nu = new Date(), d = new Date(nu); d.setSeconds(0, 0); d.setMinutes(Math.ceil((d.getMinutes() + 20) / 15) * 15);
+      for (let i = 0; o.length < 8 && i < 4 * 24 * 3; i++, d.setMinutes(d.getMinutes() + 15)) {
+        const m = d.getHours() * 60 + d.getMinutes(); if (d.getDay() === 1 || !OPEN.some(([a, b]) => m >= a && m < b)) continue;
+        const dag = d.toDateString() === nu.toDateString() ? '' : (new Date(nu.getTime() + 864e5).toDateString() === d.toDateString() ? 'morgen ' : WD[d.getDay()] + ' ');
+        o.push({ t: dag + `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`, min: (d - nu) / 6e4 }); }
+      return o; };
+    const totaal = () => Object.entries(mand).reduce((t, [n, a]) => t + ALLE.find(x => x[0] === n)[2] * a, 0);
+    const aantal = () => Object.values(mand).reduce((a, b) => a + b, 0);
+    const tekenMenu = () => {
+      $('.f-items', app).innerHTML = MENU[tab].map((x, i) => `<div class="f-item" style="animation-delay:${i * 40}ms"><span class="emo">${ico[x[1]]}</span>
+        <div><b>${x[0]}</b><small>${euro(x[2])}</small></div><button class="f-plus" data-plus="${x[0]}" aria-label="${x[0]} toevoegen">+</button></div>`).join('');
+      app.querySelectorAll('.f-tabs button').forEach(b => b.classList.toggle('aan', b.dataset.tab === tab));
+    };
+    const tekenMand = (bots) => {
+      const r = Object.entries(mand);
+      $('.f-regels', app).innerHTML = r.length ? r.map(([n, a]) => `<div class="f-regel"><button data-min="${n}" aria-label="Eén ${n} minder">−</button><b>${a}</b><button data-plus="${n}" aria-label="Eén ${n} meer">+</button><span>${n}</span><small>${euro(ALLE.find(x => x[0] === n)[2] * a)}</small></div>`).join('')
+        : '<p class="f-leeg">Je mandje is nog leeg. Tik op + om iets toe te voegen.</p>';
+      const t = $('.f-teller', app); t.textContent = aantal(); if (bots) { t.classList.remove('bots'); void t.offsetWidth; t.classList.add('bots'); }
+      $('.f-totaal', app).textContent = euro(totaal()); $('.f-btn', app).disabled = !r.length;
+    };
+    const teken = () => {
+      if (volg) {
+        app.innerHTML = `<div class="f-volg"><p>Bedankt voor je bestelling!</p><div class="nummer">#${volg.nr}</div><p>Afhalen om <b>${volg.uur}</b> · ${euro(volg.tot)}</p>
+          <div class="f-stap"><div data-s="0">Ontvangen</div><div data-s="1">In de friteuse</div><div data-s="2">Klaar!</div></div>
+          <button class="f-nog" data-nieuw>Nieuwe bestelling</button></div>`;
+        const stappen = app.querySelectorAll('.f-stap div');
+        if (!volg.snel) { stappen[0].classList.add('aan'); app.querySelector('.f-volg .f-nog').insertAdjacentHTML('beforebegin', '<p class="f-later">We beginnen te bakken een tiental minuten voor je afhaaluur, zodat alles warm en krokant is.</p>'); return; }
+        [0, 2200, 4600].forEach((ms, i) => setTimeout(() => { if (!volg) return; stappen.forEach((s, j) => { s.classList.toggle('aan', j <= i); s.classList.toggle('klaar', i === 2 && j <= i); }); }, rustig ? 0 : ms));
+        return;
+      }
+      app.innerHTML = `<div class="f-menu"><div class="f-merk"><i>F</i><div><b>Frituur</b><small>Bestel online, haal af zonder wachten</small></div></div>
+          <div class="f-tabs">${Object.keys(MENU).map(k => `<button data-tab="${k}">${k}</button>`).join('')}</div><div class="f-items"></div></div>
+        <div class="f-mand"><h4>Je bestelling <span class="f-teller">0</span></h4><div class="f-regels"></div>
+          <label class="f-afhaal">Afhalen om<select class="f-uur">${afhaal().map(u => `<option value="${u.t}" data-min="${Math.round(u.min)}">${u.t}</option>`).join('')}</select></label>
+          <div class="f-tot"><span>Totaal</span><span class="f-totaal">€ 0,00</span></div><button class="f-btn" disabled>Bestellen</button><p class="f-betaal">Betalen bij afhalen, cash of Bancontact</p></div>`;
+      tekenMenu(); tekenMand();
+    };
+    app.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.tab) { tab = b.dataset.tab; tekenMenu(); }
+      else if (b.dataset.plus) { mand[b.dataset.plus] = (mand[b.dataset.plus] || 0) + 1; tekenMand(true); }
+      else if (b.dataset.min) { if (--mand[b.dataset.min] <= 0) delete mand[b.dataset.min]; tekenMand(true); }
+      else if (b.classList.contains('f-btn')) { const sel = $('.f-uur', app); volg = { nr: 100 + Math.floor(Math.random() * 900), uur: sel.value, tot: totaal(), snel: +sel.selectedOptions[0].dataset.min <= 45 }; mand = {}; teken(); }
+      else if ('nieuw' in b.dataset) { volg = null; tab = 'Friet'; teken(); }
+    });
+    teken();
+  })();
+
+  // =============== 4. dashboard ===============
+  (() => {
+    const app = $('#d-app');
+    // vaste, verzonnen cijfers (zelfde bij elk bezoek)
+    let zaad = 7; const rnd = () => (zaad = (zaad * 16807) % 2147483647) / 2147483647;
+    const reeks = (n, basis, golf) => Array.from({ length: n }, (_, i) => Math.round(basis * (1 + Math.sin(i / n * Math.PI * golf) * .18 + (rnd() - .5) * .3)));
+    const DATA = {
+      week: { labels: ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'], nu: reeks(7, 1450, 2), vorig: reeks(7, 1300, 2), klanten: [38, 31] },
+      maand: { labels: ['w1', 'w2', 'w3', 'w4'], namen: ['week 1', 'week 2', 'week 3', 'week 4'], nu: reeks(4, 9800, 1), vorig: reeks(4, 9100, 1), klanten: [142, 128] },
+      jaar: { labels: 'jfmamjjasond'.split(''), namen: 'januari februari maart april mei juni juli augustus september oktober november december'.split(' '), nu: reeks(12, 41000, 2), vorig: reeks(12, 37500, 2), klanten: [1610, 1395] } };
+    DATA.week.nu[5] *= 1.6; DATA.week.vorig[5] *= 1.5; DATA.week.nu[6] = Math.round(DATA.week.nu[6] * .5); DATA.week.vorig[6] = Math.round(DATA.week.vorig[6] * .5);
+    const PROD = [['Koffiebonen', 1], ['Espressotassen', .72], ['Melkopschuimer', .55], ['Cadeaubon', .41], ['Theedoosjes', .3]];
+    let per = 'week';
+    app.innerHTML = `<div class="d-top"><div><b>Winkeldashboard</b><small>Verzonnen cijfers · bijgewerkt vandaag</small></div>
+        <div class="d-seg">${['week', 'maand', 'jaar'].map(p => `<button data-p="${p}" class="${p === per ? 'aan' : ''}">${p[0].toUpperCase() + p.slice(1)}</button>`).join('')}</div></div>
+      <div class="d-kpi">${['Omzet', 'Bestellingen', 'Gem. bedrag', 'Nieuwe klanten'].map((k, i) => `<div class="d-kaart"><span>${k}</span><b id="d-k${i}">0</b><em id="d-v${i}"></em></div>`).join('')}</div>
+      <div class="d-onder"><div class="d-blok d-grafiek"><h5>Omzet <i><span>nu</span><span>vorige periode</span></i></h5><svg viewBox="0 0 300 150" id="d-svg"></svg><div class="d-tip" id="d-tip"></div></div>
+        <div class="d-blok"><h5>Topproducten<small>stuks verkocht</small></h5><div class="d-top5" id="d-top5"></div></div></div>`;
+    const svg = $('#d-svg'), tip = $('#d-tip');
+    const verschil = (a, b, el) => { const p = (a - b) / b * 100; el.textContent = (p >= 0 ? '▲ ' : '▼ ') + Math.abs(p).toFixed(1).replace('.', ',') + ' %'; el.className = p >= 0 ? 'op' : 'neer'; };
+    const teken = () => {
+      const d = DATA[per], som = a => a.reduce((x, y) => x + y, 0), oms = som(d.nu), omsV = som(d.vorig);
+      const best = Math.round(oms / 31), bestV = Math.round(omsV / 30.2);
+      const kort = v => v >= 100000 ? '€ ' + (v / 1000).toLocaleString('nl-BE', { maximumFractionDigits: 0 }) + 'k' : euro(v, 0);
+      const k = [[oms, omsV, kort], [best, bestV, v => Math.round(v).toLocaleString('nl-BE')], [oms / best, omsV / bestV, v => euro(v)], [d.klanten[0], d.klanten[1], v => Math.round(v).toLocaleString('nl-BE')]];
+      k.forEach(([a, b, f], i) => { tel($('#d-k' + i), a, f, 700); verschil(a, b, $('#d-v' + i)); });
+      const n = d.nu.length, max = Math.max(...d.nu, ...d.vorig) * 1.1, W = 300, H = 130, bw = W / n, sw = Math.min(14, bw * .3);
+      const y = v => H - v / max * (H - 6);
+      if (svg.dataset.n !== String(n)) {                // nieuwe indeling: staven opnieuw aanmaken
+        svg.dataset.n = n;
+        svg.innerHTML = [0, .5, 1].map(f => `<path d="M0 ${H - f * (H - 6)} H${W}" stroke="#263241" stroke-dasharray="2 3"/>`).join('') +
+          d.nu.map((_, i) => `<g class="doel" data-i="${i}"><rect x="${i * bw}" y="0" width="${bw}" height="${H}" fill="transparent"/>
+            <rect class="d-staaf vorig" x="${i * bw + bw / 2 - sw - 1}" width="${sw}" y="${H}" height="0" rx="2"/>
+            <rect class="d-staaf" x="${i * bw + bw / 2 + 1}" width="${sw}" y="${H}" height="0" rx="2"/>
+            <text class="d-as" x="${i * bw + bw / 2}" y="${H + 14}" text-anchor="middle">${d.labels[i]}</text></g>`).join('');
+        svg.getBoundingClientRect();
+      }
+      svg.querySelectorAll('.doel').forEach((g, i) => { const [v, h] = g.querySelectorAll('.d-staaf');
+        v.setAttribute('y', y(d.vorig[i])); v.setAttribute('height', H - y(d.vorig[i])); h.setAttribute('y', y(d.nu[i])); h.setAttribute('height', H - y(d.nu[i])); });
+      const f = { week: 1, maand: 4.3, jaar: 52 }[per];
+      $('#d-top5').innerHTML = PROD.map(([naam, a]) => `<div class="d-prod"><div>${naam}<span>${Math.round(a * 46 * f).toLocaleString('nl-BE')}</span></div><i style="--w:0%"></i></div>`).join('');
+      requestAnimationFrame(() => requestAnimationFrame(() => $('#d-top5').querySelectorAll('i').forEach((el, i) => el.style.setProperty('--w', PROD[i][1] * 100 + '%'))));
+    };
+    app.addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; per = b.dataset.p;
+      app.querySelectorAll('[data-p]').forEach(x => x.classList.toggle('aan', x === b)); tip.style.opacity = 0; teken(); });
+    svg.addEventListener('pointermove', e => { const g = e.target.closest('.doel'); if (!g) return; const i = +g.dataset.i, d = DATA[per];
+      const r = svg.getBoundingClientRect(), br = g.getBoundingClientRect(), blok = svg.parentElement.getBoundingClientRect();
+      tip.innerHTML = `${(d.namen || d.labels)[i]}: ${euro(d.nu[i], 0)} <span style="opacity:.55">(vorige: ${euro(d.vorig[i], 0)})</span>`;
+      tip.style.left = Math.max(tip.offsetWidth / 2, Math.min(blok.width - tip.offsetWidth / 2, br.left + br.width / 2 - blok.left)) + 'px'; tip.style.top = (r.top - blok.top + Math.min(...[...g.querySelectorAll('.d-staaf')].map(s => s.getBoundingClientRect().top - r.top))) + 'px'; tip.style.opacity = 1; });
+    svg.addEventListener('pointerleave', () => tip.style.opacity = 0);
+    // pas animeren als het dashboard in beeld komt
+    new IntersectionObserver(([e], io) => { if (e.isIntersecting) { teken(); io.disconnect(); } }, { threshold: .3 }).observe(app);
+  })();
+})();
+</script>
+</body>
+</html>
