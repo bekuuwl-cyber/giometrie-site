@@ -467,7 +467,7 @@ footer small{opacity:.55} .voet-link{color:inherit;text-underline-offset:3px}
     <div class="oog" data-reveal style="justify-content:center"><svg viewBox="0 0 12 7" class="ruitje" aria-hidden="true"><path d="M6 0 L12 3.5 L6 7 L0 3.5 Z"/></svg> Contact</div>
     <h2 data-split>Klaar om te bouwen?</h2>
     <p data-reveal>Heb je een idee, een vraag of een probleem dat opgelost moet worden? Neem contact op, ik antwoord zo snel mogelijk.</p>
-    <!-- ✏️ formulier: berichten lopen via Web3Forms, sleutel in maak_site.py (WEB3FORMS_KEY) -->
+    <!-- ✏️ formulier: berichten lopen via FormSubmit naar EMAIL, of via Web3Forms als WEB3FORMS_KEY in maak_site.py ingevuld is -->
     <form class="contact-form" data-sleutel="" novalidate data-reveal style="--d:150ms">
       <div class="velden">
         <label class="veld"><span>Je naam <em>(niet verplicht)</em></span><input name="naam" type="text" autocomplete="name" maxlength="100"></label>
@@ -722,19 +722,23 @@ footer small{opacity:.55} .voet-link{color:inherit;text-underline-offset:3px}
       const contact = f.contact.value.trim(), bericht = f.bericht.value.trim(), naam = f.naam.value.trim();
       if (!isMail(contact) && !isGsm(contact)) { f.contact.classList.add('fout'); f.contact.focus(); return meld('Vul een geldig e-mailadres of gsm-nummer in.', 'mis'); }
       if (!bericht) { f.bericht.classList.add('fout'); f.bericht.focus(); return meld('Schrijf nog een kort bericht.', 'mis'); }
-      if (!form.dataset.sleutel) {                       // nog geen sleutel: open het mailprogramma met alles ingevuld
-        location.href = 'mailto:info@giometrie.be?subject=' + encodeURIComponent('Bericht via giometrie.be') +
-          '&body=' + encodeURIComponent(`${bericht}\n\n${naam}\n${contact}`);
-        return;
-      }
+      if (f.botcheck.checked) { form.reset(); return meld('Bedankt! Je bericht is verstuurd.', 'ok'); }   // spambot: niets versturen
       knop.disabled = true; meld('Bezig met versturen…');
-      const data = { access_key: form.dataset.sleutel, subject: 'Nieuw bericht via giometrie.be' + (naam ? ' van ' + naam : ''),
-                     from_name: 'giometrie.be', Naam: naam || '(niet ingevuld)', 'E-mail of gsm': contact, Bericht: bericht, botcheck: f.botcheck.checked };
-      if (isMail(contact)) { data.email = contact; data.replyto = contact; }
+      const onderwerp = 'Nieuw bericht via giometrie.be' + (naam ? ' van ' + naam : '');
+      let url, data;
+      if (form.dataset.sleutel) {                        // Web3Forms (met sleutel)
+        url = 'https://api.web3forms.com/submit';
+        data = { access_key: form.dataset.sleutel, subject: onderwerp, from_name: 'giometrie.be', Naam: naam || '(niet ingevuld)', 'E-mail of gsm': contact, Bericht: bericht };
+        if (isMail(contact)) { data.email = contact; data.replyto = contact; }
+      } else {                                           // FormSubmit: rechtstreeks naar info@giometrie.be
+        url = 'https://formsubmit.co/ajax/info@giometrie.be';
+        data = { _subject: onderwerp, _template: 'table', _captcha: 'false', Naam: naam || '(niet ingevuld)', 'E-mail of gsm': contact, Bericht: bericht };
+        if (isMail(contact)) { data.email = contact; data._replyto = contact; }
+      }
       try {
-        const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+        const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
         const j = await r.json();
-        if (!j.success) throw new Error(j.message);
+        if (!(j.success === true || j.success === 'true')) throw new Error(j.message);
         form.reset(); meld('Bedankt! Je bericht is verstuurd. Ik antwoord zo snel mogelijk.', 'ok');
       } catch (_) {
         meld('Er ging iets mis bij het versturen. Mail of bel me gerust rechtstreeks.', 'mis');
