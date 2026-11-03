@@ -476,7 +476,8 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
     app.innerHTML = `<div class="s-links">
         <div class="s-merk"><i></i>Vloeren op maat</div>
         <div class="s-groep"><span>Afmetingen van de ruimte</span><div class="s-maten s-maten2">${maat('l', 'Lengte')}${maat('b', 'Breedte')}</div>
-          <div class="s-tellers"><div class="s-tel"><span>Deuren</span><button data-t="deuren" data-d="-1" aria-label="Eén deur minder">−</button><b id="s-deuren">${s.deuren}</b><button data-t="deuren" data-d="1" aria-label="Eén deur meer">+</button></div></div></div>
+          <div class="s-tellers"><div class="s-tel"><span>Deuropeningen</span><button data-t="deuren" data-d="-1" aria-label="Eén deuropening minder">−</button><b id="s-deuren">${s.deuren}</b><button data-t="deuren" data-d="1" aria-label="Eén deuropening meer">+</button></div></div>
+          <p class="s-hint">Per deuropening: geen plint, wel een overgangsprofiel naar de volgende ruimte.</p></div>
         <div class="s-groep"><span>Soort vloer</span><div class="s-types" data-groep="type">${TYPES.map((t, i) =>
           `<button data-v="${i}" class="${i === s.type ? 'aan' : ''}">${t[0]}<small>${'€'.repeat(i < 2 ? 1 : i < 4 ? 2 : 3)}</small></button>`).join('')}</div></div>
         <div class="s-groep"><span>Legpatroon</span><div class="s-seg" data-groep="patroon">${PATROON.map((p, i) => `<button data-v="${i}" class="${i === s.patroon ? 'aan' : ''}">${p[0]}</button>`).join('')}</div>
@@ -541,7 +542,7 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
       const MINIMUM = 450, klein = Math.max(0, MINIMUM - (mat + plaats + voor + extra + VERPLAATSING));   // kleine opdrachten: minimumbedrag
       const sub = mat + plaats + voor + extra + VERPLAATSING + klein, pct = s.oud ? 6 : 21, btw = sub * pct / 100;
       $('#s-rij-klein').style.display = klein ? '' : 'none';
-      const delen = [t[5] && s.ondervloer && 'ondervloer', s.plinten && 'plinten', s.deuren && 'profielen', s.verwarming && 'aanpassing vloerverwarming'].filter(Boolean);
+      const delen = [t[5] && s.ondervloer && 'ondervloer', s.plinten && 'plinten', s.deuren && 'overgangsprofielen', s.verwarming && 'aanpassing vloerverwarming'].filter(Boolean);
       $('#s-rij-extra').style.display = delen.length ? '' : 'none';
       $('#s-extralabel').textContent = delen.length ? delen.join(', ').replace(/^./, c => c.toUpperCase()).replace(/, ([^,]*)$/, ' en $1') : '';
       $('#s-extrahint').textContent = s.verwarming && s.type === 4 ? 'Massief parket raden we af op vloerverwarming: het hout werkt te veel. Kies liever lamelparket of PVC.'
