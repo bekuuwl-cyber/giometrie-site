@@ -90,12 +90,13 @@ a{color:inherit}
 .demo .nr{font-weight:700;color:var(--oranje);letter-spacing:.14em;font-size:.85rem}
 .demo h2{font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.08;letter-spacing:-.03em;margin:8px 0 14px}
 .demo .tekst>p{opacity:.8}
+.demo .tekst>p+p{margin-top:12px}
 .demo ul{list-style:none;margin-top:22px;display:grid;gap:10px}
 .demo li{display:flex;gap:12px;align-items:flex-start;opacity:.85;font-size:.97rem}
 .demo li::before{content:"";flex:none;width:11px;height:7px;margin-top:9px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
-.demo .voor-wie{margin-top:22px;font-size:.9rem;opacity:.6}
+.demo .tekst .voor-wie{margin-top:20px;font-size:.92rem;opacity:.6;font-style:italic}
 /* browservenster */
-.venster{background:#fff;border-radius:16px;box-shadow:0 40px 80px -40px rgba(22,33,62,.45),0 0 0 1px rgba(22,33,62,.08);overflow:hidden;min-width:0}
+.venster{background:#fff;border-radius:14px;box-shadow:0 24px 50px -30px rgba(22,33,62,.4),0 0 0 1px rgba(22,33,62,.1);overflow:hidden;min-width:0}
 .balk{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#ece7de;border-bottom:1px solid rgba(22,33,62,.08)}
 .balk i{width:11px;height:11px;border-radius:50%;background:#d6cfc3}.balk i:first-child{background:#ff6b5b}.balk i:nth-child(2){background:#f5bf4f}.balk i:nth-child(3){background:#59c35f}
 .balk span{flex:1;margin-left:10px;background:#fff;border-radius:7px;padding:4px 12px;font-size:.78rem;color:#6b6f80;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -333,8 +334,8 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
   <svg class="held-lijnen" viewBox="-700 -700 1400 1400" aria-hidden="true"><g fill="none" stroke="#f6f1e8" stroke-opacity="1" stroke-width="1.4" stroke-dasharray="7 9"><path d="M0.0 -230.0 L199.2 -115.0 L199.2 115.0 L0.0 230.0 L-199.2 115.0 L-199.2 -115.0Z"/><path d="M0.0 -330.0 L285.8 -165.0 L285.8 165.0 L0.0 330.0 L-285.8 165.0 L-285.8 -165.0Z"/><path d="M0.0 -430.0 L372.4 -215.0 L372.4 215.0 L0.0 430.0 L-372.4 215.0 L-372.4 -215.0Z"/><path d="M0.0 -530.0 L459.0 -265.0 L459.0 265.0 L0.0 530.0 L-459.0 265.0 L-459.0 -265.0Z"/><path d="M0.0 -630.0 L545.6 -315.0 L545.6 315.0 L0.0 630.0 L-545.6 315.0 L-545.6 -315.0Z"/><path d="M-700 0 H700 M0 -700 V700"/></g></svg>
   <div class="wrap">
     <div class="oog"><i></i>Voorbeelden</div>
-    <h1>Klik, probeer, ontdek.</h1>
-    <p>Vier kleine voorbeelden van wat ik voor jouw zaak kan bouwen. Ze werken echt, dus klik gerust rond. Elk voorbeeld heeft een eigen stijl, want jouw programma krijgt de stijl van jouw zaak.</p>
+    <h1>Probeer het gewoon even.</h1>
+    <p>Wat een programma op maat is, leg je het best uit met een voorbeeld. Daarom maakte ik er vier. De zaken zijn verzonnen, maar de programma's werken echt: klik gerust rond.</p>
     <div class="sprong" role="navigation" aria-label="Naar een voorbeeld">
       <a href="#afspraak"><b>01</b>Afspraak boeken</a>
       <a href="#offerte"><b>02</b>Fotoshoot boeken</a>
@@ -348,65 +349,45 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
 <section class="demo" id="afspraak"><div class="wrap">
   <div class="tekst">
     <span class="nr">01</span>
-    <h2>Afspraken boeken, dag en nacht</h2>
-    <p>Je klanten kiezen zelf een behandeling, dag en uur. Jij krijgt geen telefoontjes meer tijdens het werk.</p>
-    <ul>
-      <li>Toont enkel uren waarop de hele behandeling past, rekening houdend met openingsuren en pauze</li>
-      <li>Werkt even vlot op een gsm als op een computer</li>
-      <li>Kan een herinnering sturen en koppelen aan je agenda</li>
-    </ul>
-    <p class="voor-wie">Voor kappers, garages, kinés, schoonheidssalons …</p>
+    <h2>Afspraken bij de kapper</h2>
+    <p>Stel: je bent kapper en je telefoon gaat terwijl je aan het knippen bent. Met dit programma kiezen klanten zelf een behandeling en een vrij uur, ook 's avonds of in het weekend.</p>
+    <p>Het weet hoe lang elke behandeling duurt, wanneer je middagpauze is en hoe laat je sluit. Een afspraak die niet past, kan dus niet geboekt worden.</p>
+    <p class="voor-wie">Werkt net zo goed voor een garage, een kinesist of een schoonheidssalon.</p>
   </div>
-  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/afspraak</span></div>
-    <div class="app k" id="k-app" aria-live="polite"></div></div>
+  <div class="venster"><div class="app k" id="k-app" aria-live="polite"></div></div>
 </div></section>
 
 <section class="demo" id="offerte"><div class="wrap">
   <div class="tekst">
     <span class="nr">02</span>
-    <h2>Je fotoshoot samenstellen, met meteen een prijs</h2>
-    <p>Klanten kiezen zelf het soort shoot, de duur en de extra's, en zien meteen wat het kost. Jij krijgt een volledige aanvraag binnen, met datum en wensen.</p>
-    <ul>
-      <li>Vaste tarieven per soort shoot, met een minimumduur</li>
-      <li>Extra's zoals een album, dronebeelden of een tweede fotograaf met één klik</li>
-      <li>Prijzen voor particulieren mét btw, voor bedrijven zonder, en meteen zien of de datum nog vrij is</li>
-    </ul>
-    <p class="voor-wie">Voor fotografen, videografen, dj's, rijscholen …</p>
+    <h2>Een fotoshoot samenstellen</h2>
+    <p>Een fotograaf krijgt bijna altijd eerst dezelfde vraag: wat kost dat? Hier stelt de klant zijn shoot zelf samen en ziet hij meteen de prijs.</p>
+    <p>Particulieren zien de prijs met btw, bedrijven zonder. De fotograaf krijgt een aanvraag binnen met alles erop, ook de gewenste datum.</p>
+    <p class="voor-wie">Hetzelfde idee past bij een dj, een rijschool of een cateraar.</p>
   </div>
-  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/boeken</span></div>
-    <div class="app p" id="p-app"></div></div>
+  <div class="venster"><div class="app p" id="p-app"></div></div>
 </div></section>
 
 <section class="demo" id="bestellen"><div class="wrap">
   <div class="tekst">
     <span class="nr">03</span>
-    <h2>Bestellen zonder wachtrij</h2>
-    <p>Klanten stellen hun bestelling samen, kiezen een afhaaluur en volgen live wanneer alles klaar is.</p>
-    <ul>
-      <li>Winkelmandje dat meteen het totaal berekent</li>
-      <li>Enkel afhaaluren binnen je openingsuren</li>
-      <li>Klant ziet wanneer zijn bestelling klaar is</li>
-    </ul>
-    <p class="voor-wie">Voor frituren, bakkers, slagers, restaurants …</p>
+    <h2>Online bestellen bij de frituur</h2>
+    <p>Op vrijdagavond staat de rij tot buiten. Hier bestelt de klant vooraf en kiest hij een afhaaluur, alleen binnen de openingsuren.</p>
+    <p>Bestel je voor straks, dan zie je wanneer je bestelling in de friteuse gaat en wanneer ze klaar is. Betalen gebeurt gewoon aan de toog.</p>
+    <p class="voor-wie">Ook bruikbaar voor een bakker, een slager of een traiteur.</p>
   </div>
-  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/bestellen</span></div>
-    <div class="app f" id="f-app"></div></div>
+  <div class="venster"><div class="app f" id="f-app"></div></div>
 </div></section>
 
 <section class="demo" id="dashboard"><div class="wrap">
   <div class="tekst">
     <span class="nr">04</span>
-    <h2>Je cijfers in één oogopslag</h2>
-    <p>Geen losse Excel-bestanden meer. Een dashboard toont wat er goed gaat en wat aandacht nodig heeft.</p>
-    <ul>
-      <li>Kies week, maand of jaar en vergelijk met vroeger</li>
-      <li>Ga met je muis over de grafiek voor de details</li>
-      <li>Haalt de cijfers automatisch uit je kassa of boekhouding</li>
-    </ul>
-    <p class="voor-wie">Voor winkels, webshops, horeca, kmo's …</p>
+    <h2>Je cijfers op één scherm</h2>
+    <p>Veel zaakvoerders zoeken hun cijfers bij elkaar uit de kassa, de boekhouding en een Excel-bestand. Een dashboard zet alles samen: omzet, bestellingen en wat het best verkoopt.</p>
+    <p>Kies een week, maand of jaar, en ga met je muis over de grafiek voor de details.</p>
+    <p class="voor-wie">Handig voor een winkel, een webshop of een horecazaak.</p>
   </div>
-  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/dashboard</span></div>
-    <div class="app d" id="d-app"></div></div>
+  <div class="venster"><div class="app d" id="d-app"></div></div>
 </div></section>
 </main>
 
