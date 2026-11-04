@@ -164,62 +164,44 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
 .k-paneel{animation:k-in .45s var(--zacht)}
 @keyframes k-in{from{opacity:0;transform:translateX(16px)}}
 
-/* ================= 2. vloerlegger: offerte ================= */
-.s{--b:#1f4fd1;--y:#ffd23f;--t:#14213d;background:#fff;color:var(--t);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-columns:1fr 1fr;min-height:470px}
-.s-links{padding:24px 24px 26px;display:grid;gap:18px;align-content:start}
-.s-merk{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
-.s-merk i{width:26px;height:26px;border-radius:7px;background:var(--y);display:grid;place-items:center;transform:rotate(-8deg)}
-.s-merk i::after{content:"";width:12px;height:12px;border-radius:2px;background:var(--b)}
-.s-groep>span{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7390;margin-bottom:8px}
-.s-groep>span b{color:var(--b);font-size:.95rem;text-transform:none;letter-spacing:0}
-.s-seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:#eef1f8;border-radius:10px;padding:4px;gap:4px}
-.s-seg button{border:0;background:none;border-radius:7px;padding:8px 4px;font-size:.88rem;font-weight:600;color:#4b5677;transition:.2s}
-.s-seg button.aan{background:#fff;color:var(--b);box-shadow:0 2px 6px rgba(20,33,61,.12)}
-.s input[type=range]{width:100%;accent-color:var(--b);height:22px}
-.s-check{display:flex;align-items:center;gap:10px;font-size:.9rem;padding:5px 0;cursor:pointer}
-.s-check input{width:18px;height:18px;accent-color:var(--b)}
-.s-check em{margin-left:auto;font-style:normal;color:#6b7390;font-size:.82rem;white-space:nowrap}
-.s-kleuren{display:flex;gap:8px;flex-wrap:wrap}
-.s-kleur{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #d5dae8;transition:transform .2s,box-shadow .2s}
-.s-kleur.aan{box-shadow:0 0 0 2px var(--b);transform:scale(1.1)}
-.s-rechts{background:#f4f6fb;padding:22px 22px 24px;display:grid;gap:16px;align-content:start;border-left:1px solid #e6e9f2}
-.s-kamer{border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 0 #e6e9f2}
-.s-kamer svg{display:block;width:100%;height:auto}
-.s-muur{transition:fill .6s ease}
-.s-rij{display:flex;justify-content:space-between;font-size:.88rem;padding:4px 0;color:#4b5677}
-.s-rij.tot{border-top:2px solid var(--t);margin-top:6px;padding-top:10px;color:var(--t);font-weight:800;font-size:1.05rem;align-items:baseline}
-.s-rij.tot b{font-size:1.5rem;color:var(--b);letter-spacing:-.02em;white-space:nowrap}
-.s-btn{background:var(--b);color:#fff;border:0;border-radius:10px;padding:13px;font-weight:700;font-size:.95rem;transition:background .2s}
-.s-btn:hover{background:#1840b0}
-.s-btn.ok{background:#16a34a}
-.s-klein{font-size:.74rem;color:#7a819a;text-align:center}
-.s-maten{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.s-maten2{grid-template-columns:1fr 1fr}
-.s-types{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.s-types button{display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid #d5dae8;background:#fff;border-radius:9px;padding:8px 10px;font-size:.84rem;font-weight:600;text-align:left;color:#14213d;transition:.2s}
-.s-types button small{color:#9aa1b8;font-size:.72rem;letter-spacing:.05em}
-.s-types button.aan{border-color:var(--b);box-shadow:0 0 0 1px var(--b);color:var(--b)}
-.s-types button:last-child{grid-column:1/-1}
-.s-seg button:disabled{opacity:.35;cursor:not-allowed}
-.s-maat{display:grid;grid-template-columns:1fr auto;align-items:center;background:#eef1f8;border-radius:9px;padding:5px 9px 6px;cursor:text}
-.s-maat small{grid-column:1/-1;font-size:.68rem;color:#6b7390;font-weight:600}
-.s-maat input{width:100%;min-width:0;border:0;background:none;font-weight:700;font-size:1rem;padding:0;-moz-appearance:textfield;appearance:textfield}
-.s-maat input::-webkit-inner-spin-button{-webkit-appearance:none}
-.s-maat input:focus{outline:none}.s-maat:focus-within{box-shadow:0 0 0 2px var(--b)}
-.s-maat span{font-size:.8rem;color:#6b7390}
-.s-tellers{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
-.s-tel{display:flex;align-items:center;gap:8px;font-size:.88rem}
-.s-tel span{margin-right:2px}
-.s-tel button{width:28px;height:28px;border-radius:50%;border:1px solid #d5dae8;background:#fff;font-weight:700;line-height:1;color:var(--b)}
-.s-tel b{min-width:14px;text-align:center}
-.s-hint{font-size:.76rem;color:#6b7390;margin-top:6px;min-height:1em}
-.s-hint:empty{display:none}
-.s-btwkeuze{border-top:1px solid #e6e9f2;padding-top:12px}
-.s-opp{font-size:.8rem;color:#4b5677;background:#fff;border-radius:9px;padding:8px 11px;box-shadow:0 1px 0 #e6e9f2}
-.s-rij.sub{border-top:1px solid #d5dae8;margin-top:4px;padding-top:8px;color:var(--t);font-weight:600}
-.s-rij span:first-child{padding-right:10px}.s-rij span:last-child{white-space:nowrap}
-.s-duur{display:flex;align-items:center;gap:8px;font-size:.86rem;font-weight:600}
-.s-duur i{width:16px;height:16px;border-radius:50%;border:2px solid var(--b);position:relative;flex:none}
-.s-duur i::after{content:"";position:absolute;left:5px;top:1px;width:2px;height:6px;background:var(--b);border-radius:2px}
+/* ================= 2. fotograaf: shoot boeken met prijs ================= */
+.p{--i:#151515;--g:#6f6a64;--l:#e9e5df;--a:#b4532a;--bg:#fbfaf7;background:var(--bg);color:var(--i);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;display:grid;grid-template-columns:1.1fr .9fr;min-height:470px}
+.p-links{padding:22px 22px 24px;display:grid;gap:18px;align-content:start}
+.p-merk{display:flex;align-items:center;gap:10px;font-size:.78rem;letter-spacing:.32em;text-transform:uppercase;font-weight:600}
+.p-merk i{width:22px;height:22px;border:2px solid var(--i);border-radius:50%;position:relative}
+.p-merk i::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--a)}
+.p-groep>span{display:flex;justify-content:space-between;align-items:baseline;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--g);margin-bottom:9px}
+.p-groep>span b{color:var(--i);font-size:.95rem;letter-spacing:0;text-transform:none}
+.p-types{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.p-type{border:1px solid var(--l);background:#fff;border-radius:10px;padding:10px 4px 9px;display:grid;justify-items:center;gap:6px;font-size:.76rem;font-weight:600;color:var(--i);transition:border-color .2s,box-shadow .2s}
+.p-type svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.p-type small{font-weight:400;color:var(--g);font-size:.68rem}
+.p-type.aan{border-color:var(--i);box-shadow:0 0 0 1px var(--i)}
+.p-type.aan svg{color:var(--a)}
+.p input[type=range]{width:100%;accent-color:var(--i);height:22px}
+.p-schaal{display:flex;justify-content:space-between;font-size:.68rem;color:var(--g);margin-top:2px}
+.p-check{display:flex;align-items:center;gap:10px;font-size:.88rem;padding:5px 0;cursor:pointer}
+.p-check input{width:17px;height:17px;accent-color:var(--i)}
+.p-check em{margin-left:auto;font-style:normal;color:var(--g);font-size:.8rem;white-space:nowrap}
+.p-check.uit{opacity:.35;cursor:not-allowed}
+.p-seg{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--l);border-radius:999px;padding:3px;background:#fff}
+.p-seg button{border:0;background:none;border-radius:999px;padding:7px;font-size:.8rem;font-weight:600;color:var(--g);transition:.2s}
+.p-seg button.aan{background:var(--i);color:#fff}
+.p-datum{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.p-datum input{border:1px solid var(--l);border-radius:9px;padding:8px 10px;font-size:.9rem;background:#fff;color:var(--i)}
+.p-vrij{font-size:.8rem;font-weight:600}.p-vrij.ja{color:#2e7d4f}.p-vrij.nee{color:#b3412e}
+.p-rechts{background:var(--i);color:#f4f1ec;padding:22px 22px 24px;display:grid;gap:14px;align-content:start}
+.p-titel{font-size:.9rem;font-weight:600;color:#f4f1ec!important;letter-spacing:.14em;letter-spacing:.2em;text-transform:uppercase;color:#a9a39b}
+.p-rij{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;padding:3px 0;color:#d9d4cc}
+.p-rij span:last-child{white-space:nowrap}
+.p-rij.tot{border-top:1px solid #3a3733;margin-top:6px;padding-top:11px;color:#fff;font-weight:600;align-items:baseline}
+.p-rij.tot b{font-size:1.6rem;letter-spacing:-.02em}
+.p-btwrij{font-size:.76rem;color:#a9a39b;padding-top:0}
+.p-incl{font-size:.78rem;color:#a9a39b;line-height:1.55}
+.p-incl b{color:#f4f1ec;font-weight:600}
+.p-btn{background:#f4f1ec;color:var(--i);border:0;border-radius:999px;padding:13px;font-weight:700;font-size:.92rem;transition:background .2s}
+.p-btn:hover{background:#fff}.p-btn.ok{background:#2e7d4f;color:#fff}
+.p-klein{font-size:.72rem;color:#8e887f;text-align:center}
 
 /* ================= 3. frituur: bestellen ================= */
 .f{--r:#d7263d;--m:#f4b942;--c:#fff8ec;--t:#2b1b12;background:var(--c);color:var(--t);font-family:"Trebuchet MS",system-ui,sans-serif;min-height:470px;display:grid;grid-template-columns:1.25fr .9fr}
@@ -311,8 +293,8 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
 @media (max-width:640px){
   body{font-size:16px}.wrap{padding:0 16px}
   .held{padding:130px 0 56px}.demo{padding:70px 0}
-  .s,.f{grid-template-columns:1fr}
-  .s-rechts{border-left:0;border-top:1px solid #e6e9f2}
+  .p,.f{grid-template-columns:1fr}
+  .p-types{grid-template-columns:repeat(2,1fr)}
   .d-kpi{grid-template-columns:1fr 1fr}.d-onder{grid-template-columns:1fr}
   .k{padding:20px 16px}.k-dagen{grid-template-columns:repeat(3,1fr)}.k-uren{grid-template-columns:repeat(3,1fr)}
 }
@@ -343,7 +325,7 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
     <p>Vier kleine voorbeelden van wat ik voor jouw zaak kan bouwen. Ze werken echt, dus klik gerust rond. Elk voorbeeld heeft een eigen stijl, want jouw programma krijgt de stijl van jouw zaak.</p>
     <div class="sprong" role="navigation" aria-label="Naar een voorbeeld">
       <a href="#afspraak"><b>01</b>Afspraak boeken</a>
-      <a href="#offerte"><b>02</b>Offerte berekenen</a>
+      <a href="#offerte"><b>02</b>Fotoshoot boeken</a>
       <a href="#bestellen"><b>03</b>Online bestellen</a>
       <a href="#dashboard"><b>04</b>Dashboard</a>
     </div>
@@ -370,17 +352,17 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
 <section class="demo" id="offerte"><div class="wrap">
   <div class="tekst">
     <span class="nr">02</span>
-    <h2>Een offerte in tien seconden</h2>
-    <p>Klanten berekenen zelf een richtprijs voor hun nieuwe vloer. Jij krijgt een aanvraag binnen met alle details, en de klant weet meteen waar hij aan toe is.</p>
+    <h2>Je fotoshoot samenstellen, met meteen een prijs</h2>
+    <p>Klanten kiezen zelf het soort shoot, de duur en de extra's, en zien meteen wat het kost. Jij krijgt een volledige aanvraag binnen, met datum en wensen.</p>
     <ul>
-      <li>Rekent met de echte afmetingen, snijverlies en volle pakken</li>
-      <li>Houdt rekening met het soort vloer, het legpatroon, de ondergrond en 6 % of 21 % btw</li>
-      <li>Toont het legpatroon en de kleur meteen in een plattegrond, met jouw eigen prijzen</li>
+      <li>Vaste tarieven per soort shoot, met een minimumduur</li>
+      <li>Extra's zoals een album, dronebeelden of een tweede fotograaf met één klik</li>
+      <li>Prijzen voor particulieren mét btw, voor bedrijven zonder, en meteen zien of de datum nog vrij is</li>
     </ul>
-    <p class="voor-wie">Voor vloerleggers, schilders, aannemers, tuinaanleggers …</p>
+    <p class="voor-wie">Voor fotografen, videografen, dj's, rijscholen …</p>
   </div>
-  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/offerte</span></div>
-    <div class="app s" id="s-app"></div></div>
+  <div class="venster"><div class="balk"><i></i><i></i><i></i><span>jouwzaak.be/boeken</span></div>
+    <div class="app p" id="p-app"></div></div>
 </div></section>
 
 <section class="demo" id="bestellen"><div class="wrap">
@@ -523,121 +505,109 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
     teken();
   })();
 
-  // =============== 2. vloerlegger ===============
+  // =============== 2. fotograaf ===============
   (() => {
-    const app = $('#s-app');
-    // [naam, materiaal €/m², plaatsing €/m², pakgrootte m², m² per dag, klikvloer (ondervloer), visgraat mogelijk]
-    const TYPES = [['Laminaat', 22, 14, 2.4, 30, 1, 0], ['PVC klik', 32, 15, 2.2, 28, 1, 1], ['PVC gelijmd', 38, 22, 2.2, 20, 0, 1],
-                   ['Lamelparket', 58, 24, 1.9, 22, 1, 1], ['Massief eiken parket', 85, 34, 1.6, 12, 0, 1]];
-    const PATROON = [['Recht', 7, 0, 1], ['Diagonaal', 12, 6, .8], ['Visgraat', 15, 20, .5]];   // [naam, snijverlies %, toeslag €/m², snelheid]
-    const ONDER = [['Goed', 'Vlakke, droge ondergrond: we kunnen meteen leggen.'], ['Oneffen', 'Eerst egaliseren (droogtijd 1 dag).'], ['Oude vloer eruit', 'Oude vloer uitbreken en afvoeren met container.']];
-    const KLEUREN = [['Natuur eik', '#c9a46c'], ['Wit geolied', '#e3d6bf'], ['Gerookt eik', '#8a6440'], ['Noten', '#5e4130'], ['Grijs', '#a39e95']];
-    const VERPLAATSING = 35;
-    const s = { l: 6, b: 4.5, deuren: 1, type: 3, patroon: 0, onder: 0, ondervloer: true, plinten: true, verwarming: false, kleur: 0, oud: true };
-    const getal = (v, d = 1) => v.toLocaleString('nl-BE', { minimumFractionDigits: d, maximumFractionDigits: d });
-    const maat = (k, t) => `<label class="s-maat"><small>${t}</small><input type="number" data-m="${k}" value="${s[k]}" min="1" max="20" step="0.1" inputmode="decimal"><span>m</span></label>`;
-    app.innerHTML = `<div class="s-links">
-        <div class="s-merk"><i></i>Vloeren op maat</div>
-        <div class="s-groep"><span>Afmetingen van de ruimte</span><div class="s-maten s-maten2">${maat('l', 'Lengte')}${maat('b', 'Breedte')}</div>
-          <div class="s-tellers"><div class="s-tel"><span>Deuropeningen</span><button data-t="deuren" data-d="-1" aria-label="Eén deuropening minder">−</button><b id="s-deuren">${s.deuren}</b><button data-t="deuren" data-d="1" aria-label="Eén deuropening meer">+</button></div></div>
-          <p class="s-hint">Per deuropening: geen plint, wel een overgangsprofiel naar de volgende ruimte.</p></div>
-        <div class="s-groep"><span>Soort vloer</span><div class="s-types" data-groep="type">${TYPES.map((t, i) =>
-          `<button data-v="${i}" class="${i === s.type ? 'aan' : ''}">${t[0]}<small>${'€'.repeat(i < 2 ? 1 : i < 4 ? 2 : 3)}</small></button>`).join('')}</div></div>
-        <div class="s-groep"><span>Legpatroon</span><div class="s-seg" data-groep="patroon">${PATROON.map((p, i) => `<button data-v="${i}" class="${i === s.patroon ? 'aan' : ''}">${p[0]}</button>`).join('')}</div>
-          <p class="s-hint" id="s-patroonhint"></p></div>
-        <div class="s-groep"><span>Ondergrond</span><div class="s-seg" data-groep="onder">${ONDER.map((o, i) => `<button data-v="${i}" class="${i === s.onder ? 'aan' : ''}">${o[0]}</button>`).join('')}</div>
-          <p class="s-hint" id="s-onderhint"></p></div>
-        <div class="s-groep"><span>Extra</span>
-          <label class="s-check"><input type="checkbox" data-o="ondervloer" checked>Geluidsdempende ondervloer<em>€ 4,50/m²</em></label>
-          <label class="s-check"><input type="checkbox" data-o="plinten" checked>Plinten plaatsen<em>€ 15,50/m</em></label>
-          <label class="s-check"><input type="checkbox" data-o="verwarming">Er ligt vloerverwarming<em>+ € 2/m²</em></label>
-          <p class="s-hint" id="s-extrahint"></p></div>
-        <div class="s-groep"><span>Kleur <b id="s-kleurnaam">${KLEUREN[0][0]}</b></span><div class="s-kleuren">${KLEUREN.map((k, i) =>
-          `<button class="s-kleur${i === s.kleur ? ' aan' : ''}" data-k="${i}" style="background:${k[1]}" aria-label="${k[0]}"></button>`).join('')}</div></div>
-        <label class="s-check s-btwkeuze"><input type="checkbox" data-o="oud" checked>Woning ouder dan 10 jaar<em>6 % btw</em></label>
+    const app = $('#p-app');
+    const ICO = {
+      huwelijk: '<svg viewBox="0 0 32 32"><circle cx="12" cy="18" r="7"/><circle cx="20" cy="18" r="7"/><path d="M14 6 l2-3 2 3 -2 3z"/></svg>',
+      portret: '<svg viewBox="0 0 32 32"><circle cx="16" cy="11" r="5"/><path d="M6 27c1.5-6 5.5-9 10-9s8.5 3 10 9"/></svg>',
+      gezin: '<svg viewBox="0 0 32 32"><circle cx="10" cy="11" r="4"/><circle cx="22" cy="11" r="4"/><circle cx="16" cy="19" r="3"/><path d="M3 27c1-5 4-8 7-8M29 27c-1-5-4-8-7-8M11 28c1-3 3-4 5-4s4 1 5 4"/></svg>',
+      event: '<svg viewBox="0 0 32 32"><path d="M5 27 13 9l10 10z"/><path d="M19 5v3M25 8l-2 2M27 14h-3M22 4l-1 2"/></svg>' };
+    // [naam, uurtarief excl. btw, minimum uren, standaard uren, bewerkte foto's per uur, levering (weken), kleuren voor het fotoraster]
+    const TYPES = { huwelijk: ['Huwelijk', 240, 4, 8, 75, 6, ['#e8dccb', '#c9b49a', '#f3ece2', '#a88f72', '#efe6da', '#d7c5ad']],
+                    portret: ['Zakelijk portret', 150, 1, 2, 25, 1, ['#cfd6dd', '#8e9aa6', '#e4e8ec', '#5f6b77', '#b7c1ca', '#dfe4e8']],
+                    gezin: ['Gezin', 175, 1, 1.5, 40, 2, ['#f0d9c4', '#e3b48d', '#f6e8da', '#c98d62', '#ecd0b8', '#f3e1cf']],
+                    event: ['Event', 140, 2, 3, 40, 2, ['#2c2a3a', '#b4532a', '#4b4762', '#e0a05a', '#3a3750', '#7d4f6b']] };
+    const EXTRA = [['tweede', 'Tweede fotograaf', 'per uur', u => u * 90, t => t === 'huwelijk' || t === 'event'],
+                   ['drone', 'Dronebeelden', '', () => 195, t => t !== 'portret'],
+                   ['album', 'Fotoalbum 30 × 30 cm', '', () => 390, () => true],
+                   ['spoed', 'Levering binnen 7 dagen', '', () => 150, () => true]];
+    const s = { type: 'huwelijk', uren: 8, km: 20, klant: 'particulier', datum: '', extra: { tweede: false, drone: false, album: true, spoed: false } };
+    const getal = (v, d = 0) => v.toLocaleString('nl-BE', { minimumFractionDigits: d, maximumFractionDigits: d });
+    const morgen = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    app.innerHTML = `<div class="p-links">
+        <div class="p-merk"><i></i>Fotografie</div>
+        <div class="p-groep"><span>Soort shoot</span><div class="p-types">${Object.entries(TYPES).map(([k, t]) =>
+          `<button class="p-type${k === s.type ? ' aan' : ''}" data-type="${k}">${ICO[k]}${t[0]}<small>vanaf € <span data-vanaf="${k}">${getal(t[1] * t[2] * 1.21)}</span></small></button>`).join('')}</div></div>
+        <div class="p-groep"><span>Duur <b id="p-uren"></b></span><input type="range" id="p-duur" min="1" max="12" step="0.5" aria-label="Duur van de shoot in uren">
+          <div class="p-schaal"><span id="p-min"></span><span>12 uur</span></div></div>
+        <div class="p-groep"><span>Extra's</span>${EXTRA.map(([k, naam, uitleg]) =>
+          `<label class="p-check" data-rij="${k}"><input type="checkbox" data-x="${k}" ${s.extra[k] ? 'checked' : ''}>${naam}<em id="p-x-${k}"></em></label>`).join('')}</div>
+        <div class="p-groep"><span>Verplaatsing <b id="p-kmtekst"></b></span><input type="range" id="p-km" min="0" max="120" step="5" value="${s.km}" aria-label="Afstand in kilometer">
+          <div class="p-schaal"><span>eerste 25 km gratis</span><span>120 km</span></div></div>
+        <div class="p-groep"><span>Datum</span><div class="p-datum"><input type="date" id="p-datum" min="${morgen}" aria-label="Datum van de shoot"><span class="p-vrij" id="p-vrij"></span></div></div>
+        <div class="p-groep"><span>Prijzen voor</span><div class="p-seg"><button data-klant="particulier" class="aan">Particulier (incl. btw)</button><button data-klant="bedrijf">Bedrijf (excl. btw)</button></div></div>
       </div>
-      <div class="s-rechts">
-        <div class="s-kamer"><svg viewBox="0 0 300 180" id="s-plan" aria-hidden="true"></svg></div>
-        <p class="s-opp" id="s-opp"></p>
+      <div class="p-rechts">
+        <div class="p-titel" id="p-titel"></div>
         <div>
-          <div class="s-rij"><span id="s-matlabel">Vloer</span><span id="s-mat"></span></div>
-          <div class="s-rij"><span id="s-plaatslabel">Plaatsing</span><span id="s-plaats"></span></div>
-          <div class="s-rij" id="s-rij-voor"><span id="s-voorlabel">Voorbereiding</span><span id="s-voor"></span></div>
-          <div class="s-rij" id="s-rij-extra"><span id="s-extralabel">Ondervloer, plinten en profielen</span><span id="s-extra"></span></div>
-          <div class="s-rij"><span>Verplaatsing</span><span id="s-verpl"></span></div>
-          <div class="s-rij" id="s-rij-klein"><span>Toeslag kleine opdracht (minimum € 450)</span><span id="s-klein"></span></div>
-          <div class="s-rij sub"><span>Totaal excl. btw</span><span id="s-sub"></span></div>
-          <div class="s-rij"><span id="s-btwlabel">Btw 6 %</span><span id="s-btw"></span></div>
-          <div class="s-rij tot"><span>Richtprijs</span><b id="s-tot"></b></div>
+          <div class="p-rij"><span id="p-shootlabel"></span><span id="p-shoot"></span></div>
+          <div id="p-extras"></div>
+          <div class="p-rij" id="p-rij-km"><span id="p-kmlabel"></span><span id="p-kmprijs"></span></div>
+          <div class="p-rij tot"><span id="p-totlabel">Totaal</span><b id="p-tot"></b></div>
+          <div class="p-rij p-btwrij" id="p-rij-btw"><span>waarvan btw 21 %</span><span id="p-btw"></span></div>
         </div>
-        <p class="s-duur" id="s-duur"></p>
-        <button class="s-btn" id="s-vraag">Vraag een gratis opmeting aan</button>
-        <p class="s-klein">Richtprijs met materiaal en plaatsing. De definitieve offerte volgt na een gratis opmeting.</p>
+        <p class="p-incl" id="p-incl"></p>
+        <button class="p-btn" id="p-boek">Reserveer je datum</button>
+        <p class="p-klein">Je datum ligt pas vast na bevestiging en een voorschot van 30 %.</p>
       </div>`;
-    // bovenaanzicht van de ruimte met het gekozen legpatroon en de gekozen kleur
-    const plan = () => {
-      const k = KLEUREN[s.kleur][1], sc = Math.min(250 / s.l, 140 / s.b), W = s.l * sc, H = s.b * sc, x = (300 - W) / 2 + 6, y = (172 - H) / 2;
-      const lijn = 'rgba(40,25,10,.28)';
-      const rij = rot => `<pattern id="s-p2" width="64" height="18" patternUnits="userSpaceOnUse"${rot}><rect width="64" height="18" fill="${k}"/>
-        <path d="M0 8.5 H64 M0 17.5 H64 M40 0 V9 M14 9 V18" stroke="${lijn}" stroke-width=".8"/><rect y="9" width="64" height="9" fill="#000" opacity=".04"/></pattern>`;
-      const pat = [rij(''), rij(' patternTransform="rotate(45)"'),
-        `<pattern id="s-p2" width="16" height="32" patternUnits="userSpaceOnUse"><rect width="16" height="32" fill="${k}"/>
-           <path d="M8 8 L16 0 L16 16 L8 24 Z M8 24 L16 16 L16 32 L8 40 Z" fill="#000" opacity=".05"/>
-           <path d="M0 0 L8 8 L8 24 L0 16 Z M8 8 L16 0 L16 16 L8 24 Z M0 16 L8 24 L8 40 L0 32 Z M8 24 L16 16 L16 32 L8 40 Z" fill="none" stroke="${lijn}" stroke-width=".8"/></pattern>`][s.patroon];
-      const dw = Math.min(18, .9 * sc), plekken = [[x + W * .12, y, 0], [x + W, y + H * .2, 90], [x + W * .75, y + H, 180], [x, y + H * .75, 270], [x + W * .6, y, 0], [x + W, y + H * .65, 90]];
-      const deur = plekken.slice(0, s.deuren).map(([dx, dy, rot]) => `<g transform="translate(${dx} ${dy}) rotate(${rot})"><path d="M0 0 h${dw}" stroke="#fff" stroke-width="5"/>
-        <path d="M${dw} 0 a${dw} ${dw} 0 0 1 ${-dw} ${dw} M0 0 V${dw}" fill="none" stroke="#14213d" stroke-opacity=".35" stroke-dasharray="2 2"/></g>`).join('');
-      $('#s-plan').innerHTML = `<defs>${pat}</defs><rect width="300" height="180" fill="#eef1f8"/>
-        <rect x="${x}" y="${y}" width="${W}" height="${H}" fill="url(#s-p2)"/>
-        <rect x="${x}" y="${y}" width="${W}" height="${H}" fill="none" stroke="#14213d" stroke-width="${s.plinten ? 4 : 3}" stroke-opacity="${s.plinten ? .9 : .6}"/>${deur}
-        <text x="150" y="${y + H + 12}" text-anchor="middle" font-size="10" fill="#4b5677">${getal(s.l)} m</text>
-        <text x="${x - 6}" y="${y + H / 2}" text-anchor="end" dominant-baseline="middle" font-size="10" fill="#4b5677">${getal(s.b)} m</text>`;
-    };
+    // verzonnen agenda: sommige dagen zijn al geboekt (vooral zaterdagen)
+    const geboekt = d => { const dt = new Date(d + 'T12:00'); const x = Math.sin(dt.getDate() * 7.1 + dt.getMonth() * 3.3) * 999; return (x - Math.floor(x)) < (dt.getDay() === 6 ? .6 : .15); };
     const bereken = () => {
-      const t = TYPES[s.type]; if (s.patroon === 2 && !t[6]) s.patroon = 0;
-      app.querySelectorAll('[data-groep="patroon"] button').forEach((b, i) => { b.disabled = i === 2 && !t[6]; b.classList.toggle('aan', i === s.patroon); });
-      const ov = $('[data-o="ondervloer"]'); ov.disabled = !t[5]; if (!t[5]) ov.checked = false; else ov.checked = s.ondervloer;
-      const p = PATROON[s.patroon], m2 = s.l * s.b, omtrek = Math.max(0, 2 * (s.l + s.b) - s.deuren * .9);
-      const kopen = Math.ceil(m2 * (1 + p[1] / 100) / t[3]) * t[3], pakken = Math.round(kopen / t[3]);
-      const mat = kopen * t[1], plaats = m2 * (t[2] + p[2]) + (s.type === 4 ? m2 * 14 : 0);
-      const voor = [0, m2 * 17, m2 * 11 + 195][s.onder];
-      const extra = (t[5] && s.ondervloer ? m2 * 4.5 : 0) + (s.plinten ? omtrek * 15.5 : 0) + s.deuren * 28 + (s.verwarming ? m2 * 2 : 0);
-      const MINIMUM = 450, klein = Math.max(0, MINIMUM - (mat + plaats + voor + extra + VERPLAATSING));   // kleine opdrachten: minimumbedrag
-      const sub = mat + plaats + voor + extra + VERPLAATSING + klein, pct = s.oud ? 6 : 21, btw = sub * pct / 100;
-      $('#s-rij-klein').style.display = klein ? '' : 'none';
-      const delen = [t[5] && s.ondervloer && 'ondervloer', s.plinten && 'plinten', s.deuren && 'overgangsprofielen', s.verwarming && 'aanpassing vloerverwarming'].filter(Boolean);
-      $('#s-rij-extra').style.display = delen.length ? '' : 'none';
-      $('#s-extralabel').textContent = delen.length ? delen.join(', ').replace(/^./, c => c.toUpperCase()).replace(/, ([^,]*)$/, ' en $1') : '';
-      $('#s-extrahint').textContent = s.verwarming && s.type === 4 ? 'Massief parket raden we af op vloerverwarming: het hout werkt te veel. Kies liever lamelparket of PVC.'
-        : s.verwarming ? 'We gebruiken een ondervloer of lijm die geschikt is voor vloerverwarming.' : '';
-      $('#s-matlabel').textContent = `${t[0]} (${pakken} pakken = ${getal(kopen)} m²)`;
-      $('#s-plaatslabel').textContent = `Plaatsing ${p[0].toLowerCase()}${s.type === 4 ? ', schuren en oliën' : ''}`;
-      $('#s-rij-voor').style.display = s.onder ? '' : 'none';
-      $('#s-voorlabel').textContent = s.onder === 1 ? 'Egaliseren' : 'Oude vloer uitbreken en container';
-      $('#s-btwlabel').textContent = `Btw ${pct} %`;
-      $('#s-opp').innerHTML = `Vloer <b>${getal(m2)} m²</b> · ${p[1]} % snijverlies${s.plinten ? ` · plinten <b>${getal(omtrek)} m</b>` : ''}`;
-      $('#s-patroonhint').textContent = !t[6] ? 'Visgraat is niet mogelijk met laminaat.' : s.patroon ? `Meer snijwerk: ${p[1]} % snijverlies en langere plaatsing.` : '';
-      $('#s-onderhint').textContent = s.type === 2 && s.onder === 0 ? 'Gelijmde PVC vraagt een perfect vlakke ondergrond. Bij de opmeting kijken we of egaliseren nodig is.' : ONDER[s.onder][1];
-      let dagen = m2 / (t[4] * p[3]) + (s.onder === 1 ? 1 : s.onder === 2 ? .5 : 0) + (s.type === 4 ? 1 : 0);
-      dagen = Math.max(1, Math.ceil(dagen * 2) / 2);
-      $('#s-duur').innerHTML = `<i></i>Geschatte duur: ${getal(dagen, dagen % 1 ? 1 : 0)} werkdag${dagen > 1 ? 'en' : ''}`;
-      [['#s-klein', klein], ['#s-mat', mat], ['#s-plaats', plaats], ['#s-voor', voor], ['#s-extra', extra], ['#s-verpl', VERPLAATSING], ['#s-sub', sub], ['#s-btw', btw], ['#s-tot', sub + btw]]
-        .forEach(([id, v]) => tel($(id), v, x => euro(x, 0)));
-      plan();
-      const knop = $('#s-vraag'); knop.classList.remove('ok'); knop.textContent = 'Vraag een gratis opmeting aan';
+      const t = TYPES[s.type], duur = $('#p-duur');
+      if (s.uren < t[2]) s.uren = t[2];
+      duur.min = t[2]; duur.value = s.uren;
+      const shoot = s.uren * t[1];
+      const extras = EXTRA.filter(([k, , , , mag]) => mag(s.type) && s.extra[k]);
+      const extra = extras.reduce((som, [, , , prijs]) => som + prijs(s.uren), 0);
+      const km = Math.max(0, s.km - 25) * 2 * .45;                 // heen en terug, vanaf 25 km
+      const excl = shoot + extra + km, btw = excl * .21, part = s.klant === 'particulier';
+      const fotos = Math.round(s.uren * t[4] / 5) * 5;
+      $('#p-uren').textContent = getal(s.uren, s.uren % 1 ? 1 : 0) + ' uur';
+      $('#p-min').textContent = `minimum ${getal(t[2], t[2] % 1 ? 1 : 0)} uur`;
+      EXTRA.forEach(([k, , uitleg, prijs, mag]) => {
+        const rij = app.querySelector(`[data-rij="${k}"]`), ok = mag(s.type);
+        rij.classList.toggle('uit', !ok); rij.querySelector('input').disabled = !ok;
+        const bedrag = k === 'tweede' ? prijs(1) : prijs(s.uren);       // tweede fotograaf: prijs per uur
+        $('#p-x-' + k).textContent = ok ? `+ € ${getal(bedrag * (part ? 1.21 : 1))}${uitleg ? ' ' + uitleg : ''}` : 'niet bij dit soort shoot';
+      });
+      $('#p-kmtekst').textContent = s.km + ' km';
+      app.querySelectorAll('[data-vanaf]').forEach(el => { const tt = TYPES[el.dataset.vanaf]; el.textContent = getal(tt[1] * tt[2] * (part ? 1.21 : 1)); });
+      $('#p-titel').textContent = `${t[0]} · ${getal(s.uren, s.uren % 1 ? 1 : 0)} uur`;
+      $('#p-shootlabel').textContent = `Shoot (${getal(s.uren, s.uren % 1 ? 1 : 0)} u × € ${getal(t[1] * (part ? 1.21 : 1))})`;
+      $('#p-extras').innerHTML = extras.map(([k, naam, , prijs]) => `<div class="p-rij"><span>${k === 'tweede' ? naam + ' (' + getal(s.uren, s.uren % 1 ? 1 : 0) + ' u)' : naam}</span><span>${euro(prijs(s.uren) * (part ? 1.21 : 1), 0)}</span></div>`).join('');
+      $('#p-rij-km').style.display = km ? '' : 'none';
+      $('#p-kmlabel').textContent = `Verplaatsing (${(s.km - 25) * 2} km)`;
+      $('#p-rij-btw').style.display = part ? '' : 'none';
+      $('#p-totlabel').textContent = part ? 'Totaal incl. btw' : 'Totaal excl. btw';
+      const f = part ? 1.21 : 1;
+      tel($('#p-shoot'), shoot * f, v => euro(v, 0)); tel($('#p-kmprijs'), km * f, v => euro(v, 0));
+      tel($('#p-btw'), btw, v => euro(v, 0)); tel($('#p-tot'), part ? excl + btw : excl, v => euro(v, 0));
+      $('#p-incl').innerHTML = `Inbegrepen: <b>± ${fotos} bewerkte foto's</b> in hoge resolutie, een online galerij om te delen en te downloaden, ` +
+        `levering binnen <b>${s.extra.spoed ? '7 dagen' : t[5] + (t[5] > 1 ? ' weken' : ' week')}</b>.`;
+      const v = $('#p-vrij');
+      if (!s.datum) { v.textContent = ''; v.className = 'p-vrij'; }
+      else if (geboekt(s.datum)) { v.textContent = 'Al geboekt, kies een andere datum'; v.className = 'p-vrij nee'; }
+      else { v.textContent = 'Nog vrij'; v.className = 'p-vrij ja'; }
+      const knop = $('#p-boek'); knop.classList.remove('ok'); knop.textContent = 'Reserveer je datum'; knop.disabled = !!(s.datum && geboekt(s.datum));
     };
     app.addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b || b.disabled) return;
-      const g = b.parentElement.dataset.groep;
-      if (g) { s[g] = +b.dataset.v; b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('aan', x === b)); bereken(); }
-      if (b.dataset.t) { s.deuren = Math.max(0, Math.min(6, s.deuren + +b.dataset.d)); $('#s-deuren').textContent = s.deuren; bereken(); }
-      if (b.dataset.k) { s.kleur = +b.dataset.k; app.querySelectorAll('.s-kleur').forEach(x => x.classList.toggle('aan', x === b)); $('#s-kleurnaam').textContent = KLEUREN[s.kleur][0]; bereken(); }
-      if (b.id === 's-vraag') { b.classList.add('ok'); b.textContent = 'Aanvraag ontvangen (demo)'; }
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.type) { s.type = b.dataset.type; s.uren = TYPES[s.type][3];
+        s.extra = { tweede: false, drone: false, album: s.type === 'huwelijk', spoed: false };   // passende standaardkeuzes per soort shoot
+        app.querySelectorAll('[data-x]').forEach(x => x.checked = s.extra[x.dataset.x]); app.querySelectorAll('.p-type').forEach(x => x.classList.toggle('aan', x === b)); bereken(); }
+      if (b.dataset.klant) { s.klant = b.dataset.klant; app.querySelectorAll('[data-klant]').forEach(x => x.classList.toggle('aan', x === b)); bereken(); }
+      if (b.id === 'p-boek') {
+        if (!s.datum) { $('#p-vrij').textContent = 'Kies eerst een datum'; $('#p-vrij').className = 'p-vrij nee'; $('#p-datum').focus(); return; }
+        b.classList.add('ok'); b.textContent = 'Aanvraag ontvangen (demo)';
+      }
     });
-    app.addEventListener('input', e => { const k = e.target.dataset.m; if (!k) return;
-      const v = parseFloat(e.target.value); if (v > 0) { s[k] = Math.min(20, Math.max(1, v)); bereken(); } });
-    app.addEventListener('change', e => { if (e.target.dataset.o) { s[e.target.dataset.o] = e.target.checked; bereken(); }
-      if (e.target.dataset.m) e.target.value = s[e.target.dataset.m]; });
+    app.addEventListener('input', e => {
+      if (e.target.id === 'p-duur') { s.uren = +e.target.value; bereken(); }
+      if (e.target.id === 'p-km') { s.km = +e.target.value; bereken(); }
+      if (e.target.id === 'p-datum') { s.datum = e.target.value; bereken(); }
+    });
+    app.addEventListener('change', e => { if (e.target.dataset.x) { s.extra[e.target.dataset.x] = e.target.checked; bereken(); } });
     bereken();
   })();
 
