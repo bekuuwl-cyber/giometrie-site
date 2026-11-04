@@ -10,287 +10,7 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon-180.png">
 <link rel="preload" href="fonts/SpaceGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
-:root{--navy:#16213e;--diep:#0f172e;--oranje:#ff5a36;--creme:#f6f1e8;--steen:#a8a194;--lei:#4b5677;--zacht:cubic-bezier(.22,1,.36,1);--veer:cubic-bezier(.22,1.4,.36,1);--lijn:rgba(246,241,232,.14)}
-/* menu:begin (wordt ook gebruikt door voorbeelden.html) */
-nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:padding .4s var(--zacht);padding:22px 0}
-nav.vast{padding:12px 0}
-/* Het glaseffect zit op een eigen laag: een backdrop-filter op <nav> zelf zou van de menubalk
-   het kader maken voor het vaste menu, waardoor dat menu alleen binnen de balk getoond wordt. */
-nav::before{content:"";position:absolute;inset:0;z-index:-2;background:rgba(15,23,46,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--lijn);opacity:0;transition:opacity .4s}
-nav.vast::before{opacity:1}
-.sub nav::before{opacity:1;background:rgba(15,23,46,.96)}   /* subpagina's: menu altijd met donkere balk, ook boven een lichte sectie */
-nav.open::before{opacity:0;transition:opacity .25s .3s}  /* pas vervagen als de cirkel de balk bedekt */
-nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
-.nav-logo{height:34px;width:auto;overflow:visible}
-.nav-logo .g-lijn{stroke:var(--creme)}.nav-logo .vlak-boven,.nav-logo .ruit-1{fill:var(--oranje)}
-.nav-logo .vlak-links,.nav-logo .letter,.nav-logo .ruit-2{fill:var(--creme)}.nav-logo .vlak-rechts{fill:var(--steen)}
-.nav-logo .vlak{transition:transform .5s var(--veer)}
-.merk:hover .vlak-boven{transform:translateY(-3px)}.merk:hover .vlak-links{transform:translate(-2.5px,2px)}.merk:hover .vlak-rechts{transform:translate(2.5px,2px)}
-.menu{display:flex;gap:30px;list-style:none;align-items:center}
-.menu a{text-decoration:none;font-weight:500;font-size:.95rem;position:relative;padding:4px 0}
-.menu a:not(.knop)::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--oranje);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--zacht)}
-.menu a:not(.knop):hover::after{transform:scaleX(1);transform-origin:left}
-/* links naar een andere pagina: apart gezet met een scheidingslijn, als omlijnde knop met een pijltje naar rechtsboven */
-.menu .naar-pagina{padding-left:26px;margin-left:-4px;border-left:1px solid rgba(246,241,232,.22)}
-.menu .pagina-link{display:inline-flex;align-items:center;gap:8px;padding:8px 15px;border:1.5px solid rgba(246,241,232,.38);border-radius:999px;transition:border-color .3s,color .3s,background .3s}
-.menu .pagina-link::after{display:none}
-.menu .pagina-link:hover{border-color:var(--oranje);color:var(--oranje)}
-.pijl-uit{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--zacht)}
-.pagina-link:hover .pijl-uit{transform:translate(2px,-2px)}
-.menu .pagina-link[aria-current]{border-color:var(--oranje);color:var(--oranje);background:rgba(255,90,54,.1);cursor:default}
-.menu .pagina-link.terug .pijl-uit{transform:rotate(-135deg)}
-.menu .naar-pagina + .naar-pagina{border-left:0;padding-left:0;margin-left:-14px}   /* pagina-knoppen naast elkaar: één scheidingslijn */
-.menu .naar-pagina:first-child{border-left:0;padding-left:0;margin-left:0}
-.burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
-.burger span{position:absolute;left:10px;right:10px;height:2px;background:var(--creme);transition:transform .4s var(--zacht),opacity .3s}
-.burger span:nth-child(1){top:16px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:28px}
-.open .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}.open .burger span:nth-child(2){opacity:0}.open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-@media (max-width:900px){
-  .burger{display:block}
-  .menu{position:fixed;inset:0;background:var(--diep);flex-direction:column;justify-content:center;gap:26px;font-size:1.5rem;z-index:-1;
-    clip-path:circle(0px at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .65s cubic-bezier(.7,0,.25,1) .18s;visibility:hidden}
-  .open .menu{clip-path:circle(var(--r,150vmax) at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .85s cubic-bezier(.7,0,.25,1);visibility:visible}
-  .menu li{opacity:0;transform:translateY(26px);transition:opacity .3s,transform .3s var(--zacht)}
-  .open .menu li{opacity:1;transform:none;transition:opacity .6s var(--zacht),transform .8s var(--zacht);transition-delay:calc(.32s + var(--i) * 70ms)}
-  .menu a{font-size:1.6rem}
-  .menu .naar-pagina,.menu .naar-pagina + .naar-pagina{border-left:0;padding-left:0;margin:4px 0 0}
-  .menu .pagina-link{padding:10px 22px}.pijl-uit{width:15px;height:15px}
-}
-@media (min-width:901px) and (max-width:1120px){.menu{gap:16px}.menu .naar-pagina{padding-left:16px}.menu .naar-pagina + .naar-pagina{margin-left:0}.menu .pagina-link{padding:8px 12px;gap:6px}}
-@media (max-width:900px){.menu{transition-property:clip-path,visibility}}
-
-nav{color:var(--creme)}.menu .knop.klein{padding:10px 20px;font-size:.92rem}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--creme);color:var(--navy);font-family:"Space Grotesk",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-button,input,select{font:inherit;color:inherit}
-button{cursor:pointer}
-.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
-a{color:inherit}
-/* intro */
-.held{background:var(--navy);color:var(--creme);padding:170px 0 80px;position:relative;overflow:hidden}
-.oog{display:flex;align-items:center;gap:10px;color:var(--oranje);font-weight:700;font-size:.82rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
-.oog i{width:12px;height:7px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
-.held h1{font-size:clamp(2.6rem,7vw,5.2rem);line-height:1;letter-spacing:-.04em;max-width:900px}
-.held p{max-width:620px;font-size:1.15rem;opacity:.8;margin-top:22px}
-.sprong{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
-.sprong a{text-decoration:none;border:1px solid rgba(246,241,232,.25);border-radius:999px;padding:9px 16px;font-size:.92rem;font-weight:500;transition:border-color .3s,background .3s}
-.sprong a:hover{border-color:var(--oranje);background:rgba(255,90,54,.1)}
-.sprong b{color:var(--oranje);margin-right:6px}
-.held-lijnen{position:absolute;right:-220px;top:50%;width:760px;transform:translateY(-50%);opacity:.08;pointer-events:none}
-/* demo-blokken */
-.demo{padding:100px 0;border-bottom:1px solid rgba(22,33,62,.1)}
-.demo .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:center}
-.demo:nth-of-type(even) .wrap{grid-template-columns:1.2fr .8fr}.demo:nth-of-type(even) .tekst{order:2}
-.demo .nr{font-weight:700;color:var(--oranje);letter-spacing:.14em;font-size:.85rem}
-.demo h2{font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.08;letter-spacing:-.03em;margin:8px 0 14px}
-.demo .tekst>p{opacity:.8}
-.demo .tekst>p+p{margin-top:12px}
-.demo ul{list-style:none;margin-top:22px;display:grid;gap:10px}
-.demo li{display:flex;gap:12px;align-items:flex-start;opacity:.85;font-size:.97rem}
-.demo li::before{content:"";flex:none;width:11px;height:7px;margin-top:9px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
-.demo .tekst .voor-wie{margin-top:20px;font-size:.92rem;opacity:.6;font-style:italic}
-/* browservenster */
-.venster{background:#fff;border-radius:12px;box-shadow:0 30px 60px -36px rgba(22,33,62,.35),0 0 0 1px rgba(22,33,62,.07);overflow:hidden;min-width:0}
-.balk{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#ece7de;border-bottom:1px solid rgba(22,33,62,.08)}
-.balk i{width:11px;height:11px;border-radius:50%;background:#d6cfc3}.balk i:first-child{background:#ff6b5b}.balk i:nth-child(2){background:#f5bf4f}.balk i:nth-child(3){background:#59c35f}
-.balk span{flex:1;margin-left:10px;background:#fff;border-radius:7px;padding:4px 12px;font-size:.78rem;color:#6b6f80;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.app{position:relative}
-/* slot */
-.slot{background:var(--navy);color:var(--creme);padding:100px 0;text-align:center}
-.slot h2{font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-.03em;line-height:1.05}
-.slot p{opacity:.78;max-width:560px;margin:18px auto 34px;font-size:1.1rem}
-.knop{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;background:var(--oranje);color:var(--navy);transition:transform .4s var(--zacht)}
-.knop:hover{transform:translateY(-2px)}
-.slot-knoppen{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.knop.rand{background:transparent;color:var(--creme);box-shadow:inset 0 0 0 1.5px rgba(246,241,232,.38);transition:transform .4s var(--zacht),box-shadow .3s,color .3s}
-.knop.rand:hover{box-shadow:inset 0 0 0 1.5px var(--oranje);color:var(--oranje)}
-.pijl-uit{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--zacht)}
-.knop:hover .pijl-uit{transform:translate(2px,-2px)}
-footer{background:var(--diep);color:var(--creme);padding:28px 0;font-size:.9rem;opacity:.95}
-footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
-.melding-demo{font-size:.8rem;opacity:.55;margin-top:12px;text-align:center}
-
-/* ================= 1. kapsalon: afspraak boeken ================= */
-.k{--z:#2a2522;--g:#8c6b4a;--p:#fbf9f6;--l:#e7e1d8;background:var(--p);color:var(--z);font-family:Georgia,"Times New Roman",serif;padding:24px 26px 26px;min-height:470px}
-.k-kop{display:flex;justify-content:space-between;align-items:baseline;gap:6px 14px;flex-wrap:wrap;border-bottom:1px solid var(--l);padding-bottom:12px;margin-bottom:14px}
-.k-merk{font-size:1.45rem;font-style:italic}
-.k-merk small{font-style:normal;font-family:system-ui,sans-serif;font-size:.76rem;color:#857b6f;margin-left:8px}
-.k-stappen{display:flex;gap:7px;font-family:system-ui,sans-serif;font-size:.76rem;color:#aaa194}
-.k-stappen span.aan{color:var(--z);font-weight:600}.k-stappen span.klaar{color:var(--g)}
-.k-stappen i{font-style:normal;opacity:.6}
-.k h3{font-weight:400;font-size:1.2rem;margin-bottom:8px}
-.k-lijst{display:grid;border-top:1px solid var(--l)}
-.k-dienst{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--l);padding:12px 4px;font-family:inherit;font-size:1.02rem;color:inherit;transition:background .2s}
-.k-dienst:hover{background:#f4f0ea}.k-dienst:hover b{color:var(--g)}
-.k-dienst em{display:block;font-style:normal;font-family:system-ui,sans-serif;font-size:.78rem;color:#8a8273;margin-top:2px}
-.k-dienst b{font-weight:400;white-space:nowrap}
-.k-dagen{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:16px}
-.k-dag{background:#f1ece4;border:1px solid transparent;border-radius:8px;padding:7px 2px;font-family:system-ui,sans-serif;text-align:center;line-height:1.2;color:var(--z);transition:.2s}
-.k-dag small{display:block;font-size:.66rem;color:#8a8273}
-.k-dag b{font-size:1.05rem;font-weight:600}
-.k-dag.vol{background:transparent;border-color:var(--l);color:#b5ad9f}.k-dag.vol b{text-decoration:line-through}
-.k-dag.aan{background:var(--z);border-color:var(--z);color:#fff}.k-dag.aan small{color:#cfc6b6}
-.k-uren{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.k-uur{background:#f1ece4;border:1px solid transparent;border-radius:8px;padding:9px 0;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--z);transition:.2s}
-.k-uur:hover{border-color:#cfc5b6}
-.k-uur:disabled{color:#c9c1b2;text-decoration:line-through;cursor:not-allowed;background:transparent;border-color:transparent}
-.k-uur.aan{background:var(--z);border-color:var(--z);color:#fff}
-.k-veld{display:grid;gap:5px;font-family:system-ui,sans-serif;font-size:.8rem;color:#6d6658;margin-bottom:12px}
-.k-veld input{border:1px solid #d9d1c4;border-radius:8px;padding:10px 12px;font-size:.95rem;background:#fff;color:var(--z)}
-.k-veld input:focus{outline:none;border-color:var(--z)}
-.k-samen{border-top:1px solid var(--l);border-bottom:1px solid var(--l);padding:9px 0;margin-bottom:14px;font-size:.95rem}
-.k-samen div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
-.k-samen span{font-family:system-ui,sans-serif;font-size:.82rem;color:#8a8273}
-.k-actie{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}
-.k-btn{background:var(--z);color:#fff;border:0;border-radius:8px;padding:12px 22px;font-family:system-ui,sans-serif;font-size:.9rem;transition:opacity .2s}
-.k-btn:disabled{opacity:.3;cursor:not-allowed}
-.k-link{background:none;border:0;font-family:system-ui,sans-serif;font-size:.86rem;color:#8a8273;text-decoration:underline}
-.k-vol{font-family:system-ui,sans-serif;font-size:.88rem;color:#8a8273;border:1px dashed #d8cfc0;border-radius:4px;padding:16px;text-align:center}
-.k-info{font-family:system-ui,sans-serif;font-size:.76rem;color:#8a8273;margin-top:10px}
-.k-fout{color:#b3412e;font-family:system-ui,sans-serif;font-size:.8rem;min-height:1.2em}
-.k-ok{padding:18px 2px}
-.k-ok h3{font-size:1.45rem;margin-bottom:6px}
-.k-ok p{font-family:system-ui,sans-serif;font-size:.92rem;color:#6d6658;margin:0 0 18px;line-height:1.55}
-.k-paneel{animation:k-in .3s ease-out}
-@keyframes k-in{from{opacity:0}}
-
-/* ================= 2. fotograaf: shoot boeken met prijs ================= */
-.p{--i:#1c1b19;--g:#77716a;--l:#e4e0d9;--bg:#fff;background:var(--bg);color:var(--i);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;display:grid;grid-template-columns:1.1fr .9fr;min-height:470px}
-.p-links{padding:22px 22px 24px;display:grid;gap:18px;align-content:start}
-.p-merk{font-family:Georgia,"Times New Roman",serif;font-size:1.35rem}
-.p-merk small{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:.76rem;color:var(--g);margin-left:6px}
-.p-groep>span{display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem;font-weight:700;margin-bottom:7px}
-.p-groep>span b{font-weight:400;color:var(--g);font-size:.85rem}
-.p-types{display:grid;border-top:1px solid var(--l)}
-.p-type{display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;border-bottom:1px solid var(--l);background:none;padding:8px 4px 8px 26px;font-size:.9rem;color:var(--i);text-align:left;position:relative}
-.p-type::before{content:"";position:absolute;left:4px;top:50%;width:11px;height:11px;margin-top:-7px;border:1.5px solid #a9a39b;border-radius:50%}
-.p-type.aan{font-weight:700}.p-type.aan::before{border-color:var(--i);background:var(--i);box-shadow:inset 0 0 0 2.5px #fff}
-.p-type small{color:var(--g);font-size:.8rem;font-weight:400}
-.p input[type=range]{width:100%;accent-color:var(--i);height:22px}
-.p-schaal{display:flex;justify-content:space-between;font-size:.7rem;color:var(--g);margin-top:2px}
-.p-check{display:flex;align-items:center;gap:10px;font-size:.88rem;padding:4px 0;cursor:pointer}
-.p-check input{width:16px;height:16px;accent-color:var(--i)}
-.p-check em{margin-left:auto;font-style:normal;color:var(--g);font-size:.8rem;white-space:nowrap}
-.p-check.uit{opacity:.35;cursor:not-allowed}
-.p-seg{display:flex}
-.p-seg button{flex:1;border:1px solid var(--l);background:#fff;padding:8px 4px;font-size:.78rem;color:var(--g)}
-.p-seg button:first-child{border-radius:8px 0 0 8px}.p-seg button:last-child{border-radius:0 8px 8px 0;border-left:0}
-.p-seg button.aan{background:var(--i);border-color:var(--i);color:#fff}
-.p-twee{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-.p-datum{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.p-datum input{width:100%;border:1px solid var(--l);border-radius:8px;padding:7px 9px;font-size:.9rem;background:#fff;color:var(--i)}
-.p-vrij{font-size:.8rem;font-weight:600}.p-vrij.ja{color:#2e7d4f}.p-vrij.nee{color:#b3412e}
-.p-rechts{background:#f7f5f1;border-left:1px solid var(--l);padding:22px 22px 24px;display:grid;gap:14px;align-content:start}
-.p-titel{font-size:.95rem;font-weight:700;border-bottom:1px solid #ddd7ce;padding-bottom:10px}
-.p-rij{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;padding:3px 0;color:#3f3c38}
-.p-rij span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
-.p-rij.tot{border-top:1px solid var(--i);margin-top:8px;padding-top:9px;color:var(--i);font-weight:700;align-items:baseline}
-.p-rij.tot b{font-size:1.5rem;letter-spacing:-.02em}
-.p-btwrij{font-size:.76rem;color:var(--g)}
-.p-incl{font-size:.8rem;color:#55514c;line-height:1.55}
-.p-incl b{color:var(--i)}
-.p-btn{background:var(--i);color:#fff;border:0;border-radius:8px;padding:13px;font-weight:700;font-size:.9rem;transition:opacity .2s}
-.p-btn:hover{opacity:.85}.p-btn.ok{background:#2e7d4f}.p-btn:disabled{opacity:.35;cursor:not-allowed}
-.p-klein{font-size:.72rem;color:var(--g)}
-
-/* ================= 3. frituur: bestellen ================= */
-.f{--r:#c8202f;--m:#f2b233;--c:#fffaf0;--t:#2b1b12;background:var(--c);color:var(--t);font-family:"Trebuchet MS",system-ui,sans-serif;min-height:470px;display:grid;grid-template-columns:1.25fr .9fr}
-.f-menu{padding:20px 20px 22px}
-.f-merk{margin-bottom:12px}
-.f-merk b{display:block;font-size:1.3rem;font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:var(--r)}
-.f-merk small{font-size:.76rem;color:#8a6a52}
-.f-tabs{display:flex;gap:18px;border-bottom:1px solid #ecdcc2;margin-bottom:4px;overflow-x:auto;scrollbar-width:none}
-.f-tabs button{border:0;border-bottom:3px solid transparent;background:none;padding:6px 0;margin-bottom:-1px;font-weight:700;font-size:.9rem;color:#9a7b62;white-space:nowrap}
-.f-tabs button.aan{color:var(--t);border-color:var(--m)}
-.f-items{display:grid}
-.f-item{display:flex;align-items:baseline;gap:8px;padding:11px 0;animation:f-in .25s ease-out both}
-.f-item b{font-size:.98rem}
-.f-item .lijn{flex:1;border-bottom:2px dotted #d9c4a3;min-width:12px}
-.f-item .prijs{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
-.f-plus{align-self:center;width:30px;height:30px;border-radius:8px;border:0;background:var(--r);color:#fff;font-size:1.15rem;font-weight:700;line-height:1;flex:none;margin-left:6px}
-.f-plus:active{transform:scale(.92)}
-@keyframes f-in{from{opacity:0}}
-.f-mand{background:#fff;color:var(--t);border-left:1px solid #f0e3cc;padding:20px 18px 22px;display:flex;flex-direction:column;min-width:0}
-.f-mand h4{font-size:1.05rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.f-teller{font-size:.82rem;font-weight:400;opacity:.75}
-.f-regels{flex:1;display:grid;gap:8px;align-content:start;font-size:.88rem;max-height:250px;overflow:auto;padding-right:2px}
-.f-regel{display:flex;align-items:center;gap:8px}
-.f-regel span{flex:1;min-width:0}
-.f-regel button{width:24px;height:24px;border-radius:6px;border:1px solid #e6d3b3;background:none;color:var(--t);font-weight:700;line-height:1}
-.f-leeg{opacity:.55;font-size:.86rem}
-.f-afhaal{display:grid;gap:5px;font-size:.78rem;color:#8a6a52;margin:12px 0}
-.f-afhaal select{background:#fff;border:1px solid #e6d3b3;border-radius:8px;padding:8px;color:var(--t)}
-.f-afhaal option{color:#000}
-.f-betaal{font-size:.72rem;opacity:.6;margin-top:8px}
-.f-later{font-size:.86rem;color:#8a6a52;max-width:360px;margin:-8px auto 18px}
-.f-tot{display:flex;justify-content:space-between;font-weight:900;font-size:1.1rem;margin-bottom:12px;border-top:1px solid #f0e3cc;padding-top:10px}
-.f-btn{background:var(--r);color:#fff;border:0;border-radius:8px;padding:13px;font-weight:900;font-size:1rem;transition:opacity .2s}
-.f-btn:disabled{opacity:.3;cursor:not-allowed}
-.f-volg{grid-column:1/-1;padding:34px 26px;text-align:center;animation:f-in .3s ease-out}
-.f-volg .nummer{display:inline-block;background:var(--m);font-weight:900;font-size:2.2rem;border-radius:10px;padding:2px 18px;margin:8px 0 6px}
-.f-volg p{color:#8a6a52;font-size:.92rem}
-.f-stap{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:26px auto 22px;max-width:440px}
-.f-stap div{font-size:.8rem;font-weight:700;color:#b49a85;display:grid;gap:8px;justify-items:center}
-.f-stap div::before{content:"";width:100%;height:6px;border-radius:3px;background:#efdcc0;transition:background .5s}
-.f-stap div.aan{color:var(--t)}.f-stap div.aan::before{background:var(--m)}
-.f-stap div.klaar::before{background:#3a8a4f}
-.f-nog{background:none;border:1.5px solid var(--t);border-radius:8px;padding:8px 16px;font-weight:700}
-
-/* ================= 4. dashboard ================= */
-.d{--bg:#fff;--k:#f3f4f6;--l:#e3e6ea;--t:#1f2933;--m:#6b7682;--a:#2f5d8a;--a2:#c5ced8;background:var(--bg);color:var(--t);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 20px 22px;min-height:470px}
-.d-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.d-top b{font-size:1.05rem}.d-top small{display:block;color:var(--m);font-size:.76rem}
-.d-seg{display:flex;background:var(--k);border-radius:8px;padding:3px}
-.d-seg button{border:0;background:none;color:var(--m);font-size:.8rem;padding:5px 12px;border-radius:6px}
-.d-seg button.aan{background:#fff;color:var(--t);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-.d-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
-.d-kaart{background:var(--k);border-radius:8px;padding:11px 13px;min-width:0}
-.d-kaart span{display:block;color:var(--m);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.d-kaart b{display:block;font-size:1.2rem;font-weight:600;margin:2px 0 1px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.d-kaart em{font-style:normal;font-size:.72rem;color:var(--m)}
-.d-kaart em.op b,.d-kaart em.op{color:#2d7a46}.d-kaart em.neer{color:#b3412e}
-.d-onder{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}
-.d-blok{background:var(--k);border-radius:8px;padding:12px 14px;min-width:0;position:relative}
-.d-blok h5{font-size:.8rem;font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
-.d-blok h5 small{font-weight:400;font-size:.72rem;color:var(--m)}
-.d-blok h5 i{font-style:normal;font-weight:400;color:var(--m);display:flex;gap:10px}
-.d-blok h5 i span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:5px;background:var(--a)}
-.d-blok h5 i span+span::before{background:var(--a2)}
-.d-grafiek svg{display:block;width:100%;height:auto;overflow:visible}
-.d-staaf{fill:var(--a);transition:y .5s ease-out,height .5s ease-out,opacity .2s}
-.d-staaf.vorig{fill:var(--a2)}
-.d-grafiek .doel:hover .d-staaf{opacity:.75}
-.d-as{fill:var(--m);font-size:10px}
-.d-tip{position:absolute;pointer-events:none;background:var(--t);color:#fff;border-radius:3px;padding:5px 8px;font-size:.74rem;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .15s}
-.d-top5{display:grid;gap:9px}
-.d-prod{font-size:.8rem}
-.d-prod div{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px;white-space:nowrap}
-.d-prod div span{color:var(--m);font-variant-numeric:tabular-nums}
-.d-prod i{display:block;height:4px;border-radius:2px;background:#e3e6ea;overflow:hidden}
-.d-prod i::after{content:"";display:block;height:100%;width:var(--w);background:var(--a);transition:width .6s ease-out}
-
-/* mobiel */
-@media (max-width:980px){
-  .demo .wrap{grid-template-columns:1fr;gap:36px}
-  .demo:nth-of-type(even) .wrap{grid-template-columns:1fr}.demo:nth-of-type(even) .tekst{order:0}
-}
-@media (max-width:640px){
-  body{font-size:16px}.wrap{padding:0 16px}
-  .held{padding:130px 0 56px}.demo{padding:70px 0}
-  .p,.f{grid-template-columns:1fr}
-  .p-rechts{border-left:0;border-top:1px solid var(--l)}.f-mand{border-left:0;border-top:1px solid #f0e3cc}
-  .d-kpi{grid-template-columns:1fr 1fr;gap:8px}.d-onder{grid-template-columns:1fr}
-  .k{padding:20px 16px}.k-dagen{grid-template-columns:repeat(3,1fr)}.k-uren{grid-template-columns:repeat(4,1fr)}.p-twee{grid-template-columns:1fr}
-}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
-</style>
+<style>@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Regular.woff2") format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Medium.woff2") format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Space Grotesk";src:url("fonts/SpaceGrotesk-Bold.woff2") format("woff2");font-weight:700;font-display:swap}:root{--navy:#16213e;--diep:#0f172e;--oranje:#ff5a36;--creme:#f6f1e8;--steen:#a8a194;--lei:#4b5677;--zacht:cubic-bezier(.22,1,.36,1);--veer:cubic-bezier(.22,1.4,.36,1);--lijn:rgba(246,241,232,.14)}nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:padding .4s var(--zacht);padding:22px 0}nav.vast{padding:12px 0}nav::before{content:"";position:absolute;inset:0;z-index:-2;background:rgba(15,23,46,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--lijn);opacity:0;transition:opacity .4s}nav.vast::before{opacity:1}.sub nav::before{opacity:1;background:rgba(15,23,46,.96)}nav.open::before{opacity:0;transition:opacity .25s .3s}nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}.nav-logo{height:34px;width:auto;overflow:visible}.nav-logo .g-lijn{stroke:var(--creme)}.nav-logo .vlak-boven,.nav-logo .ruit-1{fill:var(--oranje)}.nav-logo .vlak-links,.nav-logo .letter,.nav-logo .ruit-2{fill:var(--creme)}.nav-logo .vlak-rechts{fill:var(--steen)}.nav-logo .vlak{transition:transform .5s var(--veer)}.merk:hover .vlak-boven{transform:translateY(-3px)}.merk:hover .vlak-links{transform:translate(-2.5px,2px)}.merk:hover .vlak-rechts{transform:translate(2.5px,2px)}.menu{display:flex;gap:30px;list-style:none;align-items:center}.menu a{text-decoration:none;font-weight:500;font-size:.95rem;position:relative;padding:4px 0}.menu a:not(.knop)::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--oranje);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--zacht)}.menu a:not(.knop):hover::after{transform:scaleX(1);transform-origin:left}.menu .naar-pagina{padding-left:26px;margin-left:-4px;border-left:1px solid rgba(246,241,232,.22)}.menu .pagina-link{display:inline-flex;align-items:center;gap:8px;padding:8px 15px;border:1.5px solid rgba(246,241,232,.38);border-radius:999px;transition:border-color .3s,color .3s,background .3s}.menu .pagina-link::after{display:none}.menu .pagina-link:hover{border-color:var(--oranje);color:var(--oranje)}.pijl-uit{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--zacht)}.pagina-link:hover .pijl-uit{transform:translate(2px,-2px)}.menu .pagina-link[aria-current]{border-color:var(--oranje);color:var(--oranje);background:rgba(255,90,54,.1);cursor:default}.menu .pagina-link.terug .pijl-uit{transform:rotate(-135deg)}.menu .naar-pagina + .naar-pagina{border-left:0;padding-left:0;margin-left:-14px}.menu .naar-pagina:first-child{border-left:0;padding-left:0;margin-left:0}.burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}.burger span{position:absolute;left:10px;right:10px;height:2px;background:var(--creme);transition:transform .4s var(--zacht),opacity .3s}.burger span:nth-child(1){top:16px}.burger span:nth-child(2){top:22px}.burger span:nth-child(3){top:28px}.open .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}.open .burger span:nth-child(2){opacity:0}.open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}@media (max-width:900px){.burger{display:block}.menu{position:fixed;inset:0;background:var(--diep);flex-direction:column;justify-content:center;gap:26px;font-size:1.5rem;z-index:-1;clip-path:circle(0px at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .65s cubic-bezier(.7,0,.25,1) .18s;visibility:hidden}.open .menu{clip-path:circle(var(--r,150vmax) at var(--bx,calc(100% - 40px)) var(--by,40px));transition:clip-path .85s cubic-bezier(.7,0,.25,1);visibility:visible}.menu li{opacity:0;transform:translateY(26px);transition:opacity .3s,transform .3s var(--zacht)}.open .menu li{opacity:1;transform:none;transition:opacity .6s var(--zacht),transform .8s var(--zacht);transition-delay:calc(.32s + var(--i) * 70ms)}.menu a{font-size:1.6rem}.menu .naar-pagina,.menu .naar-pagina + .naar-pagina{border-left:0;padding-left:0;margin:4px 0 0}.menu .pagina-link{padding:10px 22px}.pijl-uit{width:15px;height:15px}}@media (min-width:901px) and (max-width:1120px){.menu{gap:16px}.menu .naar-pagina{padding-left:16px}.menu .naar-pagina + .naar-pagina{margin-left:0}.menu .pagina-link{padding:8px 12px;gap:6px}}@media (max-width:900px){.menu{transition-property:clip-path,visibility}}nav{color:var(--creme)}.menu .knop.klein{padding:10px 20px;font-size:.92rem}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--creme);color:var(--navy);font-family:"Space Grotesk",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}button,input,select{font:inherit;color:inherit}button{cursor:pointer}.wrap{max-width:1180px;margin:0 auto;padding:0 28px}a{color:inherit}.held{background:var(--navy);color:var(--creme);padding:170px 0 80px;position:relative;overflow:hidden}.oog{display:flex;align-items:center;gap:10px;color:var(--oranje);font-weight:700;font-size:.82rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}.oog i{width:12px;height:7px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}.held h1{font-size:clamp(2.6rem,7vw,5.2rem);line-height:1;letter-spacing:-.04em;max-width:900px}.held p{max-width:620px;font-size:1.15rem;opacity:.8;margin-top:22px}.sprong{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}.sprong a{text-decoration:none;border:1px solid rgba(246,241,232,.25);border-radius:999px;padding:9px 16px;font-size:.92rem;font-weight:500;transition:border-color .3s,background .3s}.sprong a:hover{border-color:var(--oranje);background:rgba(255,90,54,.1)}.sprong b{color:var(--oranje);margin-right:6px}.held-lijnen{position:absolute;right:-220px;top:50%;width:760px;transform:translateY(-50%);opacity:.08;pointer-events:none}.demo{padding:100px 0;border-bottom:1px solid rgba(22,33,62,.1)}.demo .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:center}.demo:nth-of-type(even) .wrap{grid-template-columns:1.2fr .8fr}.demo:nth-of-type(even) .tekst{order:2}.demo .nr{font-weight:700;color:var(--oranje);letter-spacing:.14em;font-size:.85rem}.demo h2{font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.08;letter-spacing:-.03em;margin:8px 0 14px}.demo .tekst>p{opacity:.8}.demo .tekst>p+p{margin-top:12px}.demo ul{list-style:none;margin-top:22px;display:grid;gap:10px}.demo li{display:flex;gap:12px;align-items:flex-start;opacity:.85;font-size:.97rem}.demo li::before{content:"";flex:none;width:11px;height:7px;margin-top:9px;background:var(--oranje);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}.demo .tekst .voor-wie{margin-top:20px;font-size:.92rem;opacity:.6;font-style:italic}.venster{background:#fff;border-radius:12px;box-shadow:0 30px 60px -36px rgba(22,33,62,.35),0 0 0 1px rgba(22,33,62,.07);overflow:hidden;min-width:0}.balk{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#ece7de;border-bottom:1px solid rgba(22,33,62,.08)}.balk i{width:11px;height:11px;border-radius:50%;background:#d6cfc3}.balk i:first-child{background:#ff6b5b}.balk i:nth-child(2){background:#f5bf4f}.balk i:nth-child(3){background:#59c35f}.balk span{flex:1;margin-left:10px;background:#fff;border-radius:7px;padding:4px 12px;font-size:.78rem;color:#6b6f80;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.app{position:relative}.slot{background:var(--navy);color:var(--creme);padding:100px 0;text-align:center}.slot h2{font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-.03em;line-height:1.05}.slot p{opacity:.78;max-width:560px;margin:18px auto 34px;font-size:1.1rem}.knop{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;background:var(--oranje);color:var(--navy);transition:transform .4s var(--zacht)}.knop:hover{transform:translateY(-2px)}.slot-knoppen{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.knop.rand{background:transparent;color:var(--creme);box-shadow:inset 0 0 0 1.5px rgba(246,241,232,.38);transition:transform .4s var(--zacht),box-shadow .3s,color .3s}.knop.rand:hover{box-shadow:inset 0 0 0 1.5px var(--oranje);color:var(--oranje)}.pijl-uit{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--zacht)}.knop:hover .pijl-uit{transform:translate(2px,-2px)}footer{background:var(--diep);color:var(--creme);padding:28px 0;font-size:.9rem;opacity:.95}footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}.melding-demo{font-size:.8rem;opacity:.55;margin-top:12px;text-align:center}.k{--z:#2a2522;--g:#8c6b4a;--p:#fbf9f6;--l:#e7e1d8;background:var(--p);color:var(--z);font-family:Georgia,"Times New Roman",serif;padding:24px 26px 26px;min-height:470px}.k-kop{display:flex;justify-content:space-between;align-items:baseline;gap:6px 14px;flex-wrap:wrap;border-bottom:1px solid var(--l);padding-bottom:12px;margin-bottom:14px}.k-merk{font-size:1.45rem;font-style:italic}.k-merk small{font-style:normal;font-family:system-ui,sans-serif;font-size:.76rem;color:#857b6f;margin-left:8px}.k-stappen{display:flex;gap:7px;font-family:system-ui,sans-serif;font-size:.76rem;color:#aaa194}.k-stappen span.aan{color:var(--z);font-weight:600}.k-stappen span.klaar{color:var(--g)}.k-stappen i{font-style:normal;opacity:.6}.k h3{font-weight:400;font-size:1.2rem;margin-bottom:8px}.k-lijst{display:grid;border-top:1px solid var(--l)}.k-dienst{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--l);padding:12px 4px;font-family:inherit;font-size:1.02rem;color:inherit;transition:background .2s}.k-dienst:hover{background:#f4f0ea}.k-dienst:hover b{color:var(--g)}.k-dienst em{display:block;font-style:normal;font-family:system-ui,sans-serif;font-size:.78rem;color:#8a8273;margin-top:2px}.k-dienst b{font-weight:400;white-space:nowrap}.k-dagen{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:16px}.k-dag{background:#f1ece4;border:1px solid transparent;border-radius:8px;padding:7px 2px;font-family:system-ui,sans-serif;text-align:center;line-height:1.2;color:var(--z);transition:.2s}.k-dag small{display:block;font-size:.66rem;color:#8a8273}.k-dag b{font-size:1.05rem;font-weight:600}.k-dag.vol{background:transparent;border-color:var(--l);color:#b5ad9f}.k-dag.vol b{text-decoration:line-through}.k-dag.aan{background:var(--z);border-color:var(--z);color:#fff}.k-dag.aan small{color:#cfc6b6}.k-uren{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.k-uur{background:#f1ece4;border:1px solid transparent;border-radius:8px;padding:9px 0;font-family:system-ui,sans-serif;font-size:.86rem;color:var(--z);transition:.2s}.k-uur:hover{border-color:#cfc5b6}.k-uur:disabled{color:#c9c1b2;text-decoration:line-through;cursor:not-allowed;background:transparent;border-color:transparent}.k-uur.aan{background:var(--z);border-color:var(--z);color:#fff}.k-veld{display:grid;gap:5px;font-family:system-ui,sans-serif;font-size:.8rem;color:#6d6658;margin-bottom:12px}.k-veld input{border:1px solid #d9d1c4;border-radius:8px;padding:10px 12px;font-size:.95rem;background:#fff;color:var(--z)}.k-veld input:focus{outline:none;border-color:var(--z)}.k-samen{border-top:1px solid var(--l);border-bottom:1px solid var(--l);padding:9px 0;margin-bottom:14px;font-size:.95rem}.k-samen div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}.k-samen span{font-family:system-ui,sans-serif;font-size:.82rem;color:#8a8273}.k-actie{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}.k-btn{background:var(--z);color:#fff;border:0;border-radius:8px;padding:12px 22px;font-family:system-ui,sans-serif;font-size:.9rem;transition:opacity .2s}.k-btn:disabled{opacity:.3;cursor:not-allowed}.k-link{background:none;border:0;font-family:system-ui,sans-serif;font-size:.86rem;color:#8a8273;text-decoration:underline}.k-vol{font-family:system-ui,sans-serif;font-size:.88rem;color:#8a8273;border:1px dashed #d8cfc0;border-radius:4px;padding:16px;text-align:center}.k-info{font-family:system-ui,sans-serif;font-size:.76rem;color:#8a8273;margin-top:10px}.k-fout{color:#b3412e;font-family:system-ui,sans-serif;font-size:.8rem;min-height:1.2em}.k-ok{padding:18px 2px}.k-ok h3{font-size:1.45rem;margin-bottom:6px}.k-ok p{font-family:system-ui,sans-serif;font-size:.92rem;color:#6d6658;margin:0 0 18px;line-height:1.55}.k-paneel{animation:k-in .3s ease-out}@keyframes k-in{from{opacity:0}}.p{--i:#1c1b19;--g:#77716a;--l:#e4e0d9;--bg:#fff;background:var(--bg);color:var(--i);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;display:grid;grid-template-columns:1.1fr .9fr;min-height:470px}.p-links{padding:22px 22px 24px;display:grid;gap:18px;align-content:start}.p-merk{font-family:Georgia,"Times New Roman",serif;font-size:1.35rem}.p-merk small{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:.76rem;color:var(--g);margin-left:6px}.p-groep>span{display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem;font-weight:700;margin-bottom:7px}.p-groep>span b{font-weight:400;color:var(--g);font-size:.85rem}.p-types{display:grid;border-top:1px solid var(--l)}.p-type{display:flex;justify-content:space-between;align-items:center;gap:10px;border:0;border-bottom:1px solid var(--l);background:none;padding:8px 4px 8px 26px;font-size:.9rem;color:var(--i);text-align:left;position:relative}.p-type::before{content:"";position:absolute;left:4px;top:50%;width:11px;height:11px;margin-top:-7px;border:1.5px solid #a9a39b;border-radius:50%}.p-type.aan{font-weight:700}.p-type.aan::before{border-color:var(--i);background:var(--i);box-shadow:inset 0 0 0 2.5px #fff}.p-type small{color:var(--g);font-size:.8rem;font-weight:400}.p input[type=range]{width:100%;accent-color:var(--i);height:22px}.p-schaal{display:flex;justify-content:space-between;font-size:.7rem;color:var(--g);margin-top:2px}.p-check{display:flex;align-items:center;gap:10px;font-size:.88rem;padding:4px 0;cursor:pointer}.p-check input{width:16px;height:16px;accent-color:var(--i)}.p-check em{margin-left:auto;font-style:normal;color:var(--g);font-size:.8rem;white-space:nowrap}.p-check.uit{opacity:.35;cursor:not-allowed}.p-seg{display:flex}.p-seg button{flex:1;border:1px solid var(--l);background:#fff;padding:8px 4px;font-size:.78rem;color:var(--g)}.p-seg button:first-child{border-radius:8px 0 0 8px}.p-seg button:last-child{border-radius:0 8px 8px 0;border-left:0}.p-seg button.aan{background:var(--i);border-color:var(--i);color:#fff}.p-twee{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.p-datum{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.p-datum input{width:100%;border:1px solid var(--l);border-radius:8px;padding:7px 9px;font-size:.9rem;background:#fff;color:var(--i)}.p-vrij{font-size:.8rem;font-weight:600}.p-vrij.ja{color:#2e7d4f}.p-vrij.nee{color:#b3412e}.p-rechts{background:#f7f5f1;border-left:1px solid var(--l);padding:22px 22px 24px;display:grid;gap:14px;align-content:start}.p-titel{font-size:.95rem;font-weight:700;border-bottom:1px solid #ddd7ce;padding-bottom:10px}.p-rij{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;padding:3px 0;color:#3f3c38}.p-rij span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}.p-rij.tot{border-top:1px solid var(--i);margin-top:8px;padding-top:9px;color:var(--i);font-weight:700;align-items:baseline}.p-rij.tot b{font-size:1.5rem;letter-spacing:-.02em}.p-btwrij{font-size:.76rem;color:var(--g)}.p-incl{font-size:.8rem;color:#55514c;line-height:1.55}.p-incl b{color:var(--i)}.p-btn{background:var(--i);color:#fff;border:0;border-radius:8px;padding:13px;font-weight:700;font-size:.9rem;transition:opacity .2s}.p-btn:hover{opacity:.85}.p-btn.ok{background:#2e7d4f}.p-btn:disabled{opacity:.35;cursor:not-allowed}.p-klein{font-size:.72rem;color:var(--g)}.f{--r:#c8202f;--m:#f2b233;--c:#fffaf0;--t:#2b1b12;background:var(--c);color:var(--t);font-family:"Trebuchet MS",system-ui,sans-serif;min-height:470px;display:grid;grid-template-columns:1.25fr .9fr}.f-menu{padding:20px 20px 22px}.f-merk{margin-bottom:12px}.f-merk b{display:block;font-size:1.3rem;font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:var(--r)}.f-merk small{font-size:.76rem;color:#8a6a52}.f-tabs{display:flex;gap:18px;border-bottom:1px solid #ecdcc2;margin-bottom:4px;overflow-x:auto;scrollbar-width:none}.f-tabs button{border:0;border-bottom:3px solid transparent;background:none;padding:6px 0;margin-bottom:-1px;font-weight:700;font-size:.9rem;color:#9a7b62;white-space:nowrap}.f-tabs button.aan{color:var(--t);border-color:var(--m)}.f-items{display:grid}.f-item{display:flex;align-items:baseline;gap:8px;padding:11px 0;animation:f-in .25s ease-out both}.f-item b{font-size:.98rem}.f-item .lijn{flex:1;border-bottom:2px dotted #d9c4a3;min-width:12px}.f-item .prijs{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}.f-plus{align-self:center;width:30px;height:30px;border-radius:8px;border:0;background:var(--r);color:#fff;font-size:1.15rem;font-weight:700;line-height:1;flex:none;margin-left:6px}.f-plus:active{transform:scale(.92)}@keyframes f-in{from{opacity:0}}.f-mand{background:#fff;color:var(--t);border-left:1px solid #f0e3cc;padding:20px 18px 22px;display:flex;flex-direction:column;min-width:0}.f-mand h4{font-size:1.05rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.f-teller{font-size:.82rem;font-weight:400;opacity:.75}.f-regels{flex:1;display:grid;gap:8px;align-content:start;font-size:.88rem;max-height:250px;overflow:auto;padding-right:2px}.f-regel{display:flex;align-items:center;gap:8px}.f-regel span{flex:1;min-width:0}.f-regel button{width:24px;height:24px;border-radius:6px;border:1px solid #e6d3b3;background:none;color:var(--t);font-weight:700;line-height:1}.f-leeg{opacity:.55;font-size:.86rem}.f-afhaal{display:grid;gap:5px;font-size:.78rem;color:#8a6a52;margin:12px 0}.f-afhaal select{background:#fff;border:1px solid #e6d3b3;border-radius:8px;padding:8px;color:var(--t)}.f-afhaal option{color:#000}.f-betaal{font-size:.72rem;opacity:.6;margin-top:8px}.f-later{font-size:.86rem;color:#8a6a52;max-width:360px;margin:-8px auto 18px}.f-tot{display:flex;justify-content:space-between;font-weight:900;font-size:1.1rem;margin-bottom:12px;border-top:1px solid #f0e3cc;padding-top:10px}.f-btn{background:var(--r);color:#fff;border:0;border-radius:8px;padding:13px;font-weight:900;font-size:1rem;transition:opacity .2s}.f-btn:disabled{opacity:.3;cursor:not-allowed}.f-volg{grid-column:1/-1;padding:34px 26px;text-align:center;animation:f-in .3s ease-out}.f-volg .nummer{display:inline-block;background:var(--m);font-weight:900;font-size:2.2rem;border-radius:10px;padding:2px 18px;margin:8px 0 6px}.f-volg p{color:#8a6a52;font-size:.92rem}.f-stap{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:26px auto 22px;max-width:440px}.f-stap div{font-size:.8rem;font-weight:700;color:#b49a85;display:grid;gap:8px;justify-items:center}.f-stap div::before{content:"";width:100%;height:6px;border-radius:3px;background:#efdcc0;transition:background .5s}.f-stap div.aan{color:var(--t)}.f-stap div.aan::before{background:var(--m)}.f-stap div.klaar::before{background:#3a8a4f}.f-nog{background:none;border:1.5px solid var(--t);border-radius:8px;padding:8px 16px;font-weight:700}.d{--bg:#fff;--k:#f3f4f6;--l:#e3e6ea;--t:#1f2933;--m:#6b7682;--a:#2f5d8a;--a2:#c5ced8;background:var(--bg);color:var(--t);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 20px 22px;min-height:470px}.d-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}.d-top b{font-size:1.05rem}.d-top small{display:block;color:var(--m);font-size:.76rem}.d-seg{display:flex;background:var(--k);border-radius:8px;padding:3px}.d-seg button{border:0;background:none;color:var(--m);font-size:.8rem;padding:5px 12px;border-radius:6px}.d-seg button.aan{background:#fff;color:var(--t);box-shadow:0 1px 2px rgba(0,0,0,.08)}.d-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}.d-kaart{background:var(--k);border-radius:8px;padding:11px 13px;min-width:0}.d-kaart span{display:block;color:var(--m);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.d-kaart b{display:block;font-size:1.2rem;font-weight:600;margin:2px 0 1px;font-variant-numeric:tabular-nums;white-space:nowrap}.d-kaart em{font-style:normal;font-size:.72rem;color:var(--m)}.d-kaart em.op b,.d-kaart em.op{color:#2d7a46}.d-kaart em.neer{color:#b3412e}.d-onder{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}.d-blok{background:var(--k);border-radius:8px;padding:12px 14px;min-width:0;position:relative}.d-blok h5{font-size:.8rem;font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}.d-blok h5 small{font-weight:400;font-size:.72rem;color:var(--m)}.d-blok h5 i{font-style:normal;font-weight:400;color:var(--m);display:flex;gap:10px}.d-blok h5 i span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:5px;background:var(--a)}.d-blok h5 i span+span::before{background:var(--a2)}.d-grafiek svg{display:block;width:100%;height:auto;overflow:visible}.d-staaf{fill:var(--a);transition:y .5s ease-out,height .5s ease-out,opacity .2s}.d-staaf.vorig{fill:var(--a2)}.d-grafiek .doel:hover .d-staaf{opacity:.75}.d-as{fill:var(--m);font-size:10px}.d-tip{position:absolute;pointer-events:none;background:var(--t);color:#fff;border-radius:3px;padding:5px 8px;font-size:.74rem;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .15s}.d-top5{display:grid;gap:9px}.d-prod{font-size:.8rem}.d-prod div{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px;white-space:nowrap}.d-prod div span{color:var(--m);font-variant-numeric:tabular-nums}.d-prod i{display:block;height:4px;border-radius:2px;background:#e3e6ea;overflow:hidden}.d-prod i::after{content:"";display:block;height:100%;width:var(--w);background:var(--a);transition:width .6s ease-out}@media (max-width:980px){.demo .wrap{grid-template-columns:1fr;gap:36px}.demo:nth-of-type(even) .wrap{grid-template-columns:1fr}.demo:nth-of-type(even) .tekst{order:0}}@media (max-width:640px){body{font-size:16px}.wrap{padding:0 16px}.held{padding:130px 0 56px}.demo{padding:70px 0}.p,.f{grid-template-columns:1fr}.p-rechts{border-left:0;border-top:1px solid var(--l)}.f-mand{border-left:0;border-top:1px solid #f0e3cc}.d-kpi{grid-template-columns:1fr 1fr;gap:8px}.d-onder{grid-template-columns:1fr}.k{padding:20px 16px}.k-dagen{grid-template-columns:repeat(3,1fr)}.k-uren{grid-template-columns:repeat(4,1fr)}.p-twee{grid-template-columns:1fr}}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}</style>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "abae760e20f744678168aeace0ceaabb"}'></script>
 <link rel="canonical" href="https://giometrie.be/voorbeelden.html">
 <meta property="og:type" content="website">
@@ -391,125 +111,35 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
 
 <footer><div class="wrap"><span>© <span class="jaar">2026</span> Giometrie · BTW BE 1044.780.367</span><span><a href="privacy.html">Privacy</a> · <a href="voorwaarden.html">Algemene voorwaarden</a> · <a href="https://www.instagram.com/giometrie.be/" target="_blank" rel="noopener">Instagram</a></span></div></footer>
 
-<script>
-(() => {
-  const $ = (s, el = document) => el.querySelector(s);
-  const euro = (n, d = 2) => '€ ' + n.toLocaleString('nl-BE', { minimumFractionDigits: d, maximumFractionDigits: d });
-  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('.jaar').forEach(e => e.textContent = new Date().getFullYear());
-  // ---------- menu (zelfde als op de andere pagina's) ----------
-  const nav = $('nav'), burger = $('.burger'), menu = $('.menu');
-  document.querySelectorAll('.menu li').forEach((li, i) => li.style.setProperty('--i', i));
-  burger.addEventListener('click', () => {
-    const b = burger.getBoundingClientRect(), bx = b.left + b.width / 2, by = b.top + b.height / 2;
-    const straal = Math.max(...[[0, 0], [innerWidth, 0], [0, innerHeight], [innerWidth, innerHeight]].map(([x, y]) => Math.hypot(x - bx, y - by)));
-    menu.style.setProperty('--bx', bx + 'px'); menu.style.setProperty('--by', by + 'px'); menu.style.setProperty('--r', Math.ceil(straal) + 'px');
-    const o = nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o); burger.setAttribute('aria-label', o ? 'Menu sluiten' : 'Menu openen');
-    document.body.style.overflow = o ? 'hidden' : '';
-  });
-  document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); burger.setAttribute('aria-expanded', false); document.body.style.overflow = ''; }));
-  const vast = () => nav.classList.toggle('vast', scrollY > 30); addEventListener('scroll', vast, { passive: true }); vast();
-  // telt een getal vloeiend op naar de nieuwe waarde
-  const tel = (el, naar, fmt, duur = 600) => {
-    const van = +el.dataset.w || 0; el.dataset.w = naar;
-    if (rustig) { el.textContent = fmt(naar); return; }
-    const t0 = performance.now();
-    const stap = t => { const p = Math.min(1, (t - t0) / duur), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(van + (naar - van) * e); if (p < 1) requestAnimationFrame(stap); };
-    requestAnimationFrame(stap);
-  };
-
-  // =============== 1. kapsalon ===============
-  (() => {
-    const app = $('#k-app');
-    const DIENSTEN = [['Knippen dames', 'wassen, knippen en föhnen', 48, 60], ['Knippen heren', 'wassen, knippen en stylen', 29, 30],
-                      ['Kleuren en knippen', 'uitgroei kleuren, knippen en föhnen', 89, 120], ['Brushing', 'wassen en brushen', 28, 30]];
-    const DAG = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'], MAAND = 'jan feb mrt apr mei jun jul aug sep okt nov dec'.split(' ');
-    const dagen = []; for (let d = new Date(), i = 0; dagen.length < 6 && i < 14; i++) { d.setDate(d.getDate() + 1); if (d.getDay() > 1) dagen.push(new Date(d)); }
-    // openingsuren in minuten: [open, dicht, middagpauze van, tot]. Di–vr 9:00–18:00 met pauze 12:30–13:30, za 8:30–16:00.
-    const OPEN = { 2: [540, 1080, 750, 810], 3: [540, 1080, 750, 810], 4: [540, 1080, 750, 810], 5: [540, 1080, 750, 810], 6: [510, 960, 0, 0] };
-    const uur = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
-    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-    // verzonnen agenda: elk blok van 30 minuten is al dan niet al geboekt (vast per dag)
-    // de eerste dag is volledig volgeboekt, de andere dagen deels
-    const geboekt = (d, m) => { if (d === dagen[0]) return true; const x = Math.sin(d.getDate() * 12.9898 + d.getMonth() * 78.233 + m * .731) * 43758.5453; return x - Math.floor(x) < .22; };
-    const starts = d => { const [o, c, p1, p2] = OPEN[d.getDay()], r = []; for (let m = o; m < c; m += 30) if (!(m >= p1 && m < p2)) r.push(m); return r; };
-    // een beginuur kan enkel als de hele behandeling past: vóór sluitingstijd, niet over de pauze, en geen geboekt blok ertussen
-    const kan = (d, m) => { const [, c, p1, p2] = OPEN[d.getDay()], duur = DIENSTEN[s.dienst][3];
-      if (m + duur > c || (p2 > p1 && m < p2 && m + duur > p1)) return false;
-      for (let t = m; t < m + duur; t += 30) if (geboekt(d, t)) return false; return true; };
-    const BEGIN = { stap: 1, dienst: null, dag: 1, uur: null, naam: '', tel: '' };      // start op de eerste dag met plaats
-    let s = { ...BEGIN };
-    const kop = () => `<div class="k-kop"><div class="k-merk">Salon Margot<small>Afspraak maken</small></div>
-      <div class="k-stappen">${['Behandeling', 'Moment', 'Gegevens'].map((t, i) => `<span class="${i + 1 === s.stap ? 'aan' : i + 1 < s.stap ? 'klaar' : ''}">${t}</span>`).join('<i>›</i>')}</div></div>`;
-    const teken = () => {
-      let h = '';
-      if (s.stap === 1) h = `<div class="k-paneel"><h3>Kies je behandeling</h3><div class="k-lijst">${DIENSTEN.map((d, i) =>
-          `<button class="k-dienst" data-d="${i}"><span>${d[0]}<em>${d[1]} · ${d[3]} min</em></span><b>€ ${d[2]}</b></button>`).join('')}</div></div>`;
-      else if (s.stap === 2) h = `<div class="k-paneel"><h3>Wanneer past het?</h3>
-          <div class="k-dagen">${dagen.map((d, i) => `<button class="k-dag${i === s.dag ? ' aan' : ''}${i === 0 ? ' vol' : ''}" data-dag="${i}"><small>${DAG[d.getDay()]}</small><b>${d.getDate()}</b><small>${i === 0 ? 'volzet' : MAAND[d.getMonth()]}</small></button>`).join('')}</div>
+<script>(()=>{const $=(s,el=document)=>el.querySelector(s);const euro=(n,d=2)=>'€ '+n.toLocaleString('nl-BE',{minimumFractionDigits:d,maximumFractionDigits:d});const rustig=matchMedia('(prefers-reduced-motion: reduce)').matches;document.querySelectorAll('.jaar').forEach(e=>e.textContent=new Date().getFullYear());const nav=$('nav'),burger=$('.burger'),menu=$('.menu');document.querySelectorAll('.menu li').forEach((li,i)=>li.style.setProperty('--i',i));burger.addEventListener('click',()=>{const b=burger.getBoundingClientRect(),bx=b.left+b.width/2,by=b.top+b.height/2;const straal=Math.max(...[[0,0],[innerWidth,0],[0,innerHeight],[innerWidth,innerHeight]].map(([x,y])=>Math.hypot(x-bx,y-by)));menu.style.setProperty('--bx',bx+'px');menu.style.setProperty('--by',by+'px');menu.style.setProperty('--r',Math.ceil(straal)+'px');const o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o);burger.setAttribute('aria-label',o?'Menu sluiten':'Menu openen');document.body.style.overflow=o?'hidden':'';});document.querySelectorAll('.menu a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');burger.setAttribute('aria-expanded',false);document.body.style.overflow='';}));const vast=()=>nav.classList.toggle('vast',scrollY>30);addEventListener('scroll',vast,{passive:true});vast();const tel=(el,naar,fmt,duur=600)=>{const van=+el.dataset.w||0;el.dataset.w=naar;if(rustig){el.textContent=fmt(naar);return;}
+const t0=performance.now();const stap=t=>{const p=Math.min(1,(t-t0)/duur),e=1-Math.pow(1-p,3);el.textContent=fmt(van+(naar-van)*e);if(p<1)requestAnimationFrame(stap);};requestAnimationFrame(stap);};(()=>{const app=$('#k-app');const DIENSTEN=[['Knippen dames','wassen, knippen en föhnen',48,60],['Knippen heren','wassen, knippen en stylen',29,30],['Kleuren en knippen','uitgroei kleuren, knippen en föhnen',89,120],['Brushing','wassen en brushen',28,30]];const DAG=['zo','ma','di','wo','do','vr','za'],MAAND='jan feb mrt apr mei jun jul aug sep okt nov dec'.split(' ');const dagen=[];for(let d=new Date(),i=0;dagen.length<6&&i<14;i++){d.setDate(d.getDate()+1);if(d.getDay()>1)dagen.push(new Date(d));}
+const OPEN={2:[540,1080,750,810],3:[540,1080,750,810],4:[540,1080,750,810],5:[540,1080,750,810],6:[510,960,0,0]};const uur=m=>`${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);const geboekt=(d,m)=>{if(d===dagen[0])return true;const x=Math.sin(d.getDate()*12.9898+d.getMonth()*78.233+m*.731)*43758.5453;return x-Math.floor(x)<.22;};const starts=d=>{const[o,c,p1,p2]=OPEN[d.getDay()],r=[];for(let m=o;m<c;m+=30)if(!(m>=p1&&m<p2))r.push(m);return r;};const kan=(d,m)=>{const[,c,p1,p2]=OPEN[d.getDay()],duur=DIENSTEN[s.dienst][3];if(m+duur>c||(p2>p1&&m<p2&&m+duur>p1))return false;for(let t=m;t<m+duur;t+=30)if(geboekt(d,t))return false;return true;};const BEGIN={stap:1,dienst:null,dag:1,uur:null,naam:'',tel:''};let s={...BEGIN};const kop=()=>`<div class="k-kop"><div class="k-merk">Salon Margot<small>Afspraak maken</small></div>
+      <div class="k-stappen">${['Behandeling', 'Moment', 'Gegevens'].map((t, i) => `<span class="${i + 1 === s.stap ? 'aan' : i + 1 < s.stap ? 'klaar' : ''}">${t}</span>`).join('<i>›</i>')}</div></div>`;const teken=()=>{let h='';if(s.stap===1)h=`<div class="k-paneel"><h3>Kies je behandeling</h3><div class="k-lijst">${DIENSTEN.map((d, i) =>
+          `<button class="k-dienst"data-d="${i}"><span>${d[0]}<em>${d[1]}· ${d[3]}min</em></span><b>€ ${d[2]}</b></button>`).join('')}</div></div>`;else if(s.stap===2)h=`<div class="k-paneel"><h3>Wanneer past het?</h3>
+          <div class="k-dagen">${dagen.map((d, i) => `<button class="k-dag${i === s.dag ? ' aan' : ''}${i === 0 ? ' vol' : ''}"data-dag="${i}"><small>${DAG[d.getDay()]}</small><b>${d.getDate()}</b><small>${i===0?'volzet':MAAND[d.getMonth()]}</small></button>`).join('')}</div>
           ${(() => { const d = dagen[s.dag], st = starts(d); return st.some(m => kan(d, m))
-            ? `<div class="k-uren">${st.filter(m => kan(d, m)).map(m => `<button class="k-uur${m === s.uur ? ' aan' : ''}" data-u="${m}">${uur(m)}</button>`).join('')}</div>`
+            ? `<div class="k-uren">${st.filter(m=>kan(d,m)).map(m=>`<button class="k-uur${m === s.uur ? ' aan' : ''}" data-u="${m}">${uur(m)}</button>`).join('')}</div>`
             : '<p class="k-vol">Deze dag is volzet. Kies een andere dag.</p>'; })()}
           <p class="k-info">${DAG[dagen[s.dag].getDay()] === 'za' ? 'Zaterdag open van 8:30 tot 16:00.' : 'Open van 9:00 tot 18:00, middagpauze van 12:30 tot 13:30.'} ${DIENSTEN[s.dienst][0]} duurt ${DIENSTEN[s.dienst][3]} minuten.</p>
-          <div class="k-actie"><button class="k-link" data-terug>← Terug</button><button class="k-btn" data-verder ${s.uur !== null ? '' : 'disabled'}>Verder</button></div></div>`;
-      else if (s.stap === 3) { const d = DIENSTEN[s.dienst], dg = dagen[s.dag];
-        h = `<div class="k-paneel"><h3>Bijna klaar</h3><div class="k-samen">
+          <div class="k-actie"><button class="k-link" data-terug>← Terug</button><button class="k-btn" data-verder ${s.uur !== null ? '' : 'disabled'}>Verder</button></div></div>`;else if(s.stap===3){const d=DIENSTEN[s.dienst],dg=dagen[s.dag];h=`<div class="k-paneel"><h3>Bijna klaar</h3><div class="k-samen">
           <div><span>Behandeling</span>${d[0]}</div><div><span>Wanneer</span>${DAG[dg.getDay()]} ${dg.getDate()} ${MAAND[dg.getMonth()]} van ${uur(s.uur)} tot ${uur(s.uur + d[3])}</div><div><span>Prijs</span>€ ${d[2]}</div></div>
           <label class="k-veld">Je naam<input id="k-naam" autocomplete="off" value="${esc(s.naam)}" placeholder="bv. Sarah"></label>
           <label class="k-veld">Gsm-nummer<input id="k-tel" inputmode="tel" autocomplete="off" value="${esc(s.tel)}" placeholder="0470 12 34 56"></label>
           <div class="k-fout" id="k-fout"></div>
-          <div class="k-actie"><button class="k-link" data-terug>← Terug</button><button class="k-btn" data-bevestig>Bevestig afspraak</button></div></div>`; }
-      else { const d = DIENSTEN[s.dienst], dg = dagen[s.dag];
-        h = `<div class="k-ok"><h3>Tot dan, ${esc(s.naam.split(' ')[0])}!</h3>
+          <div class="k-actie"><button class="k-link" data-terug>← Terug</button><button class="k-btn" data-bevestig>Bevestig afspraak</button></div></div>`;}
+else{const d=DIENSTEN[s.dienst],dg=dagen[s.dag];h=`<div class="k-ok"><h3>Tot dan, ${esc(s.naam.split(' ')[0])}!</h3>
           <p>${d[0]} op ${DAG[dg.getDay()]} ${dg.getDate()} ${MAAND[dg.getMonth()]} om ${uur(s.uur)}.<br>Je krijgt de dag voordien een sms als herinnering.</p>
-          <button class="k-btn" data-opnieuw>Nieuwe afspraak</button></div>`; }
-      app.innerHTML = kop() + h;
-    };
-    app.addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b || b.disabled) return;
-      if (b.dataset.d) { s.dienst = +b.dataset.d; s.stap = 2; if (s.uur !== null && !kan(dagen[s.dag], s.uur)) s.uur = null; }
-      else if (b.dataset.dag) { s.dag = +b.dataset.dag; if (s.uur !== null && !kan(dagen[s.dag], s.uur)) s.uur = null; }
-      else if (b.dataset.u) s.uur = +b.dataset.u;
-      else if ('verder' in b.dataset) s.stap = 3;
-      else if ('terug' in b.dataset) s.stap--;
-      else if ('bevestig' in b.dataset) {
-        s.naam = $('#k-naam').value.trim(); s.tel = $('#k-tel').value.trim();
-        if (s.naam.length < 2) return $('#k-fout').textContent = 'Vul je naam in.';
-        if (!/^\+?\d{9,13}$/.test(s.tel.replace(/[\s./-]/g, ''))) return $('#k-fout').textContent = 'Vul een geldig gsm-nummer in.';
-        s.stap = 4;
-      } else if ('opnieuw' in b.dataset) s = { ...BEGIN };
-      const pos = app.getBoundingClientRect().top; teken();
-      if (b.dataset.u || b.dataset.dag) return;            // binnen dezelfde stap: niet verspringen
-      const nieuw = app.getBoundingClientRect().top; if (Math.abs(nieuw - pos) > 2) scrollBy(0, nieuw - pos);
-    });
-    app.addEventListener('input', e => { if (e.target.id === 'k-naam') s.naam = e.target.value; if (e.target.id === 'k-tel') s.tel = e.target.value; });
-    teken();
-  })();
-
-  // =============== 2. fotograaf ===============
-  (() => {
-    const app = $('#p-app');
-    // [naam, uurtarief excl. btw, minimum uren, standaard uren, bewerkte foto's per uur, levering (weken), kleuren voor het fotoraster]
-    const TYPES = { huwelijk: ['Huwelijk', 240, 4, 8, 75, 6, ['#e8dccb', '#c9b49a', '#f3ece2', '#a88f72', '#efe6da', '#d7c5ad']],
-                    portret: ['Zakelijk portret', 150, 1, 2, 25, 1, ['#cfd6dd', '#8e9aa6', '#e4e8ec', '#5f6b77', '#b7c1ca', '#dfe4e8']],
-                    gezin: ['Gezin', 175, 1, 1.5, 40, 2, ['#f0d9c4', '#e3b48d', '#f6e8da', '#c98d62', '#ecd0b8', '#f3e1cf']],
-                    event: ['Event', 140, 2, 3, 40, 2, ['#2c2a3a', '#b4532a', '#4b4762', '#e0a05a', '#3a3750', '#7d4f6b']] };
-    const EXTRA = [['tweede', 'Tweede fotograaf', 'per uur', u => u * 90, t => t === 'huwelijk' || t === 'event'],
-                   ['drone', 'Dronebeelden', '', () => 195, t => t !== 'portret'],
-                   ['album', 'Fotoalbum 30 × 30 cm', '', () => 390, () => true],
-                   ['spoed', 'Levering binnen 7 dagen', '', () => 150, () => true]];
-    const s = { type: 'huwelijk', uren: 8, km: 20, klant: 'particulier', datum: '', extra: { tweede: false, drone: false, album: true, spoed: false } };
-    const getal = (v, d = 0) => v.toLocaleString('nl-BE', { minimumFractionDigits: d, maximumFractionDigits: d });
-    const morgen = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
-    app.innerHTML = `<div class="p-links">
+          <button class="k-btn" data-opnieuw>Nieuwe afspraak</button></div>`;}
+app.innerHTML=kop()+h;};app.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.d){s.dienst=+b.dataset.d;s.stap=2;if(s.uur!==null&&!kan(dagen[s.dag],s.uur))s.uur=null;}
+else if(b.dataset.dag){s.dag=+b.dataset.dag;if(s.uur!==null&&!kan(dagen[s.dag],s.uur))s.uur=null;}
+else if(b.dataset.u)s.uur=+b.dataset.u;else if('verder'in b.dataset)s.stap=3;else if('terug'in b.dataset)s.stap--;else if('bevestig'in b.dataset){s.naam=$('#k-naam').value.trim();s.tel=$('#k-tel').value.trim();if(s.naam.length<2)return $('#k-fout').textContent='Vul je naam in.';if(!/^\+?\d{9,13}$/.test(s.tel.replace(/[\s./-]/g,'')))return $('#k-fout').textContent='Vul een geldig gsm-nummer in.';s.stap=4;}else if('opnieuw'in b.dataset)s={...BEGIN};const pos=app.getBoundingClientRect().top;teken();if(b.dataset.u||b.dataset.dag)return;const nieuw=app.getBoundingClientRect().top;if(Math.abs(nieuw-pos)>2)scrollBy(0,nieuw-pos);});app.addEventListener('input',e=>{if(e.target.id==='k-naam')s.naam=e.target.value;if(e.target.id==='k-tel')s.tel=e.target.value;});teken();})();(()=>{const app=$('#p-app');const TYPES={huwelijk:['Huwelijk',240,4,8,75,6,['#e8dccb','#c9b49a','#f3ece2','#a88f72','#efe6da','#d7c5ad']],portret:['Zakelijk portret',150,1,2,25,1,['#cfd6dd','#8e9aa6','#e4e8ec','#5f6b77','#b7c1ca','#dfe4e8']],gezin:['Gezin',175,1,1.5,40,2,['#f0d9c4','#e3b48d','#f6e8da','#c98d62','#ecd0b8','#f3e1cf']],event:['Event',140,2,3,40,2,['#2c2a3a','#b4532a','#4b4762','#e0a05a','#3a3750','#7d4f6b']]};const EXTRA=[['tweede','Tweede fotograaf','per uur',u=>u*90,t=>t==='huwelijk'||t==='event'],['drone','Dronebeelden','',()=>195,t=>t!=='portret'],['album','Fotoalbum 30 × 30 cm','',()=>390,()=>true],['spoed','Levering binnen 7 dagen','',()=>150,()=>true]];const s={type:'huwelijk',uren:8,km:20,klant:'particulier',datum:'',extra:{tweede:false,drone:false,album:true,spoed:false}};const getal=(v,d=0)=>v.toLocaleString('nl-BE',{minimumFractionDigits:d,maximumFractionDigits:d});const morgen=new Date(Date.now()+864e5).toISOString().slice(0,10);app.innerHTML=`<div class="p-links">
         <div class="p-merk">Studio Noor<small>fotografie</small></div>
         <div class="p-groep"><span>Soort shoot</span><div class="p-types">${Object.entries(TYPES).map(([k, t]) =>
-          `<button class="p-type${k === s.type ? ' aan' : ''}" data-type="${k}"><span>${t[0]}</span><small>vanaf € <span data-vanaf="${k}">${getal(t[1] * t[2] * 1.21)}</span></small></button>`).join('')}</div></div>
+          `<button class="p-type${k === s.type ? ' aan' : ''}"data-type="${k}"><span>${t[0]}</span><small>vanaf €<span data-vanaf="${k}">${getal(t[1]*t[2]*1.21)}</span></small></button>`).join('')}</div></div>
         <div class="p-groep"><span>Duur <b id="p-uren"></b></span><input type="range" id="p-duur" min="1" max="12" step="0.5" aria-label="Duur van de shoot in uren">
           <div class="p-schaal"><span id="p-min"></span><span>12 uur</span></div></div>
         <div class="p-groep"><span>Extra's</span>${EXTRA.map(([k, naam, uitleg]) =>
-          `<label class="p-check" data-rij="${k}"><input type="checkbox" data-x="${k}" ${s.extra[k] ? 'checked' : ''}>${naam}<em id="p-x-${k}"></em></label>`).join('')}</div>
+          `<label class="p-check"data-rij="${k}"><input type="checkbox"data-x="${k}"${s.extra[k]?'checked':''}>${naam}<em id="p-x-${k}"></em></label>`).join('')}</div>
         <div class="p-groep"><span>Verplaatsing <b id="p-kmtekst"></b></span><input type="range" id="p-km" min="0" max="120" step="5" value="${s.km}" aria-label="Afstand in kilometer">
           <div class="p-schaal"><span>eerste 25 km gratis</span><span>120 km</span></div></div>
         <div class="p-twee"><div class="p-groep"><span>Datum</span><div class="p-datum"><input type="date" id="p-datum" min="${morgen}" aria-label="Datum van de shoot"><span class="p-vrij" id="p-vrij"></span></div></div>
@@ -527,179 +157,37 @@ footer a{opacity:.7;text-decoration:none}footer a:hover{opacity:1}
         <p class="p-incl" id="p-incl"></p>
         <button class="p-btn" id="p-boek">Reserveer je datum</button>
         <p class="p-klein">Je datum ligt pas vast na bevestiging en een voorschot van 30 %.</p>
-      </div>`;
-    // verzonnen agenda: sommige dagen zijn al geboekt (vooral zaterdagen)
-    const geboekt = d => { const dt = new Date(d + 'T12:00'); const x = Math.sin(dt.getDate() * 7.1 + dt.getMonth() * 3.3) * 999; return (x - Math.floor(x)) < (dt.getDay() === 6 ? .6 : .15); };
-    const bereken = () => {
-      const t = TYPES[s.type], duur = $('#p-duur');
-      if (s.uren < t[2]) s.uren = t[2];
-      duur.min = t[2]; duur.value = s.uren;
-      const shoot = s.uren * t[1];
-      const extras = EXTRA.filter(([k, , , , mag]) => mag(s.type) && s.extra[k]);
-      const extra = extras.reduce((som, [, , , prijs]) => som + prijs(s.uren), 0);
-      const km = Math.max(0, s.km - 25) * 2 * .45;                 // heen en terug, vanaf 25 km
-      const excl = shoot + extra + km, btw = excl * .21, part = s.klant === 'particulier';
-      const fotos = Math.round(s.uren * t[4] / 5) * 5;
-      $('#p-uren').textContent = getal(s.uren, s.uren % 1 ? 1 : 0) + ' uur';
-      $('#p-min').textContent = `minimum ${getal(t[2], t[2] % 1 ? 1 : 0)} uur`;
-      EXTRA.forEach(([k, , uitleg, prijs, mag]) => {
-        const rij = app.querySelector(`[data-rij="${k}"]`), ok = mag(s.type);
-        rij.classList.toggle('uit', !ok); rij.querySelector('input').disabled = !ok;
-        const bedrag = k === 'tweede' ? prijs(1) : prijs(s.uren);       // tweede fotograaf: prijs per uur
-        $('#p-x-' + k).textContent = ok ? `+ € ${getal(bedrag * (part ? 1.21 : 1))}${uitleg ? ' ' + uitleg : ''}` : 'niet bij dit soort shoot';
-      });
-      $('#p-kmtekst').textContent = s.km + ' km';
-      app.querySelectorAll('[data-vanaf]').forEach(el => { const tt = TYPES[el.dataset.vanaf]; el.textContent = getal(tt[1] * tt[2] * (part ? 1.21 : 1)); });
-      $('#p-titel').textContent = `${t[0]} · ${getal(s.uren, s.uren % 1 ? 1 : 0)} uur`;
-      $('#p-shootlabel').textContent = `Shoot (${getal(s.uren, s.uren % 1 ? 1 : 0)} u × € ${getal(t[1] * (part ? 1.21 : 1))})`;
-      $('#p-extras').innerHTML = extras.map(([k, naam, , prijs]) => `<div class="p-rij"><span>${k === 'tweede' ? naam + ' (' + getal(s.uren, s.uren % 1 ? 1 : 0) + ' u)' : naam}</span><span>${euro(prijs(s.uren) * (part ? 1.21 : 1), 0)}</span></div>`).join('');
-      $('#p-rij-km').style.display = km ? '' : 'none';
-      $('#p-kmlabel').textContent = `Verplaatsing (${(s.km - 25) * 2} km)`;
-      $('#p-rij-btw').style.display = part ? '' : 'none';
-      $('#p-totlabel').textContent = part ? 'Totaal incl. btw' : 'Totaal excl. btw';
-      const f = part ? 1.21 : 1;
-      tel($('#p-shoot'), shoot * f, v => euro(v, 0)); tel($('#p-kmprijs'), km * f, v => euro(v, 0));
-      tel($('#p-btw'), btw, v => euro(v, 0)); tel($('#p-tot'), part ? excl + btw : excl, v => euro(v, 0));
-      $('#p-incl').innerHTML = `Inbegrepen: <b>± ${fotos} bewerkte foto's</b> in hoge resolutie, een online galerij om te delen en te downloaden, ` +
-        `levering binnen <b>${s.extra.spoed ? '7 dagen' : t[5] + (t[5] > 1 ? ' weken' : ' week')}</b>.`;
-      const v = $('#p-vrij');
-      if (!s.datum) { v.textContent = ''; v.className = 'p-vrij'; }
-      else if (geboekt(s.datum)) { v.textContent = 'Al geboekt, kies een andere datum'; v.className = 'p-vrij nee'; }
-      else { v.textContent = 'Nog vrij'; v.className = 'p-vrij ja'; }
-      const knop = $('#p-boek'); knop.classList.remove('ok'); knop.textContent = 'Reserveer je datum'; knop.disabled = !!(s.datum && geboekt(s.datum));
-    };
-    app.addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.type) { s.type = b.dataset.type; s.uren = TYPES[s.type][3];
-        s.extra = { tweede: false, drone: false, album: s.type === 'huwelijk', spoed: false };   // passende standaardkeuzes per soort shoot
-        app.querySelectorAll('[data-x]').forEach(x => x.checked = s.extra[x.dataset.x]); app.querySelectorAll('.p-type').forEach(x => x.classList.toggle('aan', x === b)); bereken(); }
-      if (b.dataset.klant) { s.klant = b.dataset.klant; app.querySelectorAll('[data-klant]').forEach(x => x.classList.toggle('aan', x === b)); bereken(); }
-      if (b.id === 'p-boek') {
-        if (!s.datum) { $('#p-vrij').textContent = 'Kies eerst een datum'; $('#p-vrij').className = 'p-vrij nee'; $('#p-datum').focus(); return; }
-        b.classList.add('ok'); b.textContent = 'Aanvraag ontvangen (demo)';
-      }
-    });
-    app.addEventListener('input', e => {
-      if (e.target.id === 'p-duur') { s.uren = +e.target.value; bereken(); }
-      if (e.target.id === 'p-km') { s.km = +e.target.value; bereken(); }
-      if (e.target.id === 'p-datum') { s.datum = e.target.value; bereken(); }
-    });
-    app.addEventListener('change', e => { if (e.target.dataset.x) { s.extra[e.target.dataset.x] = e.target.checked; bereken(); } });
-    bereken();
-  })();
-
-  // =============== 3. frituur ===============
-  (() => {
-    const app = $('#f-app');
-    const MENU = { 'Friet': [['Kleine friet', 'friet', 3.2], ['Middelgrote friet', 'friet', 3.9], ['Grote friet', 'friet', 4.6]],
-      'Snacks': [['Frikandel', 'snack', 2.6], ['Kipcorn', 'snack', 2.9], ['Bitterballen (6)', 'snack', 4.2], ['Vegaburger', 'snack', 4.8]],
-      'Sauzen': [['Mayonaise', 'saus', 1.0], ['Stoofvleessaus', 'saus', 2.4], ['Andalouse', 'saus', 1.0], ['Samurai', 'saus', 1.0]],
-      'Drank': [['Water', 'drank', 2.0], ['Cola', 'drank', 2.4], ['Ice tea', 'drank', 2.4]] };
-    const ALLE = Object.values(MENU).flat();
-    let tab = 'Friet', mand = {}, volg = null;
-    // open 11:30–13:30 en 17:00–21:30, maandag gesloten; afhalen ten vroegste 20 minuten na het bestellen, per kwartier
-    const OPEN = [[690, 810], [1020, 1290]], WD = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
-    const afhaal = () => { const o = [], nu = new Date(), d = new Date(nu); d.setSeconds(0, 0); d.setMinutes(Math.ceil((d.getMinutes() + 20) / 15) * 15);
-      for (let i = 0; o.length < 8 && i < 4 * 24 * 3; i++, d.setMinutes(d.getMinutes() + 15)) {
-        const m = d.getHours() * 60 + d.getMinutes(); if (d.getDay() === 1 || !OPEN.some(([a, b]) => m >= a && m < b)) continue;
-        const dag = d.toDateString() === nu.toDateString() ? '' : (new Date(nu.getTime() + 864e5).toDateString() === d.toDateString() ? 'morgen ' : WD[d.getDay()] + ' ');
-        o.push({ t: dag + `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`, min: (d - nu) / 6e4 }); }
-      return o; };
-    const totaal = () => Object.entries(mand).reduce((t, [n, a]) => t + ALLE.find(x => x[0] === n)[2] * a, 0);
-    const aantal = () => Object.values(mand).reduce((a, b) => a + b, 0);
-    const tekenMenu = () => {
-      $('.f-items', app).innerHTML = MENU[tab].map((x, i) => `<div class="f-item"><b>${x[0]}</b><span class="lijn"></span><span class="prijs">${euro(x[2])}</span><button class="f-plus" data-plus="${x[0]}" aria-label="${x[0]} toevoegen">+</button></div>`).join('');
-      app.querySelectorAll('.f-tabs button').forEach(b => b.classList.toggle('aan', b.dataset.tab === tab));
-    };
-    const tekenMand = (bots) => {
-      const r = Object.entries(mand);
-      $('.f-regels', app).innerHTML = r.length ? r.map(([n, a]) => `<div class="f-regel"><button data-min="${n}" aria-label="Eén ${n} minder">−</button><b>${a}</b><button data-plus="${n}" aria-label="Eén ${n} meer">+</button><span>${n}</span><small>${euro(ALLE.find(x => x[0] === n)[2] * a)}</small></div>`).join('')
-        : '<p class="f-leeg">Je mandje is nog leeg. Tik op + om iets toe te voegen.</p>';
-      const t = $('.f-teller', app); t.textContent = aantal() + (aantal() === 1 ? ' stuk' : ' stuks'); if (bots) { t.classList.remove('bots'); void t.offsetWidth; t.classList.add('bots'); }
-      $('.f-totaal', app).textContent = euro(totaal()); $('.f-btn', app).disabled = !r.length;
-    };
-    const teken = () => {
-      if (volg) {
-        app.innerHTML = `<div class="f-volg"><p>Bedankt voor je bestelling!</p><div class="nummer">${volg.nr}</div><p>Afhalen om <b>${volg.uur}</b> · ${euro(volg.tot)}</p>
+      </div>`;const geboekt=d=>{const dt=new Date(d+'T12:00');const x=Math.sin(dt.getDate()*7.1+dt.getMonth()*3.3)*999;return(x-Math.floor(x))<(dt.getDay()===6?.6:.15);};const bereken=()=>{const t=TYPES[s.type],duur=$('#p-duur');if(s.uren<t[2])s.uren=t[2];duur.min=t[2];duur.value=s.uren;const shoot=s.uren*t[1];const extras=EXTRA.filter(([k,,,,mag])=>mag(s.type)&&s.extra[k]);const extra=extras.reduce((som,[,,,prijs])=>som+prijs(s.uren),0);const km=Math.max(0,s.km-25)*2*.45;const excl=shoot+extra+km,btw=excl*.21,part=s.klant==='particulier';const fotos=Math.round(s.uren*t[4]/5)*5;$('#p-uren').textContent=getal(s.uren,s.uren%1?1:0)+' uur';$('#p-min').textContent=`minimum ${getal(t[2], t[2] % 1 ? 1 : 0)} uur`;EXTRA.forEach(([k,,uitleg,prijs,mag])=>{const rij=app.querySelector(`[data-rij="${k}"]`),ok=mag(s.type);rij.classList.toggle('uit',!ok);rij.querySelector('input').disabled=!ok;const bedrag=k==='tweede'?prijs(1):prijs(s.uren);$('#p-x-'+k).textContent=ok?`+ € ${getal(bedrag * (part ? 1.21 : 1))}${uitleg ? ' ' + uitleg : ''}`:'niet bij dit soort shoot';});$('#p-kmtekst').textContent=s.km+' km';app.querySelectorAll('[data-vanaf]').forEach(el=>{const tt=TYPES[el.dataset.vanaf];el.textContent=getal(tt[1]*tt[2]*(part?1.21:1));});$('#p-titel').textContent=`${t[0]} · ${getal(s.uren, s.uren % 1 ? 1 : 0)} uur`;$('#p-shootlabel').textContent=`Shoot (${getal(s.uren, s.uren % 1 ? 1 : 0)} u × € ${getal(t[1] * (part ? 1.21 : 1))})`;$('#p-extras').innerHTML=extras.map(([k,naam,,prijs])=>`<div class="p-rij"><span>${k === 'tweede' ? naam + ' (' + getal(s.uren, s.uren % 1 ? 1 : 0) + ' u)' : naam}</span><span>${euro(prijs(s.uren) * (part ? 1.21 : 1), 0)}</span></div>`).join('');$('#p-rij-km').style.display=km?'':'none';$('#p-kmlabel').textContent=`Verplaatsing (${(s.km - 25) * 2} km)`;$('#p-rij-btw').style.display=part?'':'none';$('#p-totlabel').textContent=part?'Totaal incl. btw':'Totaal excl. btw';const f=part?1.21:1;tel($('#p-shoot'),shoot*f,v=>euro(v,0));tel($('#p-kmprijs'),km*f,v=>euro(v,0));tel($('#p-btw'),btw,v=>euro(v,0));tel($('#p-tot'),part?excl+btw:excl,v=>euro(v,0));$('#p-incl').innerHTML=`Inbegrepen: <b>± ${fotos} bewerkte foto's</b> in hoge resolutie, een online galerij om te delen en te downloaden, `+`levering binnen <b>${s.extra.spoed ? '7 dagen' : t[5] + (t[5] > 1 ? ' weken' : ' week')}</b>.`;const v=$('#p-vrij');if(!s.datum){v.textContent='';v.className='p-vrij';}
+else if(geboekt(s.datum)){v.textContent='Al geboekt, kies een andere datum';v.className='p-vrij nee';}
+else{v.textContent='Nog vrij';v.className='p-vrij ja';}
+const knop=$('#p-boek');knop.classList.remove('ok');knop.textContent='Reserveer je datum';knop.disabled=!!(s.datum&&geboekt(s.datum));};app.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.type){s.type=b.dataset.type;s.uren=TYPES[s.type][3];s.extra={tweede:false,drone:false,album:s.type==='huwelijk',spoed:false};app.querySelectorAll('[data-x]').forEach(x=>x.checked=s.extra[x.dataset.x]);app.querySelectorAll('.p-type').forEach(x=>x.classList.toggle('aan',x===b));bereken();}
+if(b.dataset.klant){s.klant=b.dataset.klant;app.querySelectorAll('[data-klant]').forEach(x=>x.classList.toggle('aan',x===b));bereken();}
+if(b.id==='p-boek'){if(!s.datum){$('#p-vrij').textContent='Kies eerst een datum';$('#p-vrij').className='p-vrij nee';$('#p-datum').focus();return;}
+b.classList.add('ok');b.textContent='Aanvraag ontvangen (demo)';}});app.addEventListener('input',e=>{if(e.target.id==='p-duur'){s.uren=+e.target.value;bereken();}
+if(e.target.id==='p-km'){s.km=+e.target.value;bereken();}
+if(e.target.id==='p-datum'){s.datum=e.target.value;bereken();}});app.addEventListener('change',e=>{if(e.target.dataset.x){s.extra[e.target.dataset.x]=e.target.checked;bereken();}});bereken();})();(()=>{const app=$('#f-app');const MENU={'Friet':[['Kleine friet','friet',3.2],['Middelgrote friet','friet',3.9],['Grote friet','friet',4.6]],'Snacks':[['Frikandel','snack',2.6],['Kipcorn','snack',2.9],['Bitterballen (6)','snack',4.2],['Vegaburger','snack',4.8]],'Sauzen':[['Mayonaise','saus',1.0],['Stoofvleessaus','saus',2.4],['Andalouse','saus',1.0],['Samurai','saus',1.0]],'Drank':[['Water','drank',2.0],['Cola','drank',2.4],['Ice tea','drank',2.4]]};const ALLE=Object.values(MENU).flat();let tab='Friet',mand={},volg=null;const OPEN=[[690,810],[1020,1290]],WD=['zo','ma','di','wo','do','vr','za'];const afhaal=()=>{const o=[],nu=new Date(),d=new Date(nu);d.setSeconds(0,0);d.setMinutes(Math.ceil((d.getMinutes()+20)/15)*15);for(let i=0;o.length<8&&i<4*24*3;i++,d.setMinutes(d.getMinutes()+15)){const m=d.getHours()*60+d.getMinutes();if(d.getDay()===1||!OPEN.some(([a,b])=>m>=a&&m<b))continue;const dag=d.toDateString()===nu.toDateString()?'':(new Date(nu.getTime()+864e5).toDateString()===d.toDateString()?'morgen ':WD[d.getDay()]+' ');o.push({t:dag+`${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`,min:(d-nu)/6e4});}
+return o;};const totaal=()=>Object.entries(mand).reduce((t,[n,a])=>t+ALLE.find(x=>x[0]===n)[2]*a,0);const aantal=()=>Object.values(mand).reduce((a,b)=>a+b,0);const tekenMenu=()=>{$('.f-items',app).innerHTML=MENU[tab].map((x,i)=>`<div class="f-item"><b>${x[0]}</b><span class="lijn"></span><span class="prijs">${euro(x[2])}</span><button class="f-plus" data-plus="${x[0]}" aria-label="${x[0]} toevoegen">+</button></div>`).join('');app.querySelectorAll('.f-tabs button').forEach(b=>b.classList.toggle('aan',b.dataset.tab===tab));};const tekenMand=(bots)=>{const r=Object.entries(mand);$('.f-regels',app).innerHTML=r.length?r.map(([n,a])=>`<div class="f-regel"><button data-min="${n}" aria-label="Eén ${n} minder">−</button><b>${a}</b><button data-plus="${n}" aria-label="Eén ${n} meer">+</button><span>${n}</span><small>${euro(ALLE.find(x => x[0] === n)[2] * a)}</small></div>`).join(''):'<p class="f-leeg">Je mandje is nog leeg. Tik op + om iets toe te voegen.</p>';const t=$('.f-teller',app);t.textContent=aantal()+(aantal()===1?' stuk':' stuks');if(bots){t.classList.remove('bots');void t.offsetWidth;t.classList.add('bots');}
+$('.f-totaal',app).textContent=euro(totaal());$('.f-btn',app).disabled=!r.length;};const teken=()=>{if(volg){app.innerHTML=`<div class="f-volg"><p>Bedankt voor je bestelling!</p><div class="nummer">${volg.nr}</div><p>Afhalen om <b>${volg.uur}</b> · ${euro(volg.tot)}</p>
           <div class="f-stap"><div data-s="0">Ontvangen</div><div data-s="1">In de friteuse</div><div data-s="2">Klaar!</div></div>
-          <button class="f-nog" data-nieuw>Nieuwe bestelling</button></div>`;
-        const stappen = app.querySelectorAll('.f-stap div');
-        if (!volg.snel) { stappen[0].classList.add('aan'); app.querySelector('.f-volg .f-nog').insertAdjacentHTML('beforebegin', '<p class="f-later">We beginnen te bakken een tiental minuten voor je afhaaluur, zodat alles warm en krokant is.</p>'); return; }
-        [0, 2200, 4600].forEach((ms, i) => setTimeout(() => { if (!volg) return; stappen.forEach((s, j) => { s.classList.toggle('aan', j <= i); s.classList.toggle('klaar', i === 2 && j <= i); }); }, rustig ? 0 : ms));
-        return;
-      }
-      app.innerHTML = `<div class="f-menu"><div class="f-merk"><b>Frituur 't Hoekske</b><small>Bestel vooraf, haal af zonder wachten</small></div>
+          <button class="f-nog" data-nieuw>Nieuwe bestelling</button></div>`;const stappen=app.querySelectorAll('.f-stap div');if(!volg.snel){stappen[0].classList.add('aan');app.querySelector('.f-volg .f-nog').insertAdjacentHTML('beforebegin','<p class="f-later">We beginnen te bakken een tiental minuten voor je afhaaluur, zodat alles warm en krokant is.</p>');return;}
+[0,2200,4600].forEach((ms,i)=>setTimeout(()=>{if(!volg)return;stappen.forEach((s,j)=>{s.classList.toggle('aan',j<=i);s.classList.toggle('klaar',i===2&&j<=i);});},rustig?0:ms));return;}
+app.innerHTML=`<div class="f-menu"><div class="f-merk"><b>Frituur 't Hoekske</b><small>Bestel vooraf, haal af zonder wachten</small></div>
           <div class="f-tabs">${Object.keys(MENU).map(k => `<button data-tab="${k}">${k}</button>`).join('')}</div><div class="f-items"></div></div>
         <div class="f-mand"><h4>Je bestelling <span class="f-teller">0 stuks</span></h4><div class="f-regels"></div>
-          <label class="f-afhaal">Afhalen om<select class="f-uur">${afhaal().map(u => `<option value="${u.t}" data-min="${Math.round(u.min)}">${u.t}</option>`).join('')}</select></label>
-          <div class="f-tot"><span>Totaal</span><span class="f-totaal">€ 0,00</span></div><button class="f-btn" disabled>Bestellen</button><p class="f-betaal">Betalen bij afhalen, cash of Bancontact</p></div>`;
-      tekenMenu(); tekenMand();
-    };
-    app.addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.tab) { tab = b.dataset.tab; tekenMenu(); }
-      else if (b.dataset.plus) { mand[b.dataset.plus] = (mand[b.dataset.plus] || 0) + 1; tekenMand(true); }
-      else if (b.dataset.min) { if (--mand[b.dataset.min] <= 0) delete mand[b.dataset.min]; tekenMand(true); }
-      else if (b.classList.contains('f-btn')) { const sel = $('.f-uur', app); volg = { nr: 100 + Math.floor(Math.random() * 900), uur: sel.value, tot: totaal(), snel: +sel.selectedOptions[0].dataset.min <= 45 }; mand = {}; teken(); }
-      else if ('nieuw' in b.dataset) { volg = null; tab = 'Friet'; teken(); }
-    });
-    teken();
-  })();
-
-  // =============== 4. dashboard ===============
-  (() => {
-    const app = $('#d-app');
-    // vaste, verzonnen cijfers (zelfde bij elk bezoek)
-    let zaad = 7; const rnd = () => (zaad = (zaad * 16807) % 2147483647) / 2147483647;
-    const reeks = (n, basis, golf) => Array.from({ length: n }, (_, i) => Math.round(basis * (1 + Math.sin(i / n * Math.PI * golf) * .18 + (rnd() - .5) * .3)));
-    const DATA = {
-      week: { labels: ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'], nu: reeks(7, 1450, 2), vorig: reeks(7, 1300, 2), klanten: [38, 31] },
-      maand: { labels: ['w1', 'w2', 'w3', 'w4'], namen: ['week 1', 'week 2', 'week 3', 'week 4'], nu: reeks(4, 9800, 1), vorig: reeks(4, 9100, 1), klanten: [142, 128] },
-      jaar: { labels: 'jfmamjjasond'.split(''), namen: 'januari februari maart april mei juni juli augustus september oktober november december'.split(' '), nu: reeks(12, 41000, 2), vorig: reeks(12, 37500, 2), klanten: [1610, 1395] } };
-    DATA.week.nu[5] *= 1.6; DATA.week.vorig[5] *= 1.5; DATA.week.nu[6] = Math.round(DATA.week.nu[6] * .5); DATA.week.vorig[6] = Math.round(DATA.week.vorig[6] * .5);
-    const PROD = [['Koffiebonen', 1], ['Espressotassen', .72], ['Melkopschuimer', .55], ['Cadeaubon', .41], ['Theedoosjes', .3]];
-    let per = 'week';
-    app.innerHTML = `<div class="d-top"><div><b>Koffiehuis Bonne · verkoop</b><small>Verzonnen cijfers, vergeleken met de vorige periode</small></div>
-        <div class="d-seg">${['week', 'maand', 'jaar'].map(p => `<button data-p="${p}" class="${p === per ? 'aan' : ''}">${p[0].toUpperCase() + p.slice(1)}</button>`).join('')}</div></div>
+          <label class="f-afhaal">Afhalen om<select class="f-uur">${afhaal().map(u => `<option value="${u.t}"data-min="${Math.round(u.min)}">${u.t}</option>`).join('')}</select></label>
+          <div class="f-tot"><span>Totaal</span><span class="f-totaal">€ 0,00</span></div><button class="f-btn" disabled>Bestellen</button><p class="f-betaal">Betalen bij afhalen, cash of Bancontact</p></div>`;tekenMenu();tekenMand();};app.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.tab){tab=b.dataset.tab;tekenMenu();}
+else if(b.dataset.plus){mand[b.dataset.plus]=(mand[b.dataset.plus]||0)+1;tekenMand(true);}
+else if(b.dataset.min){if(--mand[b.dataset.min]<=0)delete mand[b.dataset.min];tekenMand(true);}
+else if(b.classList.contains('f-btn')){const sel=$('.f-uur',app);volg={nr:100+Math.floor(Math.random()*900),uur:sel.value,tot:totaal(),snel:+sel.selectedOptions[0].dataset.min<=45};mand={};teken();}
+else if('nieuw'in b.dataset){volg=null;tab='Friet';teken();}});teken();})();(()=>{const app=$('#d-app');let zaad=7;const rnd=()=>(zaad=(zaad*16807)%2147483647)/2147483647;const reeks=(n,basis,golf)=>Array.from({length:n},(_,i)=>Math.round(basis*(1+Math.sin(i/n*Math.PI*golf)*.18+(rnd()-.5)*.3)));const DATA={week:{labels:['ma','di','wo','do','vr','za','zo'],nu:reeks(7,1450,2),vorig:reeks(7,1300,2),klanten:[38,31]},maand:{labels:['w1','w2','w3','w4'],namen:['week 1','week 2','week 3','week 4'],nu:reeks(4,9800,1),vorig:reeks(4,9100,1),klanten:[142,128]},jaar:{labels:'jfmamjjasond'.split(''),namen:'januari februari maart april mei juni juli augustus september oktober november december'.split(' '),nu:reeks(12,41000,2),vorig:reeks(12,37500,2),klanten:[1610,1395]}};DATA.week.nu[5]*=1.6;DATA.week.vorig[5]*=1.5;DATA.week.nu[6]=Math.round(DATA.week.nu[6]*.5);DATA.week.vorig[6]=Math.round(DATA.week.vorig[6]*.5);const PROD=[['Koffiebonen',1],['Espressotassen',.72],['Melkopschuimer',.55],['Cadeaubon',.41],['Theedoosjes',.3]];let per='week';app.innerHTML=`<div class="d-top"><div><b>Koffiehuis Bonne · verkoop</b><small>Verzonnen cijfers, vergeleken met de vorige periode</small></div>
+        <div class="d-seg">${['week', 'maand', 'jaar'].map(p => `<button data-p="${p}"class="${p === per ? 'aan' : ''}">${p[0].toUpperCase()+p.slice(1)}</button>`).join('')}</div></div>
       <div class="d-kpi">${['Omzet', 'Bestellingen', 'Gem. bedrag', 'Nieuwe klanten'].map((k, i) => `<div class="d-kaart"><span>${k}</span><b id="d-k${i}">0</b><em id="d-v${i}"></em></div>`).join('')}</div>
       <div class="d-onder"><div class="d-blok d-grafiek"><h5>Omzet <i><span>nu</span><span>vorige periode</span></i></h5><svg viewBox="0 0 300 150" id="d-svg"></svg><div class="d-tip" id="d-tip"></div></div>
-        <div class="d-blok"><h5>Topproducten<small>stuks verkocht</small></h5><div class="d-top5" id="d-top5"></div></div></div>`;
-    const svg = $('#d-svg'), tip = $('#d-tip');
-    const verschil = (a, b, el) => { const p = (a - b) / b * 100; el.textContent = (p >= 0 ? '+' : '−') + Math.abs(p).toFixed(1).replace('.', ',') + ' %'; el.className = p >= 0 ? 'op' : 'neer'; };
-    const teken = () => {
-      const d = DATA[per], som = a => a.reduce((x, y) => x + y, 0), oms = som(d.nu), omsV = som(d.vorig);
-      const best = Math.round(oms / 31), bestV = Math.round(omsV / 30.2);
-      const kort = v => v >= 100000 ? '€ ' + (v / 1000).toLocaleString('nl-BE', { maximumFractionDigits: 0 }) + 'k' : euro(v, 0);
-      const k = [[oms, omsV, kort], [best, bestV, v => Math.round(v).toLocaleString('nl-BE')], [oms / best, omsV / bestV, v => euro(v)], [d.klanten[0], d.klanten[1], v => Math.round(v).toLocaleString('nl-BE')]];
-      k.forEach(([a, b, f], i) => { tel($('#d-k' + i), a, f, 700); verschil(a, b, $('#d-v' + i)); });
-      const n = d.nu.length, max = Math.max(...d.nu, ...d.vorig) * 1.1, W = 300, H = 130, bw = W / n, sw = Math.min(14, bw * .3);
-      const y = v => H - v / max * (H - 6);
-      if (svg.dataset.n !== String(n)) {                // nieuwe indeling: staven opnieuw aanmaken
-        svg.dataset.n = n;
-        svg.innerHTML = [0, .5, 1].map(f => `<path d="M0 ${H - f * (H - 6)} H${W}" stroke="#dfe3e8"/>`).join('') +
-          d.nu.map((_, i) => `<g class="doel" data-i="${i}"><rect x="${i * bw}" y="0" width="${bw}" height="${H}" fill="transparent"/>
+        <div class="d-blok"><h5>Topproducten<small>stuks verkocht</small></h5><div class="d-top5" id="d-top5"></div></div></div>`;const svg=$('#d-svg'),tip=$('#d-tip');const verschil=(a,b,el)=>{const p=(a-b)/b*100;el.textContent=(p>=0?'+':'−')+Math.abs(p).toFixed(1).replace('.',',')+' %';el.className=p>=0?'op':'neer';};const teken=()=>{const d=DATA[per],som=a=>a.reduce((x,y)=>x+y,0),oms=som(d.nu),omsV=som(d.vorig);const best=Math.round(oms/31),bestV=Math.round(omsV/30.2);const kort=v=>v>=100000?'€ '+(v/1000).toLocaleString('nl-BE',{maximumFractionDigits:0})+'k':euro(v,0);const k=[[oms,omsV,kort],[best,bestV,v=>Math.round(v).toLocaleString('nl-BE')],[oms/best,omsV/bestV,v=>euro(v)],[d.klanten[0],d.klanten[1],v=>Math.round(v).toLocaleString('nl-BE')]];k.forEach(([a,b,f],i)=>{tel($('#d-k'+i),a,f,700);verschil(a,b,$('#d-v'+i));});const n=d.nu.length,max=Math.max(...d.nu,...d.vorig)*1.1,W=300,H=130,bw=W/n,sw=Math.min(14,bw*.3);const y=v=>H-v/max*(H-6);if(svg.dataset.n!==String(n)){svg.dataset.n=n;svg.innerHTML=[0,.5,1].map(f=>`<path d="M0 ${H - f * (H - 6)} H${W}" stroke="#dfe3e8"/>`).join('')+
+d.nu.map((_,i)=>`<g class="doel" data-i="${i}"><rect x="${i * bw}" y="0" width="${bw}" height="${H}" fill="transparent"/>
             <rect class="d-staaf vorig" x="${i * bw + bw / 2 - sw - 1}" width="${sw}" y="${H}" height="0" rx="2"/>
             <rect class="d-staaf" x="${i * bw + bw / 2 + 1}" width="${sw}" y="${H}" height="0" rx="2"/>
-            <text class="d-as" x="${i * bw + bw / 2}" y="${H + 14}" text-anchor="middle">${d.labels[i]}</text></g>`).join('');
-        svg.getBoundingClientRect();
-      }
-      svg.querySelectorAll('.doel').forEach((g, i) => { const [v, h] = g.querySelectorAll('.d-staaf');
-        v.setAttribute('y', y(d.vorig[i])); v.setAttribute('height', H - y(d.vorig[i])); h.setAttribute('y', y(d.nu[i])); h.setAttribute('height', H - y(d.nu[i])); });
-      const f = { week: 1, maand: 4.3, jaar: 52 }[per];
-      $('#d-top5').innerHTML = PROD.map(([naam, a]) => `<div class="d-prod"><div>${naam}<span>${Math.round(a * 46 * f).toLocaleString('nl-BE')}</span></div><i style="--w:0%"></i></div>`).join('');
-      requestAnimationFrame(() => requestAnimationFrame(() => $('#d-top5').querySelectorAll('i').forEach((el, i) => el.style.setProperty('--w', PROD[i][1] * 100 + '%'))));
-    };
-    app.addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; per = b.dataset.p;
-      app.querySelectorAll('[data-p]').forEach(x => x.classList.toggle('aan', x === b)); tip.style.opacity = 0; teken(); });
-    svg.addEventListener('pointermove', e => { const g = e.target.closest('.doel'); if (!g) return; const i = +g.dataset.i, d = DATA[per];
-      const r = svg.getBoundingClientRect(), br = g.getBoundingClientRect(), blok = svg.parentElement.getBoundingClientRect();
-      tip.innerHTML = `${(d.namen || d.labels)[i]}: ${euro(d.nu[i], 0)} <span style="opacity:.55">(vorige: ${euro(d.vorig[i], 0)})</span>`;
-      tip.style.left = Math.max(tip.offsetWidth / 2, Math.min(blok.width - tip.offsetWidth / 2, br.left + br.width / 2 - blok.left)) + 'px'; tip.style.top = (r.top - blok.top + Math.min(...[...g.querySelectorAll('.d-staaf')].map(s => s.getBoundingClientRect().top - r.top))) + 'px'; tip.style.opacity = 1; });
-    svg.addEventListener('pointerleave', () => tip.style.opacity = 0);
-    // pas animeren als het dashboard in beeld komt
-    new IntersectionObserver(([e], io) => { if (e.isIntersecting) { teken(); io.disconnect(); } }, { threshold: .3 }).observe(app);
-  })();
-})();
-</script>
+            <text class="d-as" x="${i * bw + bw / 2}" y="${H + 14}" text-anchor="middle">${d.labels[i]}</text></g>`).join('');svg.getBoundingClientRect();}
+svg.querySelectorAll('.doel').forEach((g,i)=>{const[v,h]=g.querySelectorAll('.d-staaf');v.setAttribute('y',y(d.vorig[i]));v.setAttribute('height',H-y(d.vorig[i]));h.setAttribute('y',y(d.nu[i]));h.setAttribute('height',H-y(d.nu[i]));});const f={week:1,maand:4.3,jaar:52}[per];$('#d-top5').innerHTML=PROD.map(([naam,a])=>`<div class="d-prod"><div>${naam}<span>${Math.round(a * 46 * f).toLocaleString('nl-BE')}</span></div><i style="--w:0%"></i></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>$('#d-top5').querySelectorAll('i').forEach((el,i)=>el.style.setProperty('--w',PROD[i][1]*100+'%'))));};app.addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(!b)return;per=b.dataset.p;app.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('aan',x===b));tip.style.opacity=0;teken();});svg.addEventListener('pointermove',e=>{const g=e.target.closest('.doel');if(!g)return;const i=+g.dataset.i,d=DATA[per];const r=svg.getBoundingClientRect(),br=g.getBoundingClientRect(),blok=svg.parentElement.getBoundingClientRect();tip.innerHTML=`${(d.namen || d.labels)[i]}: ${euro(d.nu[i], 0)} <span style="opacity:.55">(vorige: ${euro(d.vorig[i], 0)})</span>`;tip.style.left=Math.max(tip.offsetWidth/2,Math.min(blok.width-tip.offsetWidth/2,br.left+br.width/2-blok.left))+'px';tip.style.top=(r.top-blok.top+Math.min(...[...g.querySelectorAll('.d-staaf')].map(s=>s.getBoundingClientRect().top-r.top)))+'px';tip.style.opacity=1;});svg.addEventListener('pointerleave',()=>tip.style.opacity=0);new IntersectionObserver(([e],io)=>{if(e.isIntersecting){teken();io.disconnect();}},{threshold:.3}).observe(app);})();})();</script>
 </body>
 </html>
