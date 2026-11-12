@@ -1,7 +1,7 @@
 /*
   ELECTRO BLYSAN – GEGEVENS DIE DE ZAAK ZELF AANPAST
   ===================================================
-  Dit is de enige plek voor openingsuren, werkgebied en antwoordtermijn.
+  Dit is de enige plek voor de bereikbaarheidsuren, werkgebied en antwoordtermijn.
   Alle pagina's lezen hieruit (startpagina, contact, offerte-aanvraag, over ons).
   Naam, adres, telefoon, e-mail en btw-nummer staan bovenaan in build.py (SITE).
 
@@ -9,9 +9,9 @@
 */
 window.EB_SETTINGS = {
 
-  /* Openingsuren per dag: [begin, einde] in "uu:mm".
+  /* Uren waarop de zaak telefonisch bereikbaar is (er is geen winkel of atelier om te bezoeken), per dag: [begin, einde] in "uu:mm".
      Meerdere blokken per dag mag (bv. middagpauze). Een lege lijst [] = gesloten.
-     De live melding "Open now / Closed now" rekent met de Belgische tijd. */
+     De live melding "Nu bereikbaar / Nu niet bereikbaar" rekent met de Belgische tijd. */
   hours: {
     monday:    [["08:00", "12:00"], ["13:00", "18:00"]],
     tuesday:   [["08:00", "12:00"], ["13:00", "18:00"]],
@@ -22,8 +22,8 @@ window.EB_SETTINGS = {
     sunday:    []
   },
   hoursAreExample: true,          // zet op false zodra de uren kloppen (het label "example" verdwijnt dan)
-  hoursNote: "Also by appointment · closed on public holidays",
-  hoursNote_nl: "Ook op afspraak · gesloten op feestdagen",
+  hoursNote: "Site visits by appointment · not reachable on public holidays",
+  hoursNote_nl: "Plaatsbezoek op afspraak · niet bereikbaar op feestdagen",
 
   /* Binnen hoeveel werkdagen antwoordt de zaak op een offerte-aanvraag? (null = nog niet ingevuld) */
   replyWorkingDays: null,

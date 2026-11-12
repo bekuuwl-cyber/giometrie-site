@@ -274,17 +274,17 @@
       const slot = uren[wd].find(([a, b]) => min >= a && min < b);
       const card = $('#statusCard');
       if (slot) {
-        statusEl.className = 'status open'; $('#statusTxt').textContent = t('Open now', 'Nu open');
-        $('#statusHead').textContent = t(`Open until ${fmt(slot[1])}`, `Open tot ${fmt(slot[1])}`);
+        statusEl.className = 'status open'; $('#statusTxt').textContent = t('Reachable now', 'Nu bereikbaar');
+        $('#statusHead').textContent = t(`Reachable until ${fmt(slot[1])}`, `Bereikbaar tot ${fmt(slot[1])}`);
         const left = slot[1] - min, vb = S.hoursAreExample ? t(' (example hours)', ' (voorbeelduren)') : '';
         $('#statusSub').textContent = left <= 30 ? t(`${left} minutes left – feel free to give us a call.`, `Nog ${left} minuten – bel gerust nog even.`)
-                                                 : t(`Feel free to call or drop by${vb}.`, `Bel of kom gerust langs${vb}.`);
+                                                 : t(`Feel free to give us a call${vb}.`, `Bel ons gerust${vb}.`);
         card.style.setProperty('--st', 'rgba(47,210,122,.25)');
       } else {
-        statusEl.className = 'status closed'; $('#statusTxt').textContent = t('Closed now', 'Nu gesloten');
+        statusEl.className = 'status closed'; $('#statusTxt').textContent = t('Not reachable now', 'Nu niet bereikbaar');
         const n = nextOpen(wd, min);
         const wanneer = n && (n.k === 0 ? t('today', 'vandaag') : n.k === 1 ? t('tomorrow', 'morgen') : t('on ', 'op ') + names[n.d]);
-        $('#statusHead').textContent = n ? t(`Open again ${wanneer} at ${fmt(n.a)}`, `Weer open ${wanneer} om ${fmt(n.a)}`) : t('Opening hours to be announced', 'Openingsuren volgen nog');
+        $('#statusHead').textContent = n ? t(`Reachable again ${wanneer} from ${fmt(n.a)}`, `Weer bereikbaar ${wanneer} vanaf ${fmt(n.a)}`) : t('Phone hours to be announced', 'Uren volgen nog');
         $('#statusSub').textContent = t('In the meantime, feel free to leave a quote request.', 'Laat intussen gerust een offerte-aanvraag achter.');
         card.style.setProperty('--st', 'rgba(255,107,107,.2)');
       }
