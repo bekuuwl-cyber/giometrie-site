@@ -106,7 +106,7 @@ nav.on-hero:not(.scrolled) .menu-btn { border-color: rgba(238,243,250,.22); }
 nav.on-hero:not(.scrolled) .links a[aria-current="page"]:not(.btn) { color: #fff; }
 nav.on-hero:not(.scrolled) .links a:not(.btn) { color: rgba(238,243,250,.75); }
 nav.on-hero:not(.scrolled) .links a:not(.btn):hover { color: #fff; }
-@media (max-width: 1100px) {
+@media (max-width: 1240px) {
   .menu-btn { display: inline-flex; }
   .links {
     position: fixed; inset: 112px 16px auto 16px; flex-direction: column; gap: 0; align-items: stretch;
@@ -577,6 +577,41 @@ html.fast .circuit .pulse.p3 { animation-delay: 2.6s; }
 html.fast .circuit .pulse.p4 { animation-delay: 3s; }
 html.fast .lamp-box.flicker .halo, html.fast .lamp-box.flicker .glass, html.fast .lamp-box.flicker .fil { animation-duration: .7s; }
 html.fast .fade-up { animation-duration: .7s; }
+
+/* ---------- Taalknop (rechtsboven) en telefoonmelding ---------- */
+[hidden] { display: none !important; }
+.nav-right { display: flex; align-items: center; gap: .6rem; margin-left: 1.2rem; }
+.links { margin-left: auto; }
+.links a { white-space: nowrap; }
+.lang-switch svg, .menu-btn svg { flex: none; }
+@media (max-width: 460px) { .brand small { display: none; } .brand b { font-size: 1.05rem; } }
+.lang-switch {
+  display: inline-flex; align-items: center; gap: .45rem; padding: 7px 12px; border-radius: 10px; text-decoration: none;
+  border: 1.5px solid var(--volt); color: var(--ink); font: 600 .82rem var(--mono); letter-spacing: .04em; white-space: nowrap;
+  transition: background .25s, color .25s;
+}
+.lang-switch svg { width: 17px; height: 17px; color: var(--volt-ink); }
+.lang-switch span { opacity: .5; }
+.lang-switch span.on { opacity: 1; color: var(--volt-ink); }
+.lang-switch i { font-style: normal; opacity: .35; }
+.lang-switch:hover { background: var(--volt); color: #1a1300; }
+.lang-switch:hover svg, .lang-switch:hover span.on { color: #1a1300; }
+.lang-switch:hover span { opacity: .8; }
+nav.on-hero:not(.scrolled) .lang-switch { color: var(--hero-ink); border-color: #ffc21a; }
+nav.on-hero:not(.scrolled) .lang-switch svg, nav.on-hero:not(.scrolled) .lang-switch span.on { color: #ffc21a; }
+nav.on-hero:not(.scrolled) .lang-switch:hover { color: #1a1300; }
+nav.on-hero:not(.scrolled) .lang-switch:hover svg, nav.on-hero:not(.scrolled) .lang-switch:hover span.on { color: #1a1300; }
+@media (max-width: 1240px) { .nav-right { margin-left: auto; } }
+@media (max-width: 400px) { .nav-right { gap: .4rem; } .lang-switch { padding: 7px 8px; gap: .25rem; } .menu-btn { padding: 7px 9px; gap: .3rem; } }
+
+.phone-note { margin-top: .45rem; font-size: .84rem; line-height: 1.5; color: var(--muted); max-width: 520px; }
+.phone-note a { color: var(--volt-ink); font-weight: 500; }
+footer.site .phone-note { color: rgba(238,243,250,.55); font-size: .8rem; }
+footer.site .phone-note a { color: #ffc21a; }
+#callbackForm h3 { font-size: 1.3rem; margin-bottom: .3rem; }
+.contact > *, .c-row > div, .quote > *, .about > *, .area > *, .split > *, .fact { min-width: 0; }
+@media (max-width: 380px) { .facts { grid-template-columns: 1fr; } }
+.c-card, .phone-note { overflow-wrap: break-word; }
 
 /* ---------- Skip-link ---------- */
 .skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--volt); color: #1a1300; padding: 10px 16px; border-radius: 10px; font-weight: 600; text-decoration: none; }

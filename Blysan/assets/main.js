@@ -5,6 +5,9 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  // Taal van de pagina: Engels (hoofdmap) of Nederlands (map nl/). t('English', 'Nederlands') kiest de juiste tekst.
+  const NL = (document.documentElement.lang || '').toLowerCase().startsWith('nl');
+  const t = (en, nl) => NL ? nl : en;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   /* ----- Thema (licht/donker) ----- */
@@ -17,6 +20,12 @@
     try { localStorage.setItem('eb-theme', root.dataset.theme); } catch (_) {}
   });
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
+
+  /* ----- Taalknop: dezelfde pagina in de andere taal, met dezelfde ?query en #anker ----- */
+  $$('[data-lang-switch]').forEach(a => a.addEventListener('click', e => {
+    if (!location.search && !location.hash) return;
+    e.preventDefault(); location.href = a.getAttribute('href') + location.search + location.hash;
+  }));
 
   /* ----- Navigatie ----- */
   const nav = $('#nav'), top = $('#top');
@@ -67,7 +76,14 @@
   /* ----- Zekeringkast ----- */
   const brk = $('#breakers');
   if (brk) {
-    const kringen = [
+    const kringen = NL ? [
+      ['K1', 'Verlichting gelijkvloers', 'Plafondlichten en spots in woonkamer, keuken en hal.'],
+      ['K2', 'Stopcontacten woonkamer', 'Max. 8 enkele of meervoudige stopcontacten per kring (AREI).'],
+      ['K3', 'Keuken', 'Aparte kringen voor oven, kookplaat en vaatwasser.'],
+      ['K4', 'Wasplaats', 'Wasmachine en droogkast elk op een eigen kring.'],
+      ['K5', 'Laadpaal', 'Een eigen kring met aangepaste beveiliging.'],
+      ['K6', 'Buiten', 'Tuinverlichting en buitenstopcontacten, waterdicht.']
+    ] : [
       ['K1', 'Ground-floor lighting', 'Ceiling lights and spots in the living room, kitchen and hall.'],
       ['K2', 'Living-room sockets', 'Up to 8 single or multiple sockets per circuit (Belgian rules).'],
       ['K3', 'Kitchen', 'Separate circuits for oven, hob and dishwasher.'],
@@ -82,8 +98,8 @@
       b.addEventListener('click', () => {
         const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on);
         const n2 = $$('.breaker[aria-pressed="true"]', brk).length;
-        bCount.textContent = `${n2} / 6 on`; bOut.classList.toggle('live', n2 > 0);
-        bTxt.innerHTML = on ? `<b>${k} · ${n}</b> – ${d}` : `${k} switched off.`;
+        bCount.textContent = `${n2} / 6 ${t('on', 'aan')}`; bOut.classList.toggle('live', n2 > 0);
+        bTxt.innerHTML = on ? `<b>${k} · ${n}</b> – ${d}` : `${k} ${t('switched off.', 'uitgeschakeld.')}`;
       });
       brk.appendChild(b);
     });
@@ -119,6 +135,7 @@
 
   /* ----- Werkgebied ----- */
   const towns = S.towns || [];
+  const note = town => (NL && town.note_nl) || town.note || '';
   const tl = $('#townList');
   if (tl) towns.forEach(t => { const li = document.createElement('li'); li.textContent = t.name; if (t.kind) li.className = 'k'; tl.appendChild(li); });
   const tg = $('#towns-g');
@@ -141,18 +158,19 @@
       const pick = () => {
         $$('.town', tg).forEach(x => x.classList.remove('sel')); g.classList.add('sel');
         lines.forEach((l, j) => l && l.classList.toggle('hot', j === i));
-        info.innerHTML = `<b>${esc(t.name)}</b><p>${esc(t.note || '')}</p>`;
+        info.innerHTML = `<b>${esc(t.name)}</b><p>${esc(note(t))}</p>`;
       };
       g.addEventListener('click', pick); g.addEventListener('mouseenter', pick);
       g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
       tg.appendChild(g);
     });
-    info.innerHTML = `<b>${esc(home.name)}</b><p>${esc(home.note || '')}</p>`;
+    info.innerHTML = `<b>${esc(home.name)}</b><p>${esc(note(home))}</p>`;
   }
 
   /* ----- Antwoordtermijn ----- */
   $$('[data-reply]').forEach(el => {
-    if (S.replyWorkingDays) el.textContent = `${S.replyWorkingDays} working day${S.replyWorkingDays > 1 ? 's' : ''}`;
+    const n = S.replyWorkingDays;
+    if (n) el.textContent = NL ? `${n} werkdag${n > 1 ? 'en' : ''}` : `${n} working day${n > 1 ? 's' : ''}`;
   });
 
   /* ----- Offerte-aanvraag in 4 stappen ----- */
@@ -160,7 +178,7 @@
   if (form) {
     const sel = $('#gem');
     towns.forEach(t => sel.insertAdjacentHTML('beforeend', `<option>${esc(t.name)}</option>`));
-    sel.insertAdjacentHTML('beforeend', '<option>Other</option>');
+    sel.insertAdjacentHTML('beforeend', `<option>${t('Other', 'Andere')}</option>`);
     const pre = new URLSearchParams(location.search).get('service');
     if (pre) $$(`input[name="werk"][data-key="${pre}"]`, form).forEach(i => i.checked = true);
 
@@ -174,23 +192,24 @@
       cur = i; stepsW.forEach((s, j) => s.classList.toggle('active', j === i));
       bars.forEach((b, j) => b.classList.toggle('done', j < i || i === 4));
       back.style.visibility = i > 0 && i < 4 ? 'visible' : 'hidden';
-      next.textContent = i === 3 ? 'Send request' : 'Next';
+      next.textContent = i === 3 ? t('Send request', 'Aanvraag versturen') : t('Next', 'Volgende');
       navW.style.display = i === 4 ? 'none' : 'flex'; err.textContent = '';
-      status.textContent = i < 4 ? `Step ${i + 1} of 4` : 'Request completed';
+      status.textContent = i < 4 ? t(`Step ${i + 1} of 4`, `Stap ${i + 1} van 4`) : t('Request completed', 'Aanvraag afgerond');
       if (i === 3) {
-        const rows = [['Work', checked('werk').join(', ')], ['Property', checked('pand')[0]], ['Town', val('gemeente')], ['Installation', val('ouderdom')], ['Timing', checked('timing')[0]]];
+        const rows = [[t('Work', 'Werk'), checked('werk').join(', ')], [t('Property', 'Pand'), checked('pand')[0]], [t('Town', 'Gemeente'), val('gemeente')],
+          [t('Installation', 'Installatie'), val('ouderdom')], [t('Timing', 'Wanneer'), checked('timing')[0]]];
         $('#summary').innerHTML = rows.map(([k, v]) => `<li><span>${k}</span><b>${esc(v || '–')}</b></li>`).join('');
       }
     };
     const validate = () => {
-      if (cur === 0 && !checked('werk').length) return 'Choose at least one type of work.';
-      if (cur === 1 && !checked('pand').length) return 'Choose the type of property.';
-      if (cur === 2 && !checked('timing').length) return 'Let us know when the work should be done.';
+      if (cur === 0 && !checked('werk').length) return t('Choose at least one type of work.', 'Kies minstens één soort werk.');
+      if (cur === 1 && !checked('pand').length) return t('Choose the type of property.', 'Kies het soort pand.');
+      if (cur === 2 && !checked('timing').length) return t('Let us know when the work should be done.', 'Laat weten wanneer het werk moet gebeuren.');
       if (cur === 3) {
         const n = form.elements.naam, m = form.elements.mail;
         n.classList.toggle('bad', !n.value.trim()); m.classList.toggle('bad', !mailOk(m.value));
-        if (!n.value.trim()) return 'Please enter your name.';
-        if (!mailOk(m.value)) return 'Please enter a valid email address.';
+        if (!n.value.trim()) return t('Please enter your name.', 'Vul uw naam in.');
+        if (!mailOk(m.value)) return t('Please enter a valid email address.', 'Vul een geldig e-mailadres in.');
       }
       return '';
     };
@@ -204,12 +223,27 @@
     $('#wzReset').addEventListener('click', () => { form.reset(); $$('.bad', form).forEach(x => x.classList.remove('bad')); show(0); });
   }
 
+  /* ----- Terugbelformulier (contactpagina): wie liever Nederlands spreekt, laat zijn nummer achter ----- */
+  const cb = $('#callbackForm');
+  if (cb) cb.addEventListener('submit', e => {
+    e.preventDefault();
+    const tel = cb.elements.tel, ok = tel.value.replace(/\D/g, '').length >= 8;
+    tel.classList.toggle('bad', !ok);
+    $('#cbErr').textContent = ok ? '' : t('Please enter a phone number we can call you on.', 'Vul een telefoonnummer in waarop we u kunnen bellen.');
+    if (!ok) return;
+    $('#cbShow').textContent = tel.value.trim();
+    [...cb.children].forEach(el => { if (el.id !== 'cbDone') el.hidden = true; });
+    $('#cbDone').hidden = false;
+  });
+
   /* ----- Openingsuren met live melding (Belgische tijd) ----- */
   const statusEl = $('#status');
   const weekEl = $('#week');
   if (statusEl || weekEl) {
     const keys = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    const names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const names = NL ? ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag']
+                     : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const cap = w => w.charAt(0).toUpperCase() + w.slice(1);
     const toMin = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
     const uren = keys.map(k => ((S.hours || {})[k] || []).map(([a, b]) => [toMin(a), toMin(b)]));
     const fmt = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
@@ -221,8 +255,8 @@
     const renderWeek = wd => {
       if (!weekEl) return;
       weekEl.innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d =>
-        `<li class="${d === wd ? 'today' : ''}"><span>${names[d]}${d === wd ? ' · today' : ''}</span><span>${uren[d].length ? uren[d].map(([a, b]) => fmt(a) + '–' + fmt(b)).join(' · ') : 'closed'}</span></li>`
-      ).join('') + `<li class="wk-note">${S.hoursAreExample ? 'Example hours · ' : ''}${esc(S.hoursNote || '')}</li>`;
+        `<li class="${d === wd ? 'today' : ''}"><span>${cap(names[d])}${d === wd ? ' · ' + t('today', 'vandaag') : ''}</span><span>${uren[d].length ? uren[d].map(([a, b]) => fmt(a) + '–' + fmt(b)).join(' · ') : t('closed', 'gesloten')}</span></li>`
+      ).join('') + `<li class="wk-note">${S.hoursAreExample ? t('Example hours · ', 'Voorbeelduren · ') : ''}${esc((NL && S.hoursNote_nl) || S.hoursNote || '')}</li>`;
     };
     const nextOpen = (wd, min) => {
       for (let k = 0; k < 8; k++) {
@@ -240,16 +274,18 @@
       const slot = uren[wd].find(([a, b]) => min >= a && min < b);
       const card = $('#statusCard');
       if (slot) {
-        statusEl.className = 'status open'; $('#statusTxt').textContent = 'Open now';
-        $('#statusHead').textContent = `Open until ${fmt(slot[1])}`;
-        const left = slot[1] - min;
-        $('#statusSub').textContent = left <= 30 ? `${left} minutes left – feel free to give us a call.` : `Feel free to call or drop by${S.hoursAreExample ? ' (example hours)' : ''}.`;
+        statusEl.className = 'status open'; $('#statusTxt').textContent = t('Open now', 'Nu open');
+        $('#statusHead').textContent = t(`Open until ${fmt(slot[1])}`, `Open tot ${fmt(slot[1])}`);
+        const left = slot[1] - min, vb = S.hoursAreExample ? t(' (example hours)', ' (voorbeelduren)') : '';
+        $('#statusSub').textContent = left <= 30 ? t(`${left} minutes left – feel free to give us a call.`, `Nog ${left} minuten – bel gerust nog even.`)
+                                                 : t(`Feel free to call or drop by${vb}.`, `Bel of kom gerust langs${vb}.`);
         card.style.setProperty('--st', 'rgba(47,210,122,.25)');
       } else {
-        statusEl.className = 'status closed'; $('#statusTxt').textContent = 'Closed now';
+        statusEl.className = 'status closed'; $('#statusTxt').textContent = t('Closed now', 'Nu gesloten');
         const n = nextOpen(wd, min);
-        $('#statusHead').textContent = n ? `Open again ${n.k === 0 ? 'today' : n.k === 1 ? 'tomorrow' : 'on ' + names[n.d]} at ${fmt(n.a)}` : 'Opening hours to be announced';
-        $('#statusSub').textContent = 'In the meantime, feel free to leave a quote request.';
+        const wanneer = n && (n.k === 0 ? t('today', 'vandaag') : n.k === 1 ? t('tomorrow', 'morgen') : t('on ', 'op ') + names[n.d]);
+        $('#statusHead').textContent = n ? t(`Open again ${wanneer} at ${fmt(n.a)}`, `Weer open ${wanneer} om ${fmt(n.a)}`) : t('Opening hours to be announced', 'Openingsuren volgen nog');
+        $('#statusSub').textContent = t('In the meantime, feel free to leave a quote request.', 'Laat intussen gerust een offerte-aanvraag achter.');
         card.style.setProperty('--st', 'rgba(255,107,107,.2)');
       }
     };
